@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MyLibrary.Common.Responses;
 using Newtonsoft.Json;
+using NLog;
 
 namespace MyLibrary.Website.Controllers.api
 {
@@ -18,6 +19,7 @@ namespace MyLibrary.Website.Controllers.api
     {
         private IHttpClientFactory _clientFactory;
         private IConfiguration _configuration;
+        private Logger _logger = LogManager.GetCurrentClassLogger();
 
         public UserController(IHttpClientFactory clientFactory, IConfiguration configuration)
         {
@@ -42,6 +44,7 @@ namespace MyLibrary.Website.Controllers.api
             }
             catch (Exception ex)
             {
+                _logger.Error(ex, "Unable to retreive users");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
