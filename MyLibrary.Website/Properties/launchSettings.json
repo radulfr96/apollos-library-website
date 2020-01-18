@@ -1,9 +1,9 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:54621",
+      "applicationUrl": "http://mylibrary.com:54621",
       "sslPort": 44346
     }
   },
@@ -17,11 +17,10 @@
     },
     "MyLibrary.Website": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://mylibrary.com:5003;http://mylibrary.com:5002"
     }
   }
 }
