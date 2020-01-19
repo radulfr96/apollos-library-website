@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Typography, withStyles, Grid } from '@material-ui/core';
 import { Component } from 'react';
-import Tab from '../Util/TableFunctions';
+import Tab from '../util/TableFunctions';
 
 const styles = () => ({
 });
