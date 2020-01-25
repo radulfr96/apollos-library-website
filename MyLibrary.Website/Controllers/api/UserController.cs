@@ -26,7 +26,8 @@ namespace MyLibrary.Website.Controllers.api
         public UserController(IHttpClientFactory clientFactory, IConfiguration configuration)
         {
             _configuration = configuration;
-            _httpClient = clientFactory.CreateClient(_configuration.GetSection("BaseApiUrl").Value);
+            _httpClient = clientFactory.CreateClient();
+            _httpClient.BaseAddress = new Uri(_configuration.GetSection("BaseApiUrl").Value);
 
         }
 
