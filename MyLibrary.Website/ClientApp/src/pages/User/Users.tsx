@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Paper from '@material-ui/core/Paper';
 import { User } from '../../interfaces/user';
-import { withStyles, Theme, TableContainer, Table } from '@material-ui/core';
-import EnhancedTable from '../../components/UsersTable';
+import { withStyles, Theme, Grid } from '@material-ui/core';
+import UsersTable from '../../components/UsersTable';
+import Axios from 'axios';
 
 interface UsersProps {
     classes: any,
@@ -15,20 +15,33 @@ const useStyles = (theme: Theme) => ({
     }
 });
 
-const users = new Array<User>();
+interface UsersState {
+    users: Array<User>;
+}
 
-class Users extends React.Component<UsersProps> {
+class Users extends React.Component<UsersProps, UsersState> {
+    constructor(props: UsersProps) {
+        super(props);
+
+        this.state = {
+            users: [],
+        }
+    }
+
+    componentDidMount() {
+        Axios.get('/api/user')
+            .then((response) => {
+                this.setState({
+                    users: response.data.users
+                });
+            });
+    }
+
     render() {
-        const { classes } = this.props;
-
         return (
-            <TableContainer component={Paper}>
-                <Table>
-                    <EnhancedTable users={users}>
-
-                    </EnhancedTable>
-                </Table>
-            </TableContainer>
+            <Grid item xs={9}>
+                <UsersTable users={this.state.users} />
+            </Grid>
         )
     }
 }

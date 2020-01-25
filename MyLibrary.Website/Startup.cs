@@ -49,6 +49,7 @@ namespace MyLibrary.Website
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+            app.UseAuthentication();
 
             app.UseRouting();
 

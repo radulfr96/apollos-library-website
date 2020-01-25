@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Container } from 'reactstrap';
 import NavMenu from './NavMenu';
-import { ThemeProvider } from '@material-ui/core';
+import { ThemeProvider, Grid } from '@material-ui/core';
 import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -15,9 +14,9 @@ export default function Layout(props: { children?: React.ReactNode }) {
   return (
     <React.Fragment>
       <NavMenu />
-      <Container className={classes.root}>
+      <Grid container justify='center' className={classes.root}>
         {props.children}
-      </Container>
+      </Grid>
     </React.Fragment>
   )
 };

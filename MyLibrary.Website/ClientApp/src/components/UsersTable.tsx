@@ -1,5 +1,5 @@
 import { User } from '../interfaces/user';
-import React from 'react';
+import React, { useState } from 'react';
 import TableHelper, { Order } from '../util/TableFunctions';
 import { TableHead, TableRow, TableCell, TableSortLabel, makeStyles, createStyles, Theme, TableContainer, Paper, Table, TableBody } from '@material-ui/core';
 import classes from '*.module.css';
@@ -22,7 +22,6 @@ interface EnhancedTableProps {
     order: Order;
     orderBy: string;
 }
-
 
 function EnhancedTableHead(props: EnhancedTableProps) {
     const { classes, onRequestSort, order, orderBy } = props;
@@ -113,31 +112,29 @@ const UsersTable: React.FC<{ users: Array<User> }> = ({ users }) => {
 
     let tableContent = null;
     tableContent = tableHelper.stableSort(users, tableHelper.getSorting(order, orderBy))
-    .map((row: User) => (
-        <Row row={row} />
-    ));
+        .map((row: User) => (
+            <Row row={row} />
+        ));
 
     return (
-        <div className={classes.root}>
-            <Paper className={classes.paper}>
-                <TableContainer>
-                    <Table
-                        className={classes.table}
-                        aria-labelledby="tableTitle"
-                        aria-label="enhanced table">
-                        <EnhancedTableHead
-                            classes={classes}
-                            order={order}
-                            orderBy={orderBy}
-                            onRequestSort={handleRequestSort}
-                        />
-                        <TableBody>
-                            {tableContent}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Paper>
-        </div>
+        <>
+            <TableContainer component={Paper}>
+                <Table
+                    className={classes.table}
+                    aria-labelledby="tableTitle"
+                    aria-label="enhanced table">
+                    <EnhancedTableHead
+                        classes={classes}
+                        order={order}
+                        orderBy={orderBy}
+                        onRequestSort={handleRequestSort}
+                    />
+                    <TableBody>
+                        {tableContent}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </>
     );
 };
 

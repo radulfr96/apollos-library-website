@@ -38,7 +38,7 @@ namespace MyLibrary.Website.Controllers.api
 
                 if (restResponse.IsSuccessStatusCode)
                 {
-                    GetUsersResponse response = (GetUsersResponse)JsonConvert.DeserializeObject(restResponse.Content.ToString());
+                    GetUsersResponse response = JsonConvert.DeserializeObject<GetUsersResponse>(await restResponse.Content.ReadAsStringAsync());
                     return Ok(response);
                 }
             }
