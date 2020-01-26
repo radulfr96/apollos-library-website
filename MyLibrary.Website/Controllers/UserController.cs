@@ -5,30 +5,22 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MyLibrary.Common.Requests;
 using MyLibrary.Common.Responses;
 using Newtonsoft.Json;
-using NLog;
 
 namespace MyLibrary.Website.Controllers.api
 {
     [Route("api/User")]
-    [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : BaseApiController
     {
-        private HttpClient _httpClient;
-        private IConfiguration _configuration;
-        private Logger _logger = LogManager.GetCurrentClassLogger();
-
-        public UserController(IHttpClientFactory clientFactory, IConfiguration configuration)
+        public UserController(IHttpClientFactory clientFactory, IConfiguration configuration) : base(clientFactory, configuration)
         {
-            _configuration = configuration;
-            _httpClient = clientFactory.CreateClient();
             _httpClient.BaseAddress = new Uri(_configuration.GetSection("BaseApiUrl").Value);
-
         }
 
         [HttpGet("")]
@@ -66,7 +58,17 @@ namespace MyLibrary.Website.Controllers.api
 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    return Ok(response);
+                    HttpContext.Response.Cookies.Append("token", response.Token, new CookieOptions()
+                    {
+                        Domain = "mylibrary.com",
+                        Expires = DateTime.Now,
+                        HttpOnly = false,
+                        IsEssential = true,
+                        SameSite = SameSiteMode.Strict,
+                        Secure = true
+                    });
+
+                    return Ok();
                 }
                 else if (response.StatusCode == HttpStatusCode.Accepted)
                 {

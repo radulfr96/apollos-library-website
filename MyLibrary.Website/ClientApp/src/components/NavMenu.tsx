@@ -2,6 +2,8 @@ import * as React from 'react';
 import { AppBar, Toolbar, Typography, makeStyles } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
 import { NavLink } from 'react-router-dom';
+import { useContext } from 'react';
+import { AppContext } from '../Context';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -20,6 +22,9 @@ const useStyles = makeStyles(theme => ({
 
 export default function NavMenu() {
     const classes = useStyles();
+    const context = useContext(AppContext);
+    const isAdmin = context.isAdmin();
+
     return (
         <header>
             <AppBar position="static">
@@ -29,7 +34,7 @@ export default function NavMenu() {
                             My Library
                         </Typography>
                     </NavLink>
-                    <NavLink className={classes.menuButton} to="/user">
+                    <NavLink style={ {display: isAdmin ? '' : 'none' }} className={classes.menuButton} to="/user">
                         <PersonIcon />
                     </NavLink>
                 </Toolbar>

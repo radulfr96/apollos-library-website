@@ -5,7 +5,6 @@ import { ConnectedRouter } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import configureStore from './store/configureStore';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href') as string;
@@ -21,5 +20,3 @@ ReactDOM.render(
         </ConnectedRouter>
     </Provider>,
     document.getElementById('root'));
-
-registerServiceWorker();
