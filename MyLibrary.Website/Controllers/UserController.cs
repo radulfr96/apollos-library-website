@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 
 namespace MyLibrary.Website.Controllers.api
 {
+    [Authorize]
     [Route("api/User")]
     public class UserController : BaseApiController
     {
@@ -45,6 +46,7 @@ namespace MyLibrary.Website.Controllers.api
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
