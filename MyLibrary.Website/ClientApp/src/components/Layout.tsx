@@ -18,7 +18,7 @@ export default function Layout(props: { children?: React.ReactNode }) {
       {(context) => (
         <>
           <NavMenu />
-          <Grid container justify='center' className={classes.root}>
+          <Grid container className={classes.root}>
             {props.children}
           </Grid>
         </>

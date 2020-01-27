@@ -4,13 +4,14 @@ import PersonIcon from '@material-ui/icons/Person';
 import { NavLink } from 'react-router-dom';
 import { useContext } from 'react';
 import { AppContext } from '../Context';
+import SettingsIcon from '@material-ui/icons/Settings';
+import { userInfo } from 'os';
 
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
     },
     menuButton: {
-        marginRight: theme.spacing(2),
         color: theme.palette.secondary.main,
     },
     title: {
@@ -26,19 +27,20 @@ export default function NavMenu() {
     const isAdmin = context.isAdmin();
 
     return (
-        <header>
-            <AppBar position="static">
-                <Toolbar>
+        <AppBar position="static">
+            <Toolbar>
+                <Typography variant="h6">
                     <NavLink to="/" className={classes.title}>
-                        <Typography variant="h6">
-                            My Library
-                        </Typography>
-                    </NavLink>
-                    <NavLink style={ {display: isAdmin ? '' : 'none' }} className={classes.menuButton} to="/user">
-                        <PersonIcon />
-                    </NavLink>
-                </Toolbar>
-            </AppBar>
-        </header>
+                        My Library
+                        </NavLink>
+                </Typography>
+                <NavLink style={{ display: isAdmin ? '' : 'none' }} className={classes.menuButton} to="/user">
+                    <SettingsIcon />
+                </NavLink>
+                <NavLink style={{ display: userInfo == null ? '' : 'none' }} className={classes.menuButton} to="/login">
+                    <PersonIcon />
+                </NavLink>
+            </Toolbar>
+        </AppBar>
     );
 };

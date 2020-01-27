@@ -57,7 +57,6 @@ export const AppContextProvider: React.FC<React.PropsWithChildren<{}>> = ({ chil
             }
           })
         });
-    
       },[]);
 
     return (

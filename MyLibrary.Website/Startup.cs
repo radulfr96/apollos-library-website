@@ -68,6 +68,7 @@ namespace MyLibrary.Website
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

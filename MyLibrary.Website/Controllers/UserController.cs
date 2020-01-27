@@ -60,17 +60,18 @@ namespace MyLibrary.Website.Controllers.api
 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    HttpContext.Response.Cookies.Append("token", response.Token, new CookieOptions()
+                    HttpContext.Response.Cookies.Append("AuthToken", response.Token, new CookieOptions()
                     {
-                        Domain = "mylibrary.com",
+                        Domain = ".mylibrary.com",
                         Expires = DateTime.Now,
                         HttpOnly = false,
+                        Path = "/",
                         IsEssential = true,
                         SameSite = SameSiteMode.Strict,
-                        Secure = true
+                        Secure = false
                     });
 
-                    return Ok();
+                    return Ok(response);
                 }
                 else if (response.StatusCode == HttpStatusCode.Accepted)
                 {

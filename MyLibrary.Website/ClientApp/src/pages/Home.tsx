@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { Typography, withStyles, Grid } from '@material-ui/core';
-import { Component } from 'react';
-import Tab from '../util/TableFunctions';
 
 const styles = () => ({
 });
@@ -10,7 +8,7 @@ interface HomeProps {
   classes: any,
 }
 
-class Home extends Component<HomeProps> {
+class Home extends React.Component<HomeProps> {
 
   render() {
     const { classes } = this.props;

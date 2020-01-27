@@ -1,8 +1,7 @@
 import { User } from '../interfaces/user';
-import React, { useState } from 'react';
+import React from 'react';
 import TableHelper, { Order } from '../util/TableFunctions';
 import { TableHead, TableRow, TableCell, TableSortLabel, makeStyles, createStyles, Theme, TableContainer, Paper, Table, TableBody } from '@material-ui/core';
-import classes from '*.module.css';
 
 interface HeadCell {
     disablePadding: boolean;
