@@ -6,13 +6,16 @@ import Login from './pages/User/Login';
 import Users from './pages/User/Users';
 import theme from './config/theme'
 import { MuiThemeProvider } from '@material-ui/core';
+import { AppContextProvider } from './Context';
 
 export default () => (
-    <MuiThemeProvider theme={theme}>
-        <Layout>
-            <Route exact path='/' component={Home} />
-            <Route path='/user' component={Users} />
-            <Route path='/login' component={Login} />
-        </Layout>
-    </MuiThemeProvider>
+    <AppContextProvider>
+        <MuiThemeProvider theme={theme}>
+            <Layout>
+                <Route exact path='/' component={Home} />
+                <Route path='/user' component={Users} />
+                <Route path='/login' component={Login} />
+            </Layout>
+        </MuiThemeProvider>
+    </AppContextProvider>
 );

@@ -34,7 +34,6 @@ namespace MyLibrary.Website
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(o =>
                 {
-                    o.LoginPath = "/login";
                     o.ExpireTimeSpan = TimeSpan.FromTicks(DateTime.Now.AddYears(1).Ticks);
                     o.Cookie.Domain = ".mylibrary.com";
                     o.Cookie.HttpOnly = true;

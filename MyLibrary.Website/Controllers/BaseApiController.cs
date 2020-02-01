@@ -16,7 +16,7 @@ namespace MyLibrary.Website.Controllers
         protected HttpClient _httpClient;
         protected IConfiguration _configuration;
         protected Logger _logger = LogManager.GetCurrentClassLogger();
-        private IHttpContextAccessor _httpContextAccessor;
+        protected IHttpContextAccessor _httpContextAccessor;
 
         public BaseApiController(IHttpClientFactory clientFactory, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {

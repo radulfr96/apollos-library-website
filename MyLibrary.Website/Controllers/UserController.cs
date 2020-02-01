@@ -22,7 +22,7 @@ namespace MyLibrary.Website.Controllers.api
     [Route("api/User")]
     public class UserController : BaseApiController
     {
-        public UserController(IHttpClientFactory clientFactory, IConfiguration configuration,IHttpContextAccessor httpContextAccessor) : base(clientFactory, configuration, httpContextAccessor)
+        public UserController(IHttpClientFactory clientFactory, IConfiguration configuration, IHttpContextAccessor httpContextAccessor) : base(clientFactory, configuration, httpContextAccessor)
         {
             _httpClient.BaseAddress = new Uri(_configuration.GetSection("BaseApiUrl").Value);
         }
@@ -65,17 +65,6 @@ namespace MyLibrary.Website.Controllers.api
 
                 if (restResponse.StatusCode == HttpStatusCode.OK)
                 {
-                    //HttpContext.Response.Cookies.Append("AuthToken", response.Token, new CookieOptions()
-                    //{
-                    //    Domain = ".mylibrary.com",
-                    //    Expires = DateTime.Now.AddYears(1),
-                    //    HttpOnly = true,
-                    //    Path = "/",
-                    //    IsEssential = true,
-                    //    SameSite = SameSiteMode.Strict,
-                    //    Secure = true
-                    //});
-
                     var claims = new List<Claim>
                     {
                         new Claim("Token", response.Token)
@@ -117,6 +106,36 @@ namespace MyLibrary.Website.Controllers.api
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("userinfo")]
+        public async Task<IActionResult> GetUserInfo()
+        {
+            HttpResponseMessage restResponse;
+            try
+            {
+                if (_httpContextAccessor.HttpContext.User.Claims.Count() == 0)
+                {
+                    return Ok(null);
+                }
+
+                var restRequest = new HttpRequestMessage(HttpMethod.Get, "api/user/userinfo");
+                restRequest.Headers.Add("Authorization", $"Bearer {GetToken()}");
+                restResponse = await _httpClient.SendAsync(restRequest);
+
+                if (restResponse.IsSuccessStatusCode)
+                {
+                    GetUserInfoResponse response = JsonConvert.DeserializeObject<GetUserInfoResponse>(await restResponse.Content.ReadAsStringAsync());
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Unable to retreive users");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+            return new StatusCodeResult((int)restResponse.StatusCode);
         }
     }
 }

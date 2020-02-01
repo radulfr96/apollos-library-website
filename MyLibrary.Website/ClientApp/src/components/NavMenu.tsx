@@ -16,6 +16,8 @@ const useStyles = makeStyles(theme => ({
     },
     title: {
         flexGrow: 1,
+    },
+    homeLink: {
         color: theme.palette.secondary.main,
         textDecoration: 'none',
     },
@@ -29,10 +31,10 @@ export default function NavMenu() {
     return (
         <AppBar position="static">
             <Toolbar>
-                <Typography variant="h6">
-                    <NavLink to="/" className={classes.title}>
+                <Typography variant="h6" className={classes.title} >
+                    <NavLink to="/" className={classes.homeLink}>
                         My Library
-                        </NavLink>
+                    </NavLink>
                 </Typography>
                 <NavLink style={{ display: isAdmin ? '' : 'none' }} className={classes.menuButton} to="/user">
                     <SettingsIcon />

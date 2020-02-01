@@ -26,6 +26,8 @@ export const AppContextProvider: React.FC<React.PropsWithChildren<{}>> = ({ chil
     const isAdmin = (): boolean => {
         if (state.userInfo == null)
             return false;
+        else if (state.userInfo.roles === undefined)
+            return false;
         else if (state.userInfo.roles.indexOf('Admin') > -1) {
             return true;
         }
@@ -35,6 +37,8 @@ export const AppContextProvider: React.FC<React.PropsWithChildren<{}>> = ({ chil
 
     const isStandardUser = (): boolean => {
         if (state.userInfo == null)
+            return false;
+        else if (state.userInfo.roles === undefined)
             return false;
         else if (state.userInfo.roles.indexOf('Standard User') > -1) {
             return true;
@@ -50,7 +54,6 @@ export const AppContextProvider: React.FC<React.PropsWithChildren<{}>> = ({ chil
     useEffect(() =>{
         Axios.get('/api/user/userinfo').then((response) => {
           setState({
-            ...state,
             userInfo:{
               username: response.data.username,
               roles: response.data.roles,
