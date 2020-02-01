@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +22,7 @@ namespace MyLibrary.Website.Controllers.api
     [Route("api/User")]
     public class UserController : BaseApiController
     {
-        public UserController(IHttpClientFactory clientFactory, IConfiguration configuration) : base(clientFactory, configuration)
+        public UserController(IHttpClientFactory clientFactory, IConfiguration configuration,IHttpContextAccessor httpContextAccessor) : base(clientFactory, configuration, httpContextAccessor)
         {
             _httpClient.BaseAddress = new Uri(_configuration.GetSection("BaseApiUrl").Value);
         }
@@ -27,10 +30,12 @@ namespace MyLibrary.Website.Controllers.api
         [HttpGet("")]
         public async Task<IActionResult> GetUsers()
         {
+            var restResponse = new HttpResponseMessage();
             try
             {
                 var restRequest = new HttpRequestMessage(HttpMethod.Get, "api/user");
-                var restResponse = await _httpClient.SendAsync(restRequest);
+                restRequest.Headers.Add("Authorization", $"Bearer {GetToken()}");
+                restResponse = await _httpClient.SendAsync(restRequest);
 
                 if (restResponse.IsSuccessStatusCode)
                 {
@@ -43,7 +48,7 @@ namespace MyLibrary.Website.Controllers.api
                 _logger.Error(ex, "Unable to retreive users");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
-            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            return new StatusCodeResult((int)restResponse.StatusCode);
         }
 
         [AllowAnonymous]
@@ -58,26 +63,50 @@ namespace MyLibrary.Website.Controllers.api
                 var restResponse = await _httpClient.SendAsync(restRequest);
                 LoginResponse response = JsonConvert.DeserializeObject<LoginResponse>(await restResponse.Content.ReadAsStringAsync());
 
-                if (response.StatusCode == HttpStatusCode.OK)
+                if (restResponse.StatusCode == HttpStatusCode.OK)
                 {
-                    HttpContext.Response.Cookies.Append("AuthToken", response.Token, new CookieOptions()
+                    //HttpContext.Response.Cookies.Append("AuthToken", response.Token, new CookieOptions()
+                    //{
+                    //    Domain = ".mylibrary.com",
+                    //    Expires = DateTime.Now.AddYears(1),
+                    //    HttpOnly = true,
+                    //    Path = "/",
+                    //    IsEssential = true,
+                    //    SameSite = SameSiteMode.Strict,
+                    //    Secure = true
+                    //});
+
+                    var claims = new List<Claim>
                     {
-                        Domain = ".mylibrary.com",
-                        Expires = DateTime.Now,
-                        HttpOnly = false,
-                        Path = "/",
-                        IsEssential = true,
-                        SameSite = SameSiteMode.Strict,
-                        Secure = false
-                    });
+                        new Claim("Token", response.Token)
+                    };
+
+                    var claimsIdentity = new ClaimsIdentity(
+                        claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    var authProperties = new AuthenticationProperties
+                    {
+                        AllowRefresh = true,
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddYears(1),
+                        IsPersistent = true,
+
+                        IssuedUtc = DateTime.UtcNow,
+
+                        RedirectUri = "/",
+                    };
+
+                    await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity),
+                        authProperties);
 
                     return Ok(response);
                 }
-                else if (response.StatusCode == HttpStatusCode.Accepted)
+                else if (restResponse.StatusCode == HttpStatusCode.Accepted)
                 {
                     return Accepted();
                 }
-                else if (response.StatusCode == HttpStatusCode.BadRequest)
+                else if (restResponse.StatusCode == HttpStatusCode.BadRequest)
                 {
                     return BadRequest();
                 }

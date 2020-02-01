@@ -16,12 +16,14 @@ namespace MyLibrary.Website.Controllers
         protected HttpClient _httpClient;
         protected IConfiguration _configuration;
         protected Logger _logger = LogManager.GetCurrentClassLogger();
+        private IHttpContextAccessor _httpContextAccessor;
 
-        public BaseApiController(IHttpClientFactory clientFactory, IConfiguration configuration)
+        public BaseApiController(IHttpClientFactory clientFactory, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
             _httpClient = clientFactory.CreateClient();
             _httpClient.BaseAddress = new Uri(_configuration.GetSection("BaseApiUrl").Value);
+            _httpContextAccessor = httpContextAccessor;
 
         }
 
@@ -29,7 +31,7 @@ namespace MyLibrary.Website.Controllers
         {
             try
             {
-                return string.IsNullOrEmpty(Request.Cookies["token"]) ? "" : Request.Cookies["token"];
+                return _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type  == "Token").Value;
             }
             catch (Exception ex)
             {

@@ -39,7 +39,7 @@ class Users extends React.Component<UsersProps, UsersState> {
 
     render() {
         return (
-            <Grid item xs={9} justify='center'>
+            <Grid item xs={9} container justify='center'>
                 <UsersTable users={this.state.users} />
             </Grid>
         )
