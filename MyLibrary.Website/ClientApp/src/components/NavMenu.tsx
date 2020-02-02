@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AppBar, Toolbar, Typography, makeStyles } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, makeStyles, IconButton, Menu, MenuItem } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
 import { NavLink } from 'react-router-dom';
 import { useContext } from 'react';
@@ -24,9 +24,19 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function NavMenu() {
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const classes = useStyles();
     const context = useContext(AppContext);
     const isAdmin = context.isAdmin();
+    const open = Boolean(anchorEl);
+
+    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     return (
         <AppBar position="static">
@@ -36,12 +46,32 @@ export default function NavMenu() {
                         My Library
                     </NavLink>
                 </Typography>
-                <NavLink style={{ display: isAdmin ? '' : 'none' }} className={classes.menuButton} to="/user">
-                    <SettingsIcon />
-                </NavLink>
-                <NavLink style={{ display: userInfo == null ? '' : 'none' }} className={classes.menuButton} to="/login">
-                    <PersonIcon />
-                </NavLink>
+                <div>
+                    <IconButton
+                        aria-label="account of current user"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        onClick={handleMenu}
+                    >
+                        <PersonIcon color="secondary" />
+                    </IconButton>
+                    <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorEl}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        keepMounted
+                        open={open}
+                        onClose={handleClose}
+                    >
+                        <MenuItem style={{ display: context.userInfo !== null ? '' : 'none'  }} onClick={handleClose}>Log out</MenuItem>
+                        <MenuItem style={{ display: context.userInfo !== null ? '' : 'none'  }} onClick={handleClose}>My account</MenuItem>
+                        <MenuItem style={{ display: context.userInfo === null ? '' : 'none'  }} onClick={handleClose}>Log in</MenuItem>
+                        <MenuItem style={{ display: context.userInfo === null ? '' : 'none'  }} onClick={handleClose}>Sign Up</MenuItem>
+                    </Menu>
+                </div>
             </Toolbar>
         </AppBar>
     );
