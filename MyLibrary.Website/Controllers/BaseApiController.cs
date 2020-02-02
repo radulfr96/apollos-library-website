@@ -10,6 +10,9 @@ using NLog;
 
 namespace MyLibrary.Website.Controllers
 {
+    /// <summary>
+    /// Used as the base for all of the front end api controllers
+    /// </summary>
     [ApiController]
     public class BaseApiController : ControllerBase
     {
@@ -27,6 +30,10 @@ namespace MyLibrary.Website.Controllers
 
         }
 
+        /// <summary>
+        /// Used to get the users token
+        /// </summary>
+        /// <returns>The users token</returns>
         protected string GetToken()
         {
             try

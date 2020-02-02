@@ -18,6 +18,9 @@ using Newtonsoft.Json;
 
 namespace MyLibrary.Website.Controllers.api
 {
+    /// <summary>
+    /// Used to call user api
+    /// </summary>
     [Authorize]
     [Route("api/User")]
     public class UserController : BaseApiController
@@ -27,6 +30,10 @@ namespace MyLibrary.Website.Controllers.api
             _httpClient.BaseAddress = new Uri(_configuration.GetSection("BaseApiUrl").Value);
         }
 
+        /// <summary>
+        /// Used to get all users
+        /// </summary>
+        /// <returns>The response with the users</returns>
         [HttpGet("")]
         public async Task<IActionResult> GetUsers()
         {
@@ -50,7 +57,12 @@ namespace MyLibrary.Website.Controllers.api
             }
             return new StatusCodeResult((int)restResponse.StatusCode);
         }
-
+        
+        /// <summary>
+        /// Used to login a user
+        /// </summary>
+        /// <param name="request">The request with the users login information</param>
+        /// <returns>The response with the users token</returns>
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
@@ -108,6 +120,29 @@ namespace MyLibrary.Website.Controllers.api
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
 
+        /// <summary>
+        /// Used to log out a user
+        /// </summary>
+        /// <returns>The result</returns>
+        [HttpPost("logout")]
+        public async Task<IActionResult> LogOut()
+        {
+            try
+            {
+                await _httpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Unable to retreive users");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        /// <summary>
+        /// used to get a users inforamtion if they are logged in
+        /// </summary>
+        /// <returns>The response with the users information</returns>
         [AllowAnonymous]
         [HttpGet("userinfo")]
         public async Task<IActionResult> GetUserInfo()
