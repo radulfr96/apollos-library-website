@@ -8,6 +8,7 @@
     "axios": "^0.19.2",
     "connected-react-router": "6.5.2",
     "es6": "0.0.7",
+    "eslint-config-airbnb": "^18.0.1",
     "formik": "^2.1.2",
     "history": "4.10.1",
     "jquery": "^3.4.1",
