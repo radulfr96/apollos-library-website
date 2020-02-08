@@ -43,6 +43,8 @@ namespace MyLibrary.Website.Controllers.api
             try
             {
                 var restRequest = new HttpRequestMessage(HttpMethod.Post, "api/user");
+                var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+                restRequest.Content = content;
                 restResponse = await _httpClient.SendAsync(restRequest);
 
                 if (restResponse.IsSuccessStatusCode)
@@ -73,7 +75,7 @@ namespace MyLibrary.Website.Controllers.api
                         new ClaimsPrincipal(claimsIdentity),
                         authProperties);
 
-                    return Ok(response);
+                    return Ok();
                 }
                 else if (restResponse.StatusCode == HttpStatusCode.BadRequest)
                 {
