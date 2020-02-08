@@ -76,7 +76,7 @@ export default function AccountMenu(): JSX.Element {
           </NavLink>
         </MenuItem>
         <MenuItem style={{ display: user?.username === undefined ? 'block' : 'none' }} onClick={handleClose}>
-          <NavLink className={classes.navLink} to="/">
+          <NavLink className={classes.navLink} to="/register">
             Sign Up
           </NavLink>
         </MenuItem>

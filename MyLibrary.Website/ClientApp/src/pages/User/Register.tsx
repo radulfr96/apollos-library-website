@@ -9,13 +9,13 @@ import { WithSnackbarProps, withSnackbar } from 'notistack';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose } from 'recompose';
 import InputTextField from '../../components/InputTextField';
-import { LoginInfo } from '../../interfaces/loginInfo';
+import { RegisterInfo } from '../../interfaces/registerInfo';
 
-interface LoginState {
-    loginInfo: LoginInfo;
+interface RegisterState {
+    registrationInfo: RegisterInfo;
 }
 
-interface LoginProps extends RouteComponentProps<{}> {
+interface RegisterProps extends RouteComponentProps<{}> {
     classes: any;
     enqueueSnackbar: any;
     closeSnackbar: any;
@@ -34,23 +34,24 @@ const useStyles = createStyles({
     },
 });
 
-export class Login extends React.Component<
-    LoginProps
+export class Register extends React.Component<
+    RegisterProps
     & WithStyles<typeof useStyles>
     & WithSnackbarProps
-    , LoginState> {
-    constructor(props: LoginProps) {
+    , RegisterState> {
+    constructor(props: RegisterProps) {
         super(props);
-        this.login = this.login.bind(this);
+        this.register = this.register.bind(this);
         this.onChange = this.onChange.bind(this);
         this.renderErrorSnackbar = this.renderErrorSnackbar.bind(this);
         this.renderSuccessSnackbar = this.renderSuccessSnackbar.bind(this);
         this.renderWarningSnackbar = this.renderWarningSnackbar.bind(this);
 
         this.state = {
-            loginInfo: {
+            registrationInfo: {
                 username: '',
                 password: '',
+                confirmationPassword: '',
             },
         };
     }
@@ -58,26 +59,43 @@ export class Login extends React.Component<
     onChange(key: string, value: any): void {
         const prevState = this.state;
         this.setState({
-            loginInfo: {
-                ...prevState.loginInfo,
+            registrationInfo: {
+                ...prevState.registrationInfo,
                 [key]: value,
             },
         });
     }
 
-    login(loginInfo: LoginInfo, validateForm: Function) {
+    checkUserIsUnique(username: string) {
+        Axios.get(`api/user/${username}`)
+            .then((response) => {
+                if (response.data.result === true) {
+                    this.renderWarningSnackbar('Username is not unique please choose another');
+                } else if (response.data.result === false) {
+                    this.renderSuccessSnackbar('Username is availiable');
+                } else {
+                    this.renderErrorSnackbar('Unable to check username, please contact admin');
+                }
+            })
+            .catch(() => {
+                this.renderErrorSnackbar('Unable to check username, please contact admin');
+            });
+        return null;
+    }
+
+    register(registrationInfo: RegisterInfo, validateForm: Function) {
         validateForm()
             .then(() => {
-                Axios.post('api/user/login', loginInfo)
+                Axios.post('api/user/', registrationInfo)
                     .then((response) => {
                         if (response.status === 200) {
-                            this.renderSuccessSnackbar('Login successful');
+                            this.renderSuccessSnackbar('Registration successful');
                             this.props.history.push('/');
                         }
                     })
                     .catch((error) => {
                         if (error.response.status === 400) {
-                            this.renderWarningSnackbar('Username or password is incorrect');
+                            this.renderWarningSnackbar(error.data);
                         } else {
                             this.renderErrorSnackbar('Unable to login in user please contact admin');
                         }
@@ -107,16 +125,18 @@ export class Login extends React.Component<
         return (
             <div>
                 <Formik
-                    initialValues={this.state.loginInfo}
+                    initialValues={this.state.registrationInfo}
                     onSubmit={(values) => {
                         console.log(values);
                     }}
                     validationSchema={
                         yup.object().shape({
                             username: yup.string()
-                                .required('You must enter your username to login'),
+                                .required('You must enter a username to register'),
                             password: yup.string()
-                                .required('You must enter your password to login'),
+                                .required('You must enter your a password to register'),
+                            confirmationPassword: yup.string()
+                                .required('You must enter your confirmation password to register'),
                         })
                     }
                 >
@@ -137,7 +157,9 @@ export class Login extends React.Component<
                                             keyName="username"
                                             value={values.username}
                                             onChange={handleChange}
-                                            onBlur={handleBlur}
+                                            onBlur={() => {
+                                                this.checkUserIsUnique(values.username);
+                                            }}
                                             error={!!(errors.username)}
                                         />
                                     </Grid>
@@ -154,16 +176,28 @@ export class Login extends React.Component<
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
+                                        <InputTextField
+                                            label="Confirm Password"
+                                            required
+                                            type="password"
+                                            keyName="confirmPassword"
+                                            value={values.confirmationPassword}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            error={!!(errors.confirmationPassword)}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
                                         <Button
                                             className={this.props.classes.formButton}
                                             variant="contained"
                                             color="primary"
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                this.login(values, validateForm);
+                                                this.register(values, validateForm);
                                             }}
                                         >
-                                            Login
+                                            Register
                                         </Button>
                                         <Button
                                             className={this.props.classes.formButton}
@@ -185,8 +219,8 @@ export class Login extends React.Component<
     }
 }
 
-export default compose<LoginProps, {}>(
+export default compose<RegisterProps, {}>(
     withStyles(useStyles),
     withRouter,
     withSnackbar,
-)(Login);
+)(Register);

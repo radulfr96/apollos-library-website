@@ -1,10 +1,10 @@
 import * as React from 'react';
-import NavMenu from './Navigation/NavMenu';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { AppContext } from '../Context'
+import { AppContext } from '../Context';
+import NavMenu from './Navigation/NavMenu';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(({
   root: {
     padding: '20px',
   },

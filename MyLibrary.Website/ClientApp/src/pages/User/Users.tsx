@@ -1,18 +1,18 @@
 import * as React from 'react';
-import { User } from '../../interfaces/user';
 import { withStyles, Theme, Grid } from '@material-ui/core';
-import UsersTable from '../../components/UsersTable';
 import Axios from 'axios';
+import { User } from '../../interfaces/user';
+import UsersTable from '../../components/UsersTable';
 
 interface UsersProps {
-    classes: any,
+    classes: any;
 }
 
 const useStyles = (theme: Theme) => ({
     paper: {
         color: theme.palette.primary.main,
         width: '100%',
-    }
+    },
 });
 
 interface UsersState {
@@ -25,24 +25,24 @@ class Users extends React.Component<UsersProps, UsersState> {
 
         this.state = {
             users: [],
-        }
+        };
     }
 
     componentDidMount() {
         Axios.get('/api/user')
             .then((response) => {
                 this.setState({
-                    users: response.data.users
+                    users: response.data.users,
                 });
             });
     }
 
     render() {
         return (
-            <Grid item xs={9} container justify='center'>
+            <Grid item xs={9} container justify="center">
                 <UsersTable users={this.state.users} />
             </Grid>
-        )
+        );
     }
 }
 
