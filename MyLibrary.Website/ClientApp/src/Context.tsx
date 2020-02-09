@@ -6,11 +6,13 @@ export const AppContext = React.createContext<State & Functions>({
   userInfo: null,
   isAdmin: () => false,
   isStandardUser: () => false,
+  getUserInfo: () => null,
 });
 
 interface Functions {
   isAdmin(): boolean;
   isStandardUser(): boolean;
+  getUserInfo(): void;
 }
 
 interface State {
@@ -40,21 +42,27 @@ export const AppContextProvider: React.FC<React.PropsWithChildren<{}>> = ({ chil
     return false;
   };
 
-  const contextValue = {
-    ...state, isAdmin, isStandardUser,
-  };
-
-  useEffect(() => {
+  const getUserInfo = () => {
     Axios.get('/api/user/userinfo').then((response) => {
       if (response.data !== null && response.data !== undefined) {
         setState({
           userInfo: {
             username: response.data.username,
             roles: response.data.roles,
+            userId: response.data.userId,
+            joinDate: response.data.joinDate,
           },
         });
       }
     });
+  };
+
+  const contextValue = {
+    ...state, isAdmin, isStandardUser, getUserInfo,
+  };
+
+  useEffect(() => {
+    getUserInfo();
   }, []);
 
   return (

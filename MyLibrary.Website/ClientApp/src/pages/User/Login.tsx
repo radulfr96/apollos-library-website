@@ -74,6 +74,7 @@ export class Login extends React.Component<
                         .then((response) => {
                             if (response.status === 200) {
                                 this.renderSuccessSnackbar('Login successful');
+                                // this.context.getUserInfo();
                                 this.props.history.push('/');
                             }
                         })
