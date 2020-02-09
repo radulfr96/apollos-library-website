@@ -10,6 +10,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { compose } from 'recompose';
 import InputTextField from '../../components/InputTextField';
 import { RegisterInfo } from '../../interfaces/registerInfo';
+import YupExtensions from '../../util/YupExtensions';
 
 interface RegisterState {
     registrationInfo: RegisterInfo;
@@ -129,16 +130,17 @@ export class Register extends React.Component<
                     onSubmit={(values) => {
                         console.log(values);
                     }}
-                    validationSchema={
-                        yup.object().shape({
+                    validationSchema={() => {
+                        yup.addMethod(yup.string, 'equalTo', YupExtensions.equalTo);
+                        return yup.object().shape({
                             username: yup.string()
                                 .required('You must enter a username to register'),
                             password: yup.string()
                                 .required('You must enter your a password to register'),
                             confirmationPassword: yup.string()
-                                .required('You must enter your confirmation password to register'),
-                        })
-                    }
+                                .oneOf([yup.ref('password')], 'Confirm password must matched password'),
+                        });
+                    }}
                 >
                     {({
                         values,
@@ -180,7 +182,7 @@ export class Register extends React.Component<
                                             label="Confirm Password"
                                             required
                                             type="password"
-                                            keyName="confirmPassword"
+                                            keyName="confirmationPassword"
                                             value={values.confirmationPassword}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
