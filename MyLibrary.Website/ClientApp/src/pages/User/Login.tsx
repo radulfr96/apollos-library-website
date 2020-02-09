@@ -8,8 +8,9 @@ import Axios from 'axios';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose } from 'recompose';
-import InputTextField from '../../components/InputTextField';
+import InputTextField from '../../components/Shared/InputTextField';
 import { LoginInfo } from '../../interfaces/loginInfo';
+import PageHeading from '../../components/Shared/PageHeading';
 
 interface LoginState {
     loginInfo: LoginInfo;
@@ -67,21 +68,23 @@ export class Login extends React.Component<
 
     login(loginInfo: LoginInfo, validateForm: Function) {
         validateForm()
-            .then(() => {
-                Axios.post('api/user/login', loginInfo)
-                    .then((response) => {
-                        if (response.status === 200) {
-                            this.renderSuccessSnackbar('Login successful');
-                            this.props.history.push('/');
-                        }
-                    })
-                    .catch((error) => {
-                        if (error.response.status === 400) {
-                            this.renderWarningSnackbar('Username or password is incorrect');
-                        } else {
-                            this.renderErrorSnackbar('Unable to login in user please contact admin');
-                        }
-                    });
+            .then((formKeys: any) => {
+                if (Object.keys(formKeys).length === 0) {
+                    Axios.post('api/user/login', loginInfo)
+                        .then((response) => {
+                            if (response.status === 200) {
+                                this.renderSuccessSnackbar('Login successful');
+                                this.props.history.push('/');
+                            }
+                        })
+                        .catch((error) => {
+                            if (error.response.status === 400) {
+                                this.renderWarningSnackbar('Username or password is incorrect');
+                            } else {
+                                this.renderErrorSnackbar('Unable to login in user please contact admin');
+                            }
+                        });
+                }
             });
     }
 
@@ -105,7 +108,8 @@ export class Login extends React.Component<
 
     render(): JSX.Element {
         return (
-            <div>
+            <Paper className={this.props.classes.paper}>
+                <PageHeading headingText="Login" />
                 <Formik
                     initialValues={this.state.loginInfo}
                     onSubmit={(values) => {
@@ -124,63 +128,63 @@ export class Login extends React.Component<
                         values,
                         errors,
                         handleChange,
-                        handleBlur,
                         validateForm,
                     }) => (
-                            <Paper className={this.props.classes.paper}>
-                                <Grid container item xs={12}>
-                                    <Grid item xs={12}>
-                                        <InputTextField
-                                            label="Username"
-                                            required
-                                            type="text"
-                                            keyName="username"
-                                            value={values.username}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            error={!!(errors.username)}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <InputTextField
-                                            label="Password"
-                                            required
-                                            type="password"
-                                            keyName="password"
-                                            value={values.password}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            error={!!(errors.password)}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Button
-                                            className={this.props.classes.formButton}
-                                            variant="contained"
-                                            color="primary"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                this.login(values, validateForm);
-                                            }}
-                                        >
-                                            Login
-                                        </Button>
-                                        <Button
-                                            className={this.props.classes.formButton}
-                                            variant="contained"
-                                            color="secondary"
-                                            onClick={() => {
-                                                this.props.history.push('/');
-                                            }}
-                                        >
-                                            Cancel
-                                        </Button>
-                                    </Grid>
+                            <Grid container item xs={12}>
+                                <Grid item xs={12}>
+                                    <InputTextField
+                                        label="Username"
+                                        required
+                                        type="text"
+                                        keyName="username"
+                                        value={values.username}
+                                        onChange={handleChange}
+                                        error={!!(errors.username)}
+                                        errorMessage={errors.username}
+                                    />
                                 </Grid>
-                            </Paper>
+                                <Grid item xs={12}>
+                                    <InputTextField
+                                        label="Password"
+                                        required
+                                        type="password"
+                                        keyName="password"
+                                        value={values.password}
+                                        onChange={handleChange}
+                                        error={!!(errors.password)}
+                                        errorMessage={errors.password}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button
+                                        className={this.props.classes.formButton}
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            if (errors !== null) {
+                                                this.login(values, validateForm);
+                                            }
+                                        }}
+                                    >
+                                        Login
+                                    </Button>
+                                    <Button
+                                        className={this.props.classes.formButton}
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={() => {
+                                            this.props.history.push('/');
+                                        }}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </Grid>
+                            </Grid>
+
                         )}
                 </Formik>
-            </div>
+            </Paper>
         );
     }
 }

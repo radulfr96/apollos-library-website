@@ -15,7 +15,7 @@ export default function Layout(props: { children?: React.ReactNode }) {
   return (
     <AppContext.Consumer>
 
-      {(context) => (
+      {() => (
         <>
           <NavMenu />
           <Grid container className={classes.root}>
@@ -24,5 +24,5 @@ export default function Layout(props: { children?: React.ReactNode }) {
         </>
       )}
     </AppContext.Consumer>
-  )
-};
+  );
+}

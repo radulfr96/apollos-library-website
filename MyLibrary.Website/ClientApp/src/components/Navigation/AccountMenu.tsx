@@ -55,7 +55,7 @@ export default function AccountMenu(): JSX.Element {
         onClose={handleClose}
       >
         <MenuItem style={{ display: user?.username !== undefined ? 'block' : 'none' }} onClick={handleClose}>
-          <NavLink className={classes.navLink} to="/">
+          <NavLink className={classes.navLink} to="/account">
             My Account
           </NavLink>
         </MenuItem>

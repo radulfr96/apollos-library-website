@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Login from './pages/User/Login';
 import Users from './pages/User/Users';
 import Register from './pages/User/Register';
+import MyAccount from './pages/User/MyAccount';
 import theme from './config/theme';
 import { AppContextProvider } from './Context';
 
@@ -19,6 +20,7 @@ export default () => (
           <Route path="/user" component={Users} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
+          <Route path="/account" component={MyAccount} />
         </Layout>
       </SnackbarProvider>
     </MuiThemeProvider>
