@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {
- createStyles, WithStyles, Paper, withStyles, Grid,
+    createStyles, WithStyles, Paper, withStyles,
 } from '@material-ui/core';
-import { RouteComponentProps, withRouter } from 'react-router';
+import {
+ RouteComponentProps, withRouter,
+} from 'react-router';
 import { compose } from 'recompose';
 import { withSnackbar, WithSnackbarProps } from 'notistack';
-import PageHeading from '../../components/Shared/PageHeading';
 
 interface MyAccountProps extends RouteComponentProps<{}> {
     classes: any;
@@ -19,6 +20,13 @@ const useStyles = createStyles({
         paddingLeft: '40px',
         paddingRight: '20px',
     },
+    navPaper: {
+        paddingTop: '20px',
+        paddingLeft: '40px',
+        paddingRight: '20px',
+        marginRight: '20px',
+        width: '150px',
+    },
     formButton: {
         marginBottom: '10px',
         marginRight: '10px',
@@ -27,8 +35,8 @@ const useStyles = createStyles({
 });
 
 export class MyAccount extends React.Component<MyAccountProps
-& WithStyles<typeof useStyles>
-& WithSnackbarProps> {
+    & WithStyles<typeof useStyles>
+    & WithSnackbarProps> {
     constructor(props: MyAccountProps) {
         super(props);
         this.renderErrorSnackbar = this.renderErrorSnackbar.bind(this);
@@ -56,16 +64,14 @@ export class MyAccount extends React.Component<MyAccountProps
 
     render() {
         return (
-            <Paper className={this.props.classes.paper}>
-                <Grid container item xs={12}>
-                    <Grid item xs={12}>
-                        <PageHeading headingText="My Account" />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <div>Test</div>
-                    </Grid>
-                </Grid>
-            </Paper>
+            <>
+                <Paper className={this.props.classes.navPaper}>
+                    <p>Test</p>
+                </Paper>
+                <Paper className={this.props.classes.paper}>
+                    {this.props.children}
+                </Paper>
+            </>
         );
     }
 }

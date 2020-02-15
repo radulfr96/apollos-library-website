@@ -17,10 +17,6 @@ const useStyles = createStyles((theme: Theme) => ({
 
 export class PageHeading extends React.Component<PageHeadingProps
 & WithStyles<typeof useStyles>> {
-    constructor(props: PageHeadingProps) {
-        super(props);
-    }
-
     render() {
         return (
             <Typography className={this.props.classes.heading}>
