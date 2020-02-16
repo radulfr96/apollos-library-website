@@ -8,10 +8,10 @@ import Axios from 'axios';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose } from 'recompose';
-import InputTextField from '../../components/Shared/InputTextField';
+import InputTextField from '../../components/shared/InputTextField';
 import { RegisterInfo } from '../../interfaces/registerInfo';
 import YupExtensions from '../../util/YupExtensions';
-import PageHeading from '../../components/Shared/PageHeading';
+import PageHeading from '../../components/shared/PageHeading';
 
 interface RegisterState {
     registrationInfo: RegisterInfo;

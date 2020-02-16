@@ -154,6 +154,37 @@ namespace MyLibrary.Website.Controllers.api
         }
 
         /// <summary>
+        /// Used to update a users username
+        /// </summary>
+        /// <param name="request">The request with the user information</param>
+        /// <returns>Response used to indicate the result</returns>
+        [HttpPatch("")]
+        public async Task<IActionResult> UpdateUsername(UpdateUsernameRequest request)
+        {
+            HttpResponseMessage restResponse;
+            try
+            {
+                var restRequest = new HttpRequestMessage(HttpMethod.Patch, "api/user/");
+                restRequest.Headers.Add("Authorization", $"Bearer {GetToken()}");
+                var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+                restRequest.Content = content;
+                restResponse = await _httpClient.SendAsync(restRequest);
+
+                if (restResponse.IsSuccessStatusCode)
+                {
+                    BaseResponse response = JsonConvert.DeserializeObject<BaseResponse>(await restResponse.Content.ReadAsStringAsync());
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Unable to update username");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+        }
+
+        /// <summary>
         /// Used to check if user with username exists
         /// </summary>
         /// <returns>The response with the result</returns>

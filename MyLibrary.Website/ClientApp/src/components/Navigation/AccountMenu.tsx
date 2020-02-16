@@ -1,11 +1,11 @@
 /* eslint-disable linebreak-style */
-import React, { useContext } from 'react';
 import {
   IconButton, Menu, MenuItem, makeStyles,
 } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 import PersonIcon from '@material-ui/icons/Person';
 import Axios from 'axios';
+import React, { useContext } from 'react';
 import { AppContext } from '../../Context';
 
 const useStyles = makeStyles(() => ({
@@ -54,11 +54,11 @@ export default function AccountMenu(): JSX.Element {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem style={{ display: user?.username !== undefined ? 'block' : 'none' }} onClick={handleClose}>
-          <NavLink className={classes.navLink} to="/account/details">
+        <NavLink className={classes.navLink} to="/account">
+          <MenuItem style={{ display: user?.username !== undefined ? 'block' : 'none' }} onClick={handleClose}>
             My Account
-          </NavLink>
-        </MenuItem>
+          </MenuItem>
+        </NavLink>
         <MenuItem
           style={{ display: user?.username !== undefined ? 'block' : 'none' }}
           onClick={() => {

@@ -49,7 +49,7 @@ export const AppContextProvider: React.FC<React.PropsWithChildren<{}>> = ({ chil
           userInfo: {
             username: response.data.username,
             roles: response.data.roles,
-            userId: response.data.userId,
+            userId: response.data.userID,
             joinDate: response.data.joinDate,
           },
         });

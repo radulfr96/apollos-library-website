@@ -29,7 +29,7 @@ export default function NavMenu() {
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             <NavLink to="/" className={classes.homeLink}>
-                        My Library
+              My Library
             </NavLink>
           </Typography>
           <AccountMenu />

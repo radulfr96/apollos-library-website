@@ -1,7 +1,9 @@
-import { User } from '../interfaces/user';
 import React from 'react';
+import {
+ TableHead, TableRow, TableCell, TableSortLabel, makeStyles, createStyles, Theme, TableContainer, Paper, Table, TableBody,
+} from '@material-ui/core';
+import { User } from '../interfaces/user';
 import TableHelper, { Order } from '../util/TableFunctions';
-import { TableHead, TableRow, TableCell, TableSortLabel, makeStyles, createStyles, Theme, TableContainer, Paper, Table, TableBody } from '@material-ui/core';
 
 interface HeadCell {
     disablePadding: boolean;
@@ -23,7 +25,9 @@ interface EnhancedTableProps {
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-    const { classes, onRequestSort, order, orderBy } = props;
+    const {
+ classes, onRequestSort, order, orderBy,
+} = props;
     const createSortHandler = (property: keyof User) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
@@ -31,7 +35,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     return (
         <TableHead>
             <TableRow>
-                {headCells.map(headCell => (
+                {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
                         padding={headCell.disablePadding ? 'none' : 'default'}
@@ -56,8 +60,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     );
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
+const useStyles = makeStyles((theme: Theme) => createStyles({
         root: {
             width: '100%',
         },
@@ -80,10 +83,9 @@ const useStyles = makeStyles((theme: Theme) =>
             width: 1,
         },
         row: {
-            transition: "all 0.4s"
+            transition: 'all 0.4s',
         },
-    }),
-);
+    }));
 
 export const Row: React.FC<{ row: User }> = ({ row }) => {
     const classes = useStyles();
@@ -94,8 +96,8 @@ export const Row: React.FC<{ row: User }> = ({ row }) => {
             <TableCell component="th" scope="row">{row.username}</TableCell>
             <TableCell>{row.isActive}</TableCell>
         </TableRow>
-    )
-}
+    );
+};
 
 const UsersTable: React.FC<{ users: Array<User> }> = ({ users }) => {
     const classes = useStyles();
@@ -121,7 +123,8 @@ const UsersTable: React.FC<{ users: Array<User> }> = ({ users }) => {
                 <Table
                     className={classes.table}
                     aria-labelledby="tableTitle"
-                    aria-label="enhanced table">
+                    aria-label="enhanced table"
+                >
                     <EnhancedTableHead
                         classes={classes}
                         order={order}
