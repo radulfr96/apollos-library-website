@@ -10,6 +10,7 @@ import { WithSnackbarProps, withSnackbar } from 'notistack';
 import PageHeading from '../../../components/shared/PageHeading';
 import InputTextField from '../../../components/shared/InputTextField';
 import ChangeUsernameInfo from '../../../interfaces/changeUsernameInfo';
+import UserHelper from '../UserHelper';
 
 interface ChangeUsernameProps {
     classes: any;
@@ -59,7 +60,7 @@ export class ChangeUsername extends React.Component<ChangeUsernameProps
         validateForm()
             .then((formKeys: any) => {
                 if ((Object.keys(formKeys).length) === 0) {
-                    Axios.patch('api/user', usernameInfo)
+                    Axios.patch('api/user/username', usernameInfo)
                         .then((response) => {
                             if (response.status === 200) {
                                 this.renderSuccessSnackbar('Update username successful');
@@ -76,6 +77,19 @@ export class ChangeUsername extends React.Component<ChangeUsernameProps
                         });
                 }
             });
+    }
+
+    checkUserIsUnique(username: string) {
+        const helper = new UserHelper();
+        helper.CheckUserIsUnique(username).then((result) => {
+            if (result === null || result === undefined) {
+                this.renderErrorSnackbar('Unable to check username, please contact admin');
+            } else if (result === true) {
+                this.renderWarningSnackbar('Username is taken please choose another');
+            } else if (result === false) {
+                this.renderSuccessSnackbar('Username is availiable');
+            }
+        });
     }
 
     renderErrorSnackbar(message: string): void {
@@ -134,6 +148,9 @@ export class ChangeUsername extends React.Component<ChangeUsernameProps
                                             onChange={handleChange}
                                             error={!!(errors.newUsername)}
                                             errorMessage={errors.newUsername}
+                                            onBlur={() => {
+                                                this.checkUserIsUnique(values.newUsername);
+                                            }}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>

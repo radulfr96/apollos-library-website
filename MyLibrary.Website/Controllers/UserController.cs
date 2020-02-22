@@ -119,7 +119,7 @@ namespace MyLibrary.Website.Controllers.api
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Unable to retreive users");
+                _logger.Error(ex, "Unable to retreive user info");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
             return new StatusCodeResult((int)restResponse.StatusCode);
@@ -158,13 +158,13 @@ namespace MyLibrary.Website.Controllers.api
         /// </summary>
         /// <param name="request">The request with the user information</param>
         /// <returns>Response used to indicate the result</returns>
-        [HttpPatch("")]
+        [HttpPatch("username")]
         public async Task<IActionResult> UpdateUsername(UpdateUsernameRequest request)
         {
             HttpResponseMessage restResponse;
             try
             {
-                var restRequest = new HttpRequestMessage(HttpMethod.Patch, "api/user/");
+                var restRequest = new HttpRequestMessage(HttpMethod.Patch, "api/user/username");
                 restRequest.Headers.Add("Authorization", $"Bearer {GetToken()}");
                 var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
                 restRequest.Content = content;
@@ -207,6 +207,31 @@ namespace MyLibrary.Website.Controllers.api
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+        }
+
+        [HttpPatch("password")]
+        public async Task<IActionResult> UpdatePassword(UpdatePasswordRequest request)
+        {
+            HttpResponseMessage restResponse;
+            try
+            {
+                var restRequest = new HttpRequestMessage(HttpMethod.Patch, $"api/user/password");
+                restRequest.Headers.Add("Authorization", $"Bearer {GetToken()}");
+                var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+                restRequest.Content = content;
+                restResponse = await _httpClient.SendAsync(restRequest);
+
+                if (restResponse.IsSuccessStatusCode)
+                {
+                    return Ok();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Unable to update user");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+            return new StatusCodeResult((int)restResponse.StatusCode);
         }
 
         /// <summary>
@@ -313,7 +338,7 @@ namespace MyLibrary.Website.Controllers.api
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Unable to retreive users");
+                _logger.Error(ex, "Unable to log out");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }

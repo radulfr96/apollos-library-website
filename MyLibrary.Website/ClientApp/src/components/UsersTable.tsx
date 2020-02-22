@@ -1,6 +1,8 @@
 import React from 'react';
 import {
- TableHead, TableRow, TableCell, TableSortLabel, makeStyles, createStyles, Theme, TableContainer, Paper, Table, TableBody,
+ TableHead, TableRow, TableCell, TableSortLabel,
+ makeStyles, createStyles, Theme, TableContainer,
+ Paper, Table, TableBody,
 } from '@material-ui/core';
 import { User } from '../interfaces/user';
 import TableHelper, { Order } from '../util/TableFunctions';
@@ -16,6 +18,33 @@ const headCells: HeadCell[] = [
     { id: 'username', disablePadding: false, label: 'Username' },
     { id: 'isActive', disablePadding: false, label: ' User is Active' },
 ];
+
+const useStyles = makeStyles((theme: Theme) => createStyles({
+    root: {
+        width: '100%',
+    },
+    paper: {
+        width: '100%',
+        marginBottom: theme.spacing(2),
+    },
+    table: {
+        minWidth: 750,
+    },
+    visuallyHidden: {
+        border: 0,
+        clip: 'rect(0 0 0 0)',
+        height: 1,
+        margin: -1,
+        overflow: 'hidden',
+        padding: 0,
+        position: 'absolute',
+        top: 20,
+        width: 1,
+    },
+    row: {
+        transition: 'all 0.4s',
+    },
+}));
 
 interface EnhancedTableProps {
     classes: ReturnType<typeof useStyles>;
@@ -59,33 +88,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
         </TableHead>
     );
 }
-
-const useStyles = makeStyles((theme: Theme) => createStyles({
-        root: {
-            width: '100%',
-        },
-        paper: {
-            width: '100%',
-            marginBottom: theme.spacing(2),
-        },
-        table: {
-            minWidth: 750,
-        },
-        visuallyHidden: {
-            border: 0,
-            clip: 'rect(0 0 0 0)',
-            height: 1,
-            margin: -1,
-            overflow: 'hidden',
-            padding: 0,
-            position: 'absolute',
-            top: 20,
-            width: 1,
-        },
-        row: {
-            transition: 'all 0.4s',
-        },
-    }));
 
 export const Row: React.FC<{ row: User }> = ({ row }) => {
     const classes = useStyles();

@@ -12,6 +12,7 @@ import InputTextField from '../../components/shared/InputTextField';
 import { RegisterInfo } from '../../interfaces/registerInfo';
 import YupExtensions from '../../util/YupExtensions';
 import PageHeading from '../../components/shared/PageHeading';
+import UserHelper from './UserHelper';
 
 interface RegisterState {
     registrationInfo: RegisterInfo;
@@ -69,20 +70,16 @@ export class Register extends React.Component<
     }
 
     checkUserIsUnique(username: string) {
-        Axios.get(`api/user/${username}`)
-            .then((response) => {
-                if (response.data.result === true) {
-                    this.renderWarningSnackbar('Username is not unique please choose another');
-                } else if (response.data.result === false) {
-                    this.renderSuccessSnackbar('Username is availiable');
-                } else {
-                    this.renderErrorSnackbar('Unable to check username, please contact admin');
-                }
-            })
-            .catch(() => {
+        const helper = new UserHelper();
+        helper.CheckUserIsUnique(username).then((result) => {
+            if (result === null || result === undefined) {
                 this.renderErrorSnackbar('Unable to check username, please contact admin');
-            });
-        return null;
+            } else if (result === true) {
+                this.renderWarningSnackbar('Username is taken please choose another');
+            } else if (result === false) {
+                this.renderSuccessSnackbar('Username is availiable');
+            }
+        });
     }
 
     register(registrationInfo: RegisterInfo, validateForm: Function) {
