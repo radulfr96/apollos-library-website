@@ -1,4 +1,4 @@
 export default interface ChangeUsernameInfo {
-    username: string;
+    newUsername: string;
     password: string;
 }

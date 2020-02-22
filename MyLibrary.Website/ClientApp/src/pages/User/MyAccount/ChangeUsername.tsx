@@ -49,7 +49,7 @@ export class ChangeUsername extends React.Component<ChangeUsernameProps
 
             this.state = {
                 changeUsernameInfo: {
-                    username: '',
+                    newUsername: '',
                     password: '',
                 },
             };
@@ -58,7 +58,7 @@ export class ChangeUsername extends React.Component<ChangeUsernameProps
     updateUsername(usernameInfo: ChangeUsernameInfo, validateForm: Function) {
         validateForm()
             .then((formKeys: any) => {
-                if (Object.keys(formKeys).length === 0) {
+                if ((Object.keys(formKeys).length) === 0) {
                     Axios.patch('api/user', usernameInfo)
                         .then((response) => {
                             if (response.status === 200) {
@@ -110,7 +110,7 @@ export class ChangeUsername extends React.Component<ChangeUsernameProps
                         }}
                         validationSchema={
                             yup.object().shape({
-                                username: yup.string()
+                                newUsername: yup.string()
                                     .required('You must enter your username to login'),
                                 password: yup.string()
                                     .required('You must enter your password to login'),
@@ -129,11 +129,11 @@ export class ChangeUsername extends React.Component<ChangeUsernameProps
                                             label="New Username"
                                             required
                                             type="text"
-                                            keyName="username"
-                                            value={values.username}
+                                            keyName="newUsername"
+                                            value={values.newUsername}
                                             onChange={handleChange}
-                                            error={!!(errors.username)}
-                                            errorMessage={errors.username}
+                                            error={!!(errors.newUsername)}
+                                            errorMessage={errors.newUsername}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>

@@ -172,7 +172,32 @@ namespace MyLibrary.Website.Controllers.api
 
                 if (restResponse.IsSuccessStatusCode)
                 {
-                    BaseResponse response = JsonConvert.DeserializeObject<BaseResponse>(await restResponse.Content.ReadAsStringAsync());
+                    UpdateUsernameResponse response = JsonConvert.DeserializeObject<UpdateUsernameResponse>(await restResponse.Content.ReadAsStringAsync());
+
+                    var claims = new List<Claim>
+                    {
+                        new Claim("Token", response.Token)
+                    };
+
+                    var claimsIdentity = new ClaimsIdentity(
+                        claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    var authProperties = new AuthenticationProperties
+                    {
+                        AllowRefresh = true,
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddYears(1),
+                        IsPersistent = true,
+
+                        IssuedUtc = DateTime.UtcNow,
+
+                        RedirectUri = "/",
+                    };
+
+                    await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity),
+                        authProperties);
+
                     return Ok(response);
                 }
             }
@@ -192,7 +217,7 @@ namespace MyLibrary.Website.Controllers.api
         [HttpGet("{username}")]
         public async Task<IActionResult> CheckUsernameTaken([FromRoute] string username)
         {
-            var restResponse = new HttpResponseMessage();
+            HttpResponseMessage restResponse;
             try
             {
                 var restRequest = new HttpRequestMessage(HttpMethod.Get, $"api/user/{username}");
