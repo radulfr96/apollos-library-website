@@ -13,6 +13,7 @@ import { RegisterInfo } from '../../interfaces/registerInfo';
 import YupExtensions from '../../util/YupExtensions';
 import PageHeading from '../../components/shared/PageHeading';
 import UserHelper from './UserHelper';
+import { AppContext } from '../../Context';
 
 interface RegisterState {
     registrationInfo: RegisterInfo;
@@ -90,6 +91,7 @@ export class Register extends React.Component<
                         .then((response) => {
                             if (response.status === 200) {
                                 this.renderSuccessSnackbar('Registration successful');
+                                this.context.getUserInfo();
                                 this.props.history.push('/');
                             }
                         })
@@ -224,6 +226,8 @@ export class Register extends React.Component<
         );
     }
 }
+
+Register.contextType = AppContext;
 
 export default compose<RegisterProps, {}>(
     withStyles(useStyles),

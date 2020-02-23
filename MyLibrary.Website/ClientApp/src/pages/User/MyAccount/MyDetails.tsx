@@ -51,6 +51,7 @@ export class MyDetails extends React.Component<MyDetailsProps
             .then((response) => {
                 if (response.status === 200) {
                     this.renderSuccessSnackbar('Deactivation successful');
+                    this.context.clearUserInfo();
                     this.props.history.push('/');
                 }
             })
@@ -70,6 +71,7 @@ export class MyDetails extends React.Component<MyDetailsProps
             .then((response) => {
                 if (response.status === 200) {
                     this.renderSuccessSnackbar('Deletion successful');
+                    this.context.clearUserInfo();
                     this.props.history.push('/');
                 }
             })
@@ -104,68 +106,66 @@ export class MyDetails extends React.Component<MyDetailsProps
 
     render() {
         return (
-            <AppContext.Consumer>
-                {(context) => (
-                    <Grid container item xs={12}>
-                        <Grid item xs={12}>
-                            <PageHeading headingText="My Details" />
-                        </Grid>
+            <Grid container item xs={12}>
+                <Grid item xs={12}>
+                    <PageHeading headingText="My Details" />
+                </Grid>
+                <Grid item xs={12}>
+                    <ReadOnlyLabel
+                        text="User Number"
+                    />
+                    <ReadOnlyText text={this.context.userInfo?.userId} />
+                </Grid>
+                <Grid item xs={12}>
+                    <ReadOnlyLabel
+                        text="Username"
+                    />
+                    <ReadOnlyText text={this.context.userInfo?.username} />
+                </Grid>
+                <Grid item xs={12}>
+                    <ReadOnlyLabel
+                        text="Date Joined"
+                    />
+                    <ReadOnlyText text={this.context.userInfo?.joinDate} />
+                </Grid>
+                <Grid item xs={12}>
+                    <Grid item xs={12}>
                         <Grid item xs={12}>
                             <ReadOnlyLabel
-                                text="User Number"
+                                text="Roles"
                             />
-                            <ReadOnlyText text={context.userInfo?.userId} />
                         </Grid>
-                        <Grid item xs={12}>
-                            <ReadOnlyLabel
-                                text="Username"
-                            />
-                            <ReadOnlyText text={context.userInfo?.username} />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <ReadOnlyLabel
-                                text="Date Joined"
-                            />
-                            <ReadOnlyText text={context.userInfo?.joinDate} />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Grid item xs={12}>
-                                <Grid item xs={12}>
-                                    <ReadOnlyLabel
-                                        text="Roles"
-                                    />
-                                </Grid>
-                                {context.userInfo?.roles.map((role) => (
-                                    <ReadOnlyText text={role} />
-                                ))}
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button
-                                onClick={() => {
-                                    this.deactivateUser();
-                                }}
-                                variant="contained"
-                                color="primary"
-                                className={this.props.classes.actionButton}
-                            >
-                                Deactivate Account
-                            </Button>
-                            <Button
-                                onClick={() => {
-                                    this.deleteUser();
-                                }}
-                                className={this.props.classes.actionButton}
-                            >
-                                Delete Account
-                            </Button>
-                        </Grid>
+                        {this.context.userInfo?.roles.map((role: string) => (
+                            <ReadOnlyText text={role} />
+                        ))}
                     </Grid>
-                )}
-            </AppContext.Consumer>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button
+                        onClick={() => {
+                            this.deactivateUser();
+                        }}
+                        variant="contained"
+                        color="primary"
+                        className={this.props.classes.actionButton}
+                    >
+                        Deactivate Account
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            this.deleteUser();
+                        }}
+                        className={this.props.classes.actionButton}
+                    >
+                        Delete Account
+                    </Button>
+                </Grid>
+            </Grid>
         );
     }
 }
+
+MyDetails.contextType = AppContext;
 
 export default compose<MyDetailsProps, {}>(
     withStyles(useStyles),
