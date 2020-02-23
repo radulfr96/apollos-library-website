@@ -35,10 +35,10 @@ export default function NavMenu() {
             My Library
           </NavLink>
         </Typography>
-        <AdminMenu />
-        <div style={{ display: context.isAdmin ? 'block' : 'none' }}>
-          <AccountMenu />
+        <div style={{ display: context.isAdmin() ? 'block' : 'none' }}>
+          <AdminMenu />
         </div>
+          <AccountMenu />
       </Toolbar>
     </AppBar>
   );

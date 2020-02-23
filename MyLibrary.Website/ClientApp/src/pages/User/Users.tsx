@@ -1,8 +1,11 @@
 import * as React from 'react';
-import { withStyles, Theme, Grid } from '@material-ui/core';
+import {
+ withStyles, Theme, Grid, WithStyles,
+} from '@material-ui/core';
 import Axios from 'axios';
 import { User } from '../../interfaces/user';
 import UsersTable from '../../components/UsersTable';
+import PageHeading from '../../components/shared/PageHeading';
 
 interface UsersProps {
     classes: any;
@@ -19,7 +22,10 @@ interface UsersState {
     users: Array<User>;
 }
 
-class Users extends React.Component<UsersProps, UsersState> {
+class Users extends React.Component<
+UsersProps
+& WithStyles<typeof useStyles>
+, UsersState> {
     constructor(props: UsersProps) {
         super(props);
 
@@ -40,7 +46,12 @@ class Users extends React.Component<UsersProps, UsersState> {
     render() {
         return (
             <Grid item xs={9} container justify="center">
-                <UsersTable users={this.state.users} />
+                <Grid item xs={12}>
+                    <PageHeading headingText="Users" />
+                </Grid>
+                <Grid item xs={12}>
+                    <UsersTable users={this.state.users} />
+                </Grid>
             </Grid>
         );
     }

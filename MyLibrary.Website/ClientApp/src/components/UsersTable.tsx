@@ -8,15 +8,14 @@ import { User } from '../interfaces/user';
 import TableHelper, { Order } from '../util/TableFunctions';
 
 interface HeadCell {
-    disablePadding: boolean;
     id: keyof User;
     label: string;
 }
 
 const headCells: HeadCell[] = [
-    { id: 'userID', disablePadding: true, label: 'User ID' },
-    { id: 'username', disablePadding: false, label: 'Username' },
-    { id: 'isActive', disablePadding: false, label: ' User is Active' },
+    { id: 'userID', label: 'User ID' },
+    { id: 'username', label: 'Username' },
+    { id: 'isActive', label: ' User is Active' },
 ];
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -67,7 +66,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
-                        padding={headCell.disablePadding ? 'none' : 'default'}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
                         <TableSortLabel
@@ -84,6 +82,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                         </TableSortLabel>
                     </TableCell>
                 ))}
+                <TableCell />
             </TableRow>
         </TableHead>
     );
@@ -97,6 +96,7 @@ export const Row: React.FC<{ row: User }> = ({ row }) => {
             <TableCell>{row.userID}</TableCell>
             <TableCell component="th" scope="row">{row.username}</TableCell>
             <TableCell>{row.isActive}</TableCell>
+            <TableCell />
         </TableRow>
     );
 };
