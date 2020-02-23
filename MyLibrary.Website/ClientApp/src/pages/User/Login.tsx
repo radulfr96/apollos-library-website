@@ -11,6 +11,7 @@ import { compose } from 'recompose';
 import InputTextField from '../../components/shared/InputTextField';
 import { LoginInfo } from '../../interfaces/loginInfo';
 import PageHeading from '../../components/shared/PageHeading';
+import { AppContext } from '../../Context';
 
 interface LoginState {
     loginInfo: LoginInfo;
@@ -74,7 +75,7 @@ export class Login extends React.Component<
                         .then((response) => {
                             if (response.status === 200) {
                                 this.renderSuccessSnackbar('Login successful');
-                                // this.context.getUserInfo();
+                                this.context.getUserInfo();
                                 this.props.history.push('/');
                             }
                         })
@@ -189,6 +190,8 @@ export class Login extends React.Component<
         );
     }
 }
+
+Login.contextType = AppContext;
 
 export default compose<LoginProps, {}>(
     withStyles(useStyles),

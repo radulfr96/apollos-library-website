@@ -7,12 +7,14 @@ export const AppContext = React.createContext<State & Functions>({
   isAdmin: () => false,
   isStandardUser: () => false,
   getUserInfo: () => null,
+  clearUserInfo: () => null,
 });
 
 interface Functions {
   isAdmin(): boolean;
   isStandardUser(): boolean;
   getUserInfo(): void;
+  clearUserInfo(): void;
 }
 
 interface State {
@@ -42,6 +44,12 @@ export const AppContextProvider: React.FC<React.PropsWithChildren<{}>> = ({ chil
     return false;
   };
 
+  const clearUserInfo = () => {
+    setState({
+      userInfo: null,
+    });
+  };
+
   const getUserInfo = () => {
     Axios.get('/api/user/userinfo').then((response) => {
       if (response.data !== null && response.data !== undefined) {
@@ -58,7 +66,7 @@ export const AppContextProvider: React.FC<React.PropsWithChildren<{}>> = ({ chil
   };
 
   const contextValue = {
-    ...state, isAdmin, isStandardUser, getUserInfo,
+    ...state, isAdmin, isStandardUser, getUserInfo, clearUserInfo,
   };
 
   useEffect(() => {

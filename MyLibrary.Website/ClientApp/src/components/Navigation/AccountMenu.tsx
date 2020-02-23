@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
 export default function AccountMenu(): JSX.Element {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const user = useContext(AppContext).userInfo;
+  const context = useContext(AppContext);
   const classes = useStyles();
 
   const logOut = () => {
@@ -55,14 +55,15 @@ export default function AccountMenu(): JSX.Element {
         onClose={handleClose}
       >
         <NavLink className={classes.navLink} to="/account">
-          <MenuItem style={{ display: user?.username !== undefined ? 'block' : 'none' }} onClick={handleClose}>
+          <MenuItem style={{ display: context.userInfo?.username !== undefined ? 'block' : 'none' }} onClick={handleClose}>
             My Account
           </MenuItem>
         </NavLink>
         <MenuItem
-          style={{ display: user?.username !== undefined ? 'block' : 'none' }}
+          style={{ display: context.userInfo?.username !== undefined ? 'block' : 'none' }}
           onClick={() => {
             logOut();
+            context.clearUserInfo();
             handleClose();
           }}
         >
@@ -70,12 +71,12 @@ export default function AccountMenu(): JSX.Element {
             Log out
           </NavLink>
         </MenuItem>
-        <MenuItem style={{ display: user?.username === undefined ? 'block' : 'none' }} onClick={handleClose}>
+        <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={handleClose}>
           <NavLink className={classes.navLink} to="/login">
             Log in
           </NavLink>
         </MenuItem>
-        <MenuItem style={{ display: user?.username === undefined ? 'block' : 'none' }} onClick={handleClose}>
+        <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={handleClose}>
           <NavLink className={classes.navLink} to="/register">
             Sign Up
           </NavLink>
