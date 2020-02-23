@@ -1,10 +1,11 @@
+/* eslint-disable max-len */
 import * as React from 'react';
-import { Container } from 'reactstrap';
-import NavMenu from './NavMenu';
-import { ThemeProvider } from '@material-ui/core';
-import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
+import { Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { AppContext } from '../Context';
+import NavMenu from './navigation/NavMenu';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(({
   root: {
     padding: '20px',
   },
@@ -12,12 +13,17 @@ const useStyles = makeStyles(theme => ({
 
 export default function Layout(props: { children?: React.ReactNode }) {
   const classes = useStyles();
+
   return (
-    <React.Fragment>
-      <NavMenu />
-      <Container className={classes.root}>
-        {props.children}
-      </Container>
-    </React.Fragment>
-  )
-};
+    <AppContext.Consumer>
+      {() => (
+        <>
+          <NavMenu />
+          <Grid container className={classes.root}>
+            {props.children}
+          </Grid>
+        </>
+      )}
+    </AppContext.Consumer>
+  );
+}

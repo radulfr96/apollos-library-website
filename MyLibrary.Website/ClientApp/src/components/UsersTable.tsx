@@ -1,20 +1,49 @@
-import { User } from '../interfaces/user';
 import React from 'react';
+import {
+ TableHead, TableRow, TableCell, TableSortLabel,
+ makeStyles, createStyles, Theme, TableContainer,
+ Paper, Table, TableBody,
+} from '@material-ui/core';
+import { User } from '../interfaces/user';
 import TableHelper, { Order } from '../util/TableFunctions';
-import { TableHead, TableRow, TableCell, TableSortLabel, makeStyles, createStyles, Theme, TableContainer, Paper, Table, TableBody } from '@material-ui/core';
-import classes from '*.module.css';
 
 interface HeadCell {
-    disablePadding: boolean;
     id: keyof User;
     label: string;
 }
 
 const headCells: HeadCell[] = [
-    { id: 'userID', disablePadding: true, label: 'User ID' },
-    { id: 'username', disablePadding: false, label: 'Username' },
-    { id: 'isActive', disablePadding: false, label: ' User is Active' },
+    { id: 'userID', label: 'User ID' },
+    { id: 'username', label: 'Username' },
+    { id: 'isActive', label: ' User is Active' },
 ];
+
+const useStyles = makeStyles((theme: Theme) => createStyles({
+    root: {
+        width: '100%',
+    },
+    paper: {
+        width: '100%',
+        marginBottom: theme.spacing(2),
+    },
+    table: {
+        minWidth: 750,
+    },
+    visuallyHidden: {
+        border: 0,
+        clip: 'rect(0 0 0 0)',
+        height: 1,
+        margin: -1,
+        overflow: 'hidden',
+        padding: 0,
+        position: 'absolute',
+        top: 20,
+        width: 1,
+    },
+    row: {
+        transition: 'all 0.4s',
+    },
+}));
 
 interface EnhancedTableProps {
     classes: ReturnType<typeof useStyles>;
@@ -23,9 +52,10 @@ interface EnhancedTableProps {
     orderBy: string;
 }
 
-
 function EnhancedTableHead(props: EnhancedTableProps) {
-    const { classes, onRequestSort, order, orderBy } = props;
+    const {
+ classes, onRequestSort, order, orderBy,
+} = props;
     const createSortHandler = (property: keyof User) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
@@ -33,10 +63,9 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     return (
         <TableHead>
             <TableRow>
-                {headCells.map(headCell => (
+                {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
-                        padding={headCell.disablePadding ? 'none' : 'default'}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
                         <TableSortLabel
@@ -53,39 +82,11 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                         </TableSortLabel>
                     </TableCell>
                 ))}
+                <TableCell />
             </TableRow>
         </TableHead>
     );
 }
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            width: '100%',
-        },
-        paper: {
-            width: '100%',
-            marginBottom: theme.spacing(2),
-        },
-        table: {
-            minWidth: 750,
-        },
-        visuallyHidden: {
-            border: 0,
-            clip: 'rect(0 0 0 0)',
-            height: 1,
-            margin: -1,
-            overflow: 'hidden',
-            padding: 0,
-            position: 'absolute',
-            top: 20,
-            width: 1,
-        },
-        row: {
-            transition: "all 0.4s"
-        },
-    }),
-);
 
 export const Row: React.FC<{ row: User }> = ({ row }) => {
     const classes = useStyles();
@@ -95,9 +96,10 @@ export const Row: React.FC<{ row: User }> = ({ row }) => {
             <TableCell>{row.userID}</TableCell>
             <TableCell component="th" scope="row">{row.username}</TableCell>
             <TableCell>{row.isActive}</TableCell>
+            <TableCell />
         </TableRow>
-    )
-}
+    );
+};
 
 const UsersTable: React.FC<{ users: Array<User> }> = ({ users }) => {
     const classes = useStyles();
@@ -113,31 +115,30 @@ const UsersTable: React.FC<{ users: Array<User> }> = ({ users }) => {
 
     let tableContent = null;
     tableContent = tableHelper.stableSort(users, tableHelper.getSorting(order, orderBy))
-    .map((row: User) => (
-        <Row row={row} />
-    ));
+        .map((row: User) => (
+            <Row row={row} />
+        ));
 
     return (
-        <div className={classes.root}>
-            <Paper className={classes.paper}>
-                <TableContainer>
-                    <Table
-                        className={classes.table}
-                        aria-labelledby="tableTitle"
-                        aria-label="enhanced table">
-                        <EnhancedTableHead
-                            classes={classes}
-                            order={order}
-                            orderBy={orderBy}
-                            onRequestSort={handleRequestSort}
-                        />
-                        <TableBody>
-                            {tableContent}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Paper>
-        </div>
+        <>
+            <TableContainer component={Paper}>
+                <Table
+                    className={classes.table}
+                    aria-labelledby="tableTitle"
+                    aria-label="enhanced table"
+                >
+                    <EnhancedTableHead
+                        classes={classes}
+                        order={order}
+                        orderBy={orderBy}
+                        onRequestSort={handleRequestSort}
+                    />
+                    <TableBody>
+                        {tableContent}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </>
     );
 };
 

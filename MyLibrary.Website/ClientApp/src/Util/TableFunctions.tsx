@@ -10,7 +10,7 @@ export default class TableHelper {
         }
         return 0;
     }
-    
+
     public stableSort<T>(array: T[], cmp: (a: T, b: T) => number) {
         const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
         stabilizedThis.sort((a, b) => {
@@ -18,10 +18,9 @@ export default class TableHelper {
             if (order !== 0) return order;
             return a[1] - b[1];
         });
-        return stabilizedThis.map(el => el[0]);
+        return stabilizedThis.map((el) => el[0]);
     }
-    
-    
+
     public getSorting<K extends keyof any>(
       order: Order,
       orderBy: K,

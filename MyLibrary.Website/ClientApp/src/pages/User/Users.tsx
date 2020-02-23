@@ -1,35 +1,59 @@
 import * as React from 'react';
-import Paper from '@material-ui/core/Paper';
+import {
+ withStyles, Theme, Grid, WithStyles,
+} from '@material-ui/core';
+import Axios from 'axios';
 import { User } from '../../interfaces/user';
-import { withStyles, Theme, TableContainer, Table } from '@material-ui/core';
-import EnhancedTable from '../../components/UsersTable';
+import UsersTable from '../../components/UsersTable';
+import PageHeading from '../../components/shared/PageHeading';
 
 interface UsersProps {
-    classes: any,
+    classes: any;
 }
 
 const useStyles = (theme: Theme) => ({
     paper: {
         color: theme.palette.primary.main,
         width: '100%',
-    }
+    },
 });
 
-const users = new Array<User>();
+interface UsersState {
+    users: Array<User>;
+}
 
-class Users extends React.Component<UsersProps> {
+class Users extends React.Component<
+UsersProps
+& WithStyles<typeof useStyles>
+, UsersState> {
+    constructor(props: UsersProps) {
+        super(props);
+
+        this.state = {
+            users: [],
+        };
+    }
+
+    componentDidMount() {
+        Axios.get('/api/user')
+            .then((response) => {
+                this.setState({
+                    users: response.data.users,
+                });
+            });
+    }
+
     render() {
-        const { classes } = this.props;
-
         return (
-            <TableContainer component={Paper}>
-                <Table>
-                    <EnhancedTable users={users}>
-
-                    </EnhancedTable>
-                </Table>
-            </TableContainer>
-        )
+            <Grid item xs={9} container justify="center">
+                <Grid item xs={12}>
+                    <PageHeading headingText="Users" />
+                </Grid>
+                <Grid item xs={12}>
+                    <UsersTable users={this.state.users} />
+                </Grid>
+            </Grid>
+        );
     }
 }
 

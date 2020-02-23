@@ -1,17 +1,14 @@
 import * as React from 'react';
 import { Typography, withStyles, Grid } from '@material-ui/core';
-import { Component } from 'react';
-import Tab from '../util/TableFunctions';
 
 const styles = () => ({
 });
 
 interface HomeProps {
-  classes: any,
+  classes: any;
 }
 
-class Home extends Component<HomeProps> {
-
+class Home extends React.Component<HomeProps> {
   render() {
     const { classes } = this.props;
 
@@ -24,14 +21,14 @@ class Home extends Component<HomeProps> {
         </Grid>
         <Grid item xs={6}>
           <Typography>
-            My Library is a site where book lovers can keep track of their own personable library. You 
-            will also be able to keep track of their purchase history in order to adjust their book spending 
-            budget as much as needed.
+            My Library is a site where book lovers can keep track of their own personal library.
+            They will also be able to keep track of their purchase history in order to adjust
+             their book spending budget as much as needed.
           </Typography>
         </Grid>
       </Grid>
     );
   }
-};
+}
 
 export default withStyles(styles, { withTheme: true })(Home);
