@@ -209,6 +209,12 @@ namespace MyLibrary.Website.Controllers.api
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
 
+
+        /// <summary>
+        /// Used to update the users password
+        /// </summary>
+        /// <param name="request">The request with the informaton</param>
+        /// <returns>Response that indicate the result</returns>
         [HttpPatch("password")]
         public async Task<IActionResult> UpdatePassword(UpdatePasswordRequest request)
         {
@@ -223,6 +229,54 @@ namespace MyLibrary.Website.Controllers.api
 
                 if (restResponse.IsSuccessStatusCode)
                 {
+                    return Ok();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Unable to update user");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+            return new StatusCodeResult((int)restResponse.StatusCode);
+        }
+
+        [HttpDelete("")]
+        public async Task<IActionResult> DeleteUser()
+        {
+            HttpResponseMessage restResponse;
+            try
+            {
+                var restRequest = new HttpRequestMessage(HttpMethod.Delete, $"api/user");
+                restRequest.Headers.Add("Authorization", $"Bearer {GetToken()}");
+                restResponse = await _httpClient.SendAsync(restRequest);
+
+                if (restResponse.IsSuccessStatusCode)
+                {
+                    await _httpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                    return Ok();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Unable to update user");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+            return new StatusCodeResult((int)restResponse.StatusCode);
+        }
+
+        [HttpPatch("deactivate")]
+        public async Task<IActionResult> DeactivateUser()
+        {
+            HttpResponseMessage restResponse;
+            try
+            {
+                var restRequest = new HttpRequestMessage(HttpMethod.Patch, $"api/user/deactivate");
+                restRequest.Headers.Add("Authorization", $"Bearer {GetToken()}");
+                restResponse = await _httpClient.SendAsync(restRequest);
+
+                if (restResponse.IsSuccessStatusCode)
+                {
+                    await _httpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                     return Ok();
                 }
             }
