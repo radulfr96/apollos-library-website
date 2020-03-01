@@ -92,6 +92,35 @@ namespace MyLibrary.Website.Controllers.api
         }
 
         /// <summary>
+        /// Used to get the user with the id received
+        /// </summary>
+        /// <param name="id">The id of the user to be found</param>
+        /// <returns>The result</returns>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUser([FromRoute] int id)
+        {
+            HttpResponseMessage restResponse;
+            try
+            {
+                var restRequest = new HttpRequestMessage(HttpMethod.Get, $"api/user/{id}");
+                restRequest.Headers.Add("Authorization", $"Bearer {GetToken()}");
+                restResponse = await _httpClient.SendAsync(restRequest);
+
+                if (restResponse.IsSuccessStatusCode)
+                {
+                    GetUserResponse response = JsonConvert.DeserializeObject<GetUserResponse>(await restResponse.Content.ReadAsStringAsync());
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Unable to retreive user info");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+            return new StatusCodeResult((int)restResponse.StatusCode);
+        }
+
+        /// <summary>
         /// used to get a users inforamtion if they are logged in
         /// </summary>
         /// <returns>The response with the users information</returns>
@@ -293,13 +322,13 @@ namespace MyLibrary.Website.Controllers.api
         /// </summary>
         /// <returns>The response with the result</returns>
         [AllowAnonymous]
-        [HttpGet("{username}")]
+        [HttpGet("check/{username}")]
         public async Task<IActionResult> CheckUsernameTaken([FromRoute] string username)
         {
             HttpResponseMessage restResponse;
             try
             {
-                var restRequest = new HttpRequestMessage(HttpMethod.Get, $"api/user/{username}");
+                var restRequest = new HttpRequestMessage(HttpMethod.Get, $"api/user/check/{username}");
                 restResponse = await _httpClient.SendAsync(restRequest);
 
                 if (restResponse.IsSuccessStatusCode)

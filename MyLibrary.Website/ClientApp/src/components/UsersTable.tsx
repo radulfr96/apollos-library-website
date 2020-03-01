@@ -1,9 +1,11 @@
 import React from 'react';
 import {
- TableHead, TableRow, TableCell, TableSortLabel,
- makeStyles, createStyles, Theme, TableContainer,
- Paper, Table, TableBody,
+    TableHead, TableRow, TableCell, TableSortLabel,
+    makeStyles, createStyles, Theme, TableContainer,
+    Paper, Table, TableBody, IconButton,
 } from '@material-ui/core';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { NavLink } from 'react-router-dom';
 import { User } from '../interfaces/user';
 import TableHelper, { Order } from '../util/TableFunctions';
 
@@ -54,8 +56,8 @@ interface EnhancedTableProps {
 
 function EnhancedTableHead(props: EnhancedTableProps) {
     const {
- classes, onRequestSort, order, orderBy,
-} = props;
+        classes, onRequestSort, order, orderBy,
+    } = props;
     const createSortHandler = (property: keyof User) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
@@ -94,9 +96,15 @@ export const Row: React.FC<{ row: User }> = ({ row }) => {
     return (
         <TableRow key={row.userID} hover className={classes.row}>
             <TableCell>{row.userID}</TableCell>
-            <TableCell component="th" scope="row">{row.username}</TableCell>
+            <TableCell>{row.username}</TableCell>
             <TableCell>{row.isActive}</TableCell>
-            <TableCell />
+            <TableCell>
+                <IconButton>
+                    <NavLink to={`/userdetails/${row.userID}`}>
+                        <ChevronRightIcon />
+                    </NavLink>
+                </IconButton>
+            </TableCell>
         </TableRow>
     );
 };
