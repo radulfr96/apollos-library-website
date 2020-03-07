@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
-    withStyles, Theme, Grid, WithStyles, Button, CircularProgress, Typography,
+    withStyles, Theme, Grid, WithStyles, Button, CircularProgress,
 } from '@material-ui/core';
 import Axios from 'axios';
 import { withRouter, RouteComponentProps, RouteProps } from 'react-router';
@@ -23,6 +23,9 @@ const useStyles = (theme: Theme) => ({
     paper: {
         color: theme.palette.primary.main,
         width: '100%',
+    },
+    formButton: {
+        marginRight: '10px',
     },
 });
 
@@ -72,7 +75,7 @@ class UserPage extends React.Component<
                         password: '',
                         confirmationPassword: '',
                         userID: response.data.user.userID,
-                        roles: [],
+                        roles: response.data.user.roles,
                     },
                     roles: response.data.roles,
                 });
@@ -148,9 +151,9 @@ class UserPage extends React.Component<
                         validationSchema={
                             yup.object().shape({
                                 username: yup.string()
-                                    .required('You must enter your username to login'),
-                                password: yup.string()
-                                    .required('You must enter your password to login'),
+                                    .required('A user must have a username'),
+                                roles: yup.string()
+                                    .required('A user must have a role'),
                             })
                         }
                     >
@@ -196,10 +199,36 @@ class UserPage extends React.Component<
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <Typography>User Roles</Typography>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <RoleSelector roles={this.state.roles} />
+                                        <RoleSelector
+                                            roles={this.state.roles.map(
+                                                (r) => r.name,
+                                            )}
+                                            selectedRoles={this.state.updateInfo.roles.map(
+                                                (r) => r.name,
+                                            )}
+                                            updateUserRoles={(newRoleNames: string[]) => {
+                                                const newRoles = new Array<Role>();
+                                                newRoleNames.forEach((n) => {
+                                                    const role = this.state.roles.find(
+                                                        (r) => r.name === n,
+                                                    );
+                                                    if (role !== undefined) {
+                                                        const newRole: Role = {
+                                                            roleId: role.roleId,
+                                                            name: role.name,
+                                                        };
+                                                        newRoles.push(newRole);
+                                                    }
+                                                });
+                                                this.setState({
+                                                    ...this.state,
+                                                    updateInfo: {
+                                                        ...this.state.updateInfo,
+                                                        roles: newRoles,
+                                                    },
+                                                });
+                                            }}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} style={{ paddingTop: '10px' }}>
                                         <Button

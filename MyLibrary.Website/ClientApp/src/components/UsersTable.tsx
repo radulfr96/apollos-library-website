@@ -134,6 +134,7 @@ const UsersTable: React.FC<{ users: Array<User> }> = ({ users }) => {
                     className={classes.table}
                     aria-labelledby="tableTitle"
                     aria-label="enhanced table"
+                    size="small"
                 >
                     <EnhancedTableHead
                         classes={classes}
