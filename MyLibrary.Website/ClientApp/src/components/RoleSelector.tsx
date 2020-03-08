@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-    Grid, InputLabel, Select, MenuItem, FormControl, makeStyles, Input, Chip,
+    Grid, InputLabel, Select, MenuItem, FormControl, makeStyles, Input, Chip, Theme,
 } from '@material-ui/core';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
     roleChipSection: {
         paddingTop: '10px',
         width: '100%',
@@ -11,14 +11,21 @@ const useStyles = makeStyles({
     roleChip: {
         marginRight: '5px',
     },
-});
+    errorMessage: {
+        paddingBottom: '20px',
+        color: 'red',
+        fontFamily: theme.typography.fontFamily,
+    },
+}));
 
 const RoleSelector: React.FC<{
     roles: Array<string>;
     selectedRoles: Array<string>;
     updateUserRoles: Function;
+    error?: boolean;
+    errorMessage?: string;
 }> = ({
-    roles, selectedRoles, updateUserRoles,
+    roles, selectedRoles, updateUserRoles, error, errorMessage,
 }) => {
         const classes = useStyles();
         const inputLabel = React.useRef<HTMLLabelElement>(null);
@@ -36,6 +43,7 @@ const RoleSelector: React.FC<{
                             labelId="roleSelectLabel"
                             id="roleSelect"
                             multiple
+                            name="roles"
                             className={classes.roleChipSection}
                             value={selectedRoles}
                             onChange={handleChange}
@@ -55,6 +63,7 @@ const RoleSelector: React.FC<{
                             ))}
                         </Select>
                     </FormControl>
+                    <div className={classes.errorMessage}>{error ? errorMessage : ''}</div>
                 </Grid>
             </Grid>
         );

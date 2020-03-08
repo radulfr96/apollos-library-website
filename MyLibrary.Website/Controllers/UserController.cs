@@ -269,6 +269,37 @@ namespace MyLibrary.Website.Controllers.api
             return new StatusCodeResult((int)restResponse.StatusCode);
         }
 
+        /// <summary>
+        /// Used to update a user
+        /// </summary>
+        /// <returns>Returns a response to indicate the result</returns>
+        [HttpPatch("")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserRequest request)
+        {
+            HttpResponseMessage restResponse;
+
+            try
+            {
+                var restRequest = new HttpRequestMessage(HttpMethod.Patch, $"api/user");
+
+                restRequest.Headers.Add("Authorization", $"Bearer {GetToken()}");
+                var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+                restRequest.Content = content;
+                restResponse = await _httpClient.SendAsync(restRequest);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Unable to update user");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+
+            return new StatusCodeResult((int)restResponse.StatusCode);
+        }
+
+        /// <summary>
+        /// Used by a user to delete their account
+        /// </summary>
+        /// <returns>Returns a response used to indicate the result</returns>
         [HttpDelete("")]
         public async Task<IActionResult> DeleteUser()
         {
@@ -293,6 +324,10 @@ namespace MyLibrary.Website.Controllers.api
             return new StatusCodeResult((int)restResponse.StatusCode);
         }
 
+        /// <summary>
+        /// Used by a user to deactive their account
+        /// </summary>
+        /// <returns>Returns a response used to indicate the result</returns>
         [HttpPatch("deactivate")]
         public async Task<IActionResult> DeactivateUser()
         {

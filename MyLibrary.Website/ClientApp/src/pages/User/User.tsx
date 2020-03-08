@@ -152,8 +152,20 @@ class UserPage extends React.Component<
                             yup.object().shape({
                                 username: yup.string()
                                     .required('A user must have a username'),
-                                roles: yup.string()
+                                roles: yup.array()
                                     .required('A user must have a role'),
+                                password: yup.string()
+                                    .notRequired()
+                                    .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Password must be at least 6 characters long and contain one number and uppercase character.'),
+                                confirmationPassword: yup.string()
+                                    .oneOf([yup.ref('password')], 'Confirmation password must matched password')
+                                    .when(
+                                        'password', {
+                                        // eslint-disable-next-line no-restricted-globals
+                                        is: (password) => password?.length > 0,
+                                        then: yup.string().required('Confirmation password is required'),
+                                    },
+                                    ),
                             })
                         }
                     >
@@ -192,10 +204,10 @@ class UserPage extends React.Component<
                                             label="Confirmation Password"
                                             type="password"
                                             keyName="confirmationPassword"
-                                            value={values.password}
+                                            value={values.confirmationPassword}
                                             onChange={handleChange}
-                                            error={!!(errors.password)}
-                                            errorMessage={errors.password}
+                                            error={!!(errors.confirmationPassword)}
+                                            errorMessage={errors.confirmationPassword}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -203,7 +215,7 @@ class UserPage extends React.Component<
                                             roles={this.state.roles.map(
                                                 (r) => r.name,
                                             )}
-                                            selectedRoles={this.state.updateInfo.roles.map(
+                                            selectedRoles={values.roles.map(
                                                 (r) => r.name,
                                             )}
                                             updateUserRoles={(newRoleNames: string[]) => {
@@ -220,6 +232,8 @@ class UserPage extends React.Component<
                                                         newRoles.push(newRole);
                                                     }
                                                 });
+                                                // eslint-disable-next-line no-param-reassign
+                                                values.roles = newRoles;
                                                 this.setState({
                                                     ...this.state,
                                                     updateInfo: {
@@ -228,6 +242,8 @@ class UserPage extends React.Component<
                                                     },
                                                 });
                                             }}
+                                            error={!!(errors.roles)}
+                                            errorMessage="A user must have a role"
                                         />
                                     </Grid>
                                     <Grid item xs={12} style={{ paddingTop: '10px' }}>
@@ -249,7 +265,7 @@ class UserPage extends React.Component<
                                             variant="contained"
                                             color="secondary"
                                             onClick={() => {
-                                                this.props.history.push('/');
+                                                this.props.history.push('/user');
                                             }}
                                         >
                                             Cancel
