@@ -296,6 +296,24 @@ namespace MyLibrary.Website.Controllers.api
             return new StatusCodeResult((int)restResponse.StatusCode);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser([FromRoute] int id)
+        {
+            HttpResponseMessage restResponse;
+            try
+            {
+                var restRequest = new HttpRequestMessage(HttpMethod.Delete, $"api/user/{id}");
+                restRequest.Headers.Add("Authorization", $"Bearer {GetToken()}");
+                restResponse = await _httpClient.SendAsync(restRequest);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Unable to delete user");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+            return new StatusCodeResult((int)restResponse.StatusCode);
+        }
+
         /// <summary>
         /// Used by a user to delete their account
         /// </summary>
@@ -318,7 +336,7 @@ namespace MyLibrary.Website.Controllers.api
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Unable to update user");
+                _logger.Error(ex, "Unable to delete user");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
             return new StatusCodeResult((int)restResponse.StatusCode);

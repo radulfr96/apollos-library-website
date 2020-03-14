@@ -14,6 +14,7 @@ import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
 import { Role } from '../../interfaces/role';
 import RoleSelector from '../../components/RoleSelector';
+import UserHelper from './UserHelper';
 
 interface UserProps {
     classes: any;
@@ -105,13 +106,26 @@ class UserPage extends React.Component<
                         })
                         .catch((error) => {
                             if (error.response.status === 400) {
-                                this.renderWarningSnackbar('Username or password is incorrect');
+                                this.renderWarningSnackbar('Unable to update user invalid input');
                             } else {
-                                this.renderErrorSnackbar('Unable to login in user please contact admin');
+                                this.renderErrorSnackbar('Unable to update user please contact admin');
                             }
                         });
                 }
             });
+    }
+
+    checkUserIsUnique(username: string) {
+        const helper = new UserHelper();
+        helper.CheckUserIsUnique(username).then((result) => {
+            if (result === null || result === undefined) {
+                this.renderErrorSnackbar('Unable to check username, please contact admin');
+            } else if (result === true) {
+                this.renderWarningSnackbar('Username is taken please choose another');
+            } else if (result === false) {
+                this.renderSuccessSnackbar('Username is availiable');
+            }
+        });
     }
 
     renderErrorSnackbar(message: string): void {
@@ -184,6 +198,9 @@ class UserPage extends React.Component<
                                             keyName="username"
                                             value={values.username}
                                             onChange={handleChange}
+                                            onBlur={() => {
+                                                this.checkUserIsUnique(values.username);
+                                            }}
                                             error={!!(errors.username)}
                                             errorMessage={errors.username}
                                         />

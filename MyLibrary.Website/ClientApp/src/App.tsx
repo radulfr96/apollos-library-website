@@ -16,7 +16,7 @@ import { AppContextProvider } from './Context';
 export default () => (
   <AppContextProvider>
     <MuiThemeProvider theme={theme}>
-      <SnackbarProvider maxSnack={1}>
+      <SnackbarProvider maxSnack={10}>
       <Layout>
           <Route exact path="/" component={Home} />
           <Route path="/user" component={Users} />

@@ -52,6 +52,11 @@ export default function AdminMenu(): JSX.Element {
                         Users
                     </MenuItem>
                 </NavLink>
+                <NavLink className={classes.navLink} to="/genre">
+                    <MenuItem>
+                        Genres
+                    </MenuItem>
+                </NavLink>
             </Menu>
         </div>
     );
