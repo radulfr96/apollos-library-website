@@ -4,7 +4,7 @@ import Axios from 'axios';
 export default class UserHelper {
     public CheckUserIsUnique(username: string) {
         return new Promise<boolean | null>((resolve) => {
-            Axios.get(`api/user/${username}`)
+            Axios.get(`api/user/check/${username}`)
             .then((response) => {
                 resolve(response.data.result);
             });

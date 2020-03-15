@@ -92,6 +92,35 @@ namespace MyLibrary.Website.Controllers.api
         }
 
         /// <summary>
+        /// Used to get the user with the id received
+        /// </summary>
+        /// <param name="id">The id of the user to be found</param>
+        /// <returns>The result</returns>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUser([FromRoute] int id)
+        {
+            HttpResponseMessage restResponse;
+            try
+            {
+                var restRequest = new HttpRequestMessage(HttpMethod.Get, $"api/user/{id}");
+                restRequest.Headers.Add("Authorization", $"Bearer {GetToken()}");
+                restResponse = await _httpClient.SendAsync(restRequest);
+
+                if (restResponse.IsSuccessStatusCode)
+                {
+                    GetUserResponse response = JsonConvert.DeserializeObject<GetUserResponse>(await restResponse.Content.ReadAsStringAsync());
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Unable to retreive user info");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+            return new StatusCodeResult((int)restResponse.StatusCode);
+        }
+
+        /// <summary>
         /// used to get a users inforamtion if they are logged in
         /// </summary>
         /// <returns>The response with the users information</returns>
@@ -240,6 +269,55 @@ namespace MyLibrary.Website.Controllers.api
             return new StatusCodeResult((int)restResponse.StatusCode);
         }
 
+        /// <summary>
+        /// Used to update a user
+        /// </summary>
+        /// <returns>Returns a response to indicate the result</returns>
+        [HttpPatch("")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserRequest request)
+        {
+            HttpResponseMessage restResponse;
+
+            try
+            {
+                var restRequest = new HttpRequestMessage(HttpMethod.Patch, $"api/user");
+
+                restRequest.Headers.Add("Authorization", $"Bearer {GetToken()}");
+                var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+                restRequest.Content = content;
+                restResponse = await _httpClient.SendAsync(restRequest);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Unable to update user");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+
+            return new StatusCodeResult((int)restResponse.StatusCode);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser([FromRoute] int id)
+        {
+            HttpResponseMessage restResponse;
+            try
+            {
+                var restRequest = new HttpRequestMessage(HttpMethod.Delete, $"api/user/{id}");
+                restRequest.Headers.Add("Authorization", $"Bearer {GetToken()}");
+                restResponse = await _httpClient.SendAsync(restRequest);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Unable to delete user");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+            return new StatusCodeResult((int)restResponse.StatusCode);
+        }
+
+        /// <summary>
+        /// Used by a user to delete their account
+        /// </summary>
+        /// <returns>Returns a response used to indicate the result</returns>
         [HttpDelete("")]
         public async Task<IActionResult> DeleteUser()
         {
@@ -258,12 +336,16 @@ namespace MyLibrary.Website.Controllers.api
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Unable to update user");
+                _logger.Error(ex, "Unable to delete user");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
             return new StatusCodeResult((int)restResponse.StatusCode);
         }
 
+        /// <summary>
+        /// Used by a user to deactive their account
+        /// </summary>
+        /// <returns>Returns a response used to indicate the result</returns>
         [HttpPatch("deactivate")]
         public async Task<IActionResult> DeactivateUser()
         {
@@ -293,13 +375,13 @@ namespace MyLibrary.Website.Controllers.api
         /// </summary>
         /// <returns>The response with the result</returns>
         [AllowAnonymous]
-        [HttpGet("{username}")]
+        [HttpGet("check/{username}")]
         public async Task<IActionResult> CheckUsernameTaken([FromRoute] string username)
         {
             HttpResponseMessage restResponse;
             try
             {
-                var restRequest = new HttpRequestMessage(HttpMethod.Get, $"api/user/{username}");
+                var restRequest = new HttpRequestMessage(HttpMethod.Get, $"api/user/check/{username}");
                 restResponse = await _httpClient.SendAsync(restRequest);
 
                 if (restResponse.IsSuccessStatusCode)

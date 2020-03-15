@@ -1,9 +1,12 @@
 import React from 'react';
 import {
- TableHead, TableRow, TableCell, TableSortLabel,
- makeStyles, createStyles, Theme, TableContainer,
- Paper, Table, TableBody,
+    TableHead, TableRow, TableCell, TableSortLabel,
+    makeStyles, createStyles, Theme, TableContainer,
+    Paper, Table, TableBody, IconButton,
 } from '@material-ui/core';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { NavLink } from 'react-router-dom';
 import { User } from '../interfaces/user';
 import TableHelper, { Order } from '../util/TableFunctions';
 
@@ -43,6 +46,9 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     row: {
         transition: 'all 0.4s',
     },
+    deleteIcon: {
+        color: 'red',
+    },
 }));
 
 interface EnhancedTableProps {
@@ -54,8 +60,8 @@ interface EnhancedTableProps {
 
 function EnhancedTableHead(props: EnhancedTableProps) {
     const {
- classes, onRequestSort, order, orderBy,
-} = props;
+        classes, onRequestSort, order, orderBy,
+    } = props;
     const createSortHandler = (property: keyof User) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
@@ -88,20 +94,40 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     );
 }
 
-export const Row: React.FC<{ row: User }> = ({ row }) => {
+interface RowProps {
+    user: User;
+    deleteUser: Function;
+}
+
+export const Row: React.FC<RowProps> = (props) => {
     const classes = useStyles();
 
     return (
-        <TableRow key={row.userID} hover className={classes.row}>
-            <TableCell>{row.userID}</TableCell>
-            <TableCell component="th" scope="row">{row.username}</TableCell>
-            <TableCell>{row.isActive}</TableCell>
-            <TableCell />
+        <TableRow key={props.user.userID} hover className={classes.row}>
+            <TableCell>{props.user.userID}</TableCell>
+            <TableCell>{props.user.username}</TableCell>
+            <TableCell>{props.user.isActive}</TableCell>
+            <TableCell>
+                <IconButton onClick={() => {
+                    props.deleteUser(props.user.userID);
+                }}
+                >
+                    <DeleteIcon className={classes.deleteIcon} />
+                </IconButton>
+                <IconButton>
+                    <NavLink to={`/userdetails/${props.user.userID}`}>
+                        <ChevronRightIcon />
+                    </NavLink>
+                </IconButton>
+            </TableCell>
         </TableRow>
     );
 };
 
-const UsersTable: React.FC<{ users: Array<User> }> = ({ users }) => {
+const UsersTable: React.FC<{
+    users: Array<User>;
+    deleteUser: Function;
+}> = ({ users, deleteUser }) => {
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof User>('userID');
@@ -116,7 +142,7 @@ const UsersTable: React.FC<{ users: Array<User> }> = ({ users }) => {
     let tableContent = null;
     tableContent = tableHelper.stableSort(users, tableHelper.getSorting(order, orderBy))
         .map((row: User) => (
-            <Row row={row} />
+            <Row user={row} deleteUser={deleteUser} />
         ));
 
     return (
@@ -126,6 +152,7 @@ const UsersTable: React.FC<{ users: Array<User> }> = ({ users }) => {
                     className={classes.table}
                     aria-labelledby="tableTitle"
                     aria-label="enhanced table"
+                    size="small"
                 >
                     <EnhancedTableHead
                         classes={classes}

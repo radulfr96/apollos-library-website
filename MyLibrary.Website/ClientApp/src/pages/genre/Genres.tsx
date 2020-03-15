@@ -9,7 +9,7 @@ import { User } from '../../interfaces/user';
 import UsersTable from '../../components/UsersTable';
 import PageHeading from '../../components/shared/PageHeading';
 
-interface UsersProps {
+interface GenresProps {
     classes: any;
     enqueueSnackbar: any;
     closeSnackbar: any;
@@ -22,15 +22,15 @@ const useStyles = (theme: Theme) => ({
     },
 });
 
-interface UsersState {
+interface GenresState {
     users: Array<User>;
 }
 
-export class Users extends React.Component<
-UsersProps
+export class Genres extends React.Component<
+GenresProps
 & WithStyles<typeof useStyles>
 & WithSnackbarProps
-, UsersState> {
+, GenresState> {
     constructor(props: any) {
         super(props);
         this.renderErrorSnackbar = this.renderErrorSnackbar.bind(this);

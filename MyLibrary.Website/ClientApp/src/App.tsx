@@ -9,20 +9,21 @@ import Login from './pages/user/Login';
 import Users from './pages/user/Users';
 import Register from './pages/user/Register';
 import MyAccount from './pages/user/myAccount/MyAccount';
-import MyDetails from './pages/user/myAccount/MyDetails';
+import UserPage from './pages/user/User';
 import theme from './config/theme';
 import { AppContextProvider } from './Context';
 
 export default () => (
   <AppContextProvider>
     <MuiThemeProvider theme={theme}>
-      <SnackbarProvider maxSnack={1}>
+      <SnackbarProvider maxSnack={10}>
       <Layout>
           <Route exact path="/" component={Home} />
           <Route path="/user" component={Users} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/account" component={MyAccount} />
+          <Route path="/userdetails/:id" component={UserPage} />
       </Layout>
       </SnackbarProvider>
     </MuiThemeProvider>
