@@ -7,18 +7,17 @@ import {
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { NavLink } from 'react-router-dom';
-import { User } from '../interfaces/user';
+import { Genre } from '../interfaces/genre';
 import TableHelper, { Order } from '../util/TableFunctions';
 
 interface HeadCell {
-    id: keyof User;
+    id: keyof Genre;
     label: string;
 }
 
 const headCells: HeadCell[] = [
-    { id: 'userID', label: 'User ID' },
-    { id: 'username', label: 'Username' },
-    { id: 'isActive', label: ' User is Active' },
+    { id: 'genreId', label: 'Genre ID' },
+    { id: 'name', label: 'Name' },
 ];
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -50,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
 interface EnhancedTableProps {
     classes: ReturnType<typeof useStyles>;
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof User) => void;
+    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Genre) => void;
     order: Order;
     orderBy: string;
 }
@@ -59,7 +58,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     const {
         classes, onRequestSort, order, orderBy,
     } = props;
-    const createSortHandler = (property: keyof User) => (event: React.MouseEvent<unknown>) => {
+    const createSortHandler = (property: keyof Genre) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
 
@@ -92,27 +91,25 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 }
 
 interface RowProps {
-    user: User;
-    deleteUser: Function;
+    genre: Genre;
+    deleteGenre: Function;
 }
 
 export const Row: React.FC<RowProps> = (props) => {
     const classes = useStyles();
 
     return (
-        <TableRow key={props.user.userID} hover className={classes.row}>
-            <TableCell>{props.user.userID}</TableCell>
-            <TableCell>{props.user.username}</TableCell>
-            <TableCell>{props.user.isActive}</TableCell>
+        <TableRow key={props.genre.genreId} hover className={classes.row}>
+            <TableCell>{props.genre.name}</TableCell>
             <TableCell>
                 <IconButton onClick={() => {
-                    props.deleteUser(props.user.userID);
+                    props.deleteGenre(props.genre.genreId);
                 }}
                 >
                     <DeleteIcon className={classes.deleteIcon} />
                 </IconButton>
                 <IconButton>
-                    <NavLink to={`/userdetails/${props.user.userID}`}>
+                    <NavLink to={`/userdetails/${props.genre.name}`}>
                         <ChevronRightIcon />
                     </NavLink>
                 </IconButton>
@@ -121,25 +118,25 @@ export const Row: React.FC<RowProps> = (props) => {
     );
 };
 
-const UsersTable: React.FC<{
-    users: Array<User>;
-    deleteUser: Function;
-}> = ({ users, deleteUser }) => {
+const GenresTable: React.FC<{
+    genres: Array<Genre>;
+    deleteGenre: Function;
+}> = ({ genres, deleteGenre }) => {
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof User>('userID');
+    const [orderBy, setOrderBy] = React.useState<keyof Genre>('genreId');
     const tableHelper = new TableHelper();
 
-    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof User) => {
+    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Genre) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
     };
 
     let tableContent = null;
-    tableContent = tableHelper.stableSort(users, tableHelper.getSorting(order, orderBy))
-        .map((row: User) => (
-            <Row user={row} deleteUser={deleteUser} />
+    tableContent = tableHelper.stableSort(genres, tableHelper.getSorting(order, orderBy))
+        .map((row: Genre) => (
+            <Row genre={row} deleteGenre={deleteGenre} />
         ));
 
     return (
@@ -165,4 +162,4 @@ const UsersTable: React.FC<{
     );
 };
 
-export default UsersTable;
+export default GenresTable;

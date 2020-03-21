@@ -1,13 +1,14 @@
 import * as React from 'react';
 import {
- withStyles, Theme, Grid, WithStyles,
+    withStyles, Grid, WithStyles, Fab, createStyles,
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import Axios from 'axios';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
 import { compose } from 'recompose';
-import { User } from '../../interfaces/user';
-import UsersTable from '../../components/UsersTable';
+import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/PageHeading';
+import GenresTable from '../../components/GenresTable';
 
 interface GenresProps {
     classes: any;
@@ -15,22 +16,22 @@ interface GenresProps {
     closeSnackbar: any;
 }
 
-const useStyles = (theme: Theme) => ({
-    paper: {
-        color: theme.palette.primary.main,
-        width: '100%',
+const useStyles = createStyles({
+    addGenreButton: {
+        marginTop: '10px',
+        float: 'right',
     },
 });
 
 interface GenresState {
-    users: Array<User>;
+    genres: Array<Genre>;
 }
 
 export class Genres extends React.Component<
-GenresProps
-& WithStyles<typeof useStyles>
-& WithSnackbarProps
-, GenresState> {
+    GenresProps
+    & WithStyles<typeof useStyles>
+    & WithSnackbarProps
+    , GenresState> {
     constructor(props: any) {
         super(props);
         this.renderErrorSnackbar = this.renderErrorSnackbar.bind(this);
@@ -38,37 +39,33 @@ GenresProps
         this.renderWarningSnackbar = this.renderWarningSnackbar.bind(this);
 
         this.state = {
-            users: [],
+            genres: [],
         };
     }
 
     componentDidMount() {
-        this.getUsers();
+        this.getGenres();
     }
 
-    getUsers() {
-        Axios.get('/api/user')
-        .then((response) => {
-            this.setState({
-                users: response.data.users,
+    getGenres() {
+        Axios.get('/api/genre')
+            .then((response) => {
+                this.setState({
+                    genres: response.data.genres,
+                });
             });
-        });
     }
 
-    deleteUser(id: string): void {
-        Axios.delete(`api/user/${id}`)
+    deleteGenre(id: string): void {
+        Axios.delete(`api/genre/${id}`)
             .then((response) => {
                 if (response.status === 200) {
                     this.renderSuccessSnackbar('Delete successful');
-                    this.getUsers();
+                    this.getGenres();
                 }
             })
-            .catch((error) => {
-                if (error.response.status === 400) {
-                    this.renderWarningSnackbar('You cannot delete the current logged in user.');
-                } else {
-                    this.renderErrorSnackbar('Unable to delete user please contact admin');
-                }
+            .catch(() => {
+                this.renderErrorSnackbar('Unable to genre user please contact admin');
             });
     }
 
@@ -92,19 +89,24 @@ GenresProps
 
     render() {
         return (
-            <Grid item xs={9} container justify="center">
+            <Grid item xs={5} container justify="center">
                 <Grid item xs={12}>
-                    <PageHeading headingText="Users" />
+                    <PageHeading headingText="Genres" />
                 </Grid>
                 <Grid item xs={12}>
-                    <UsersTable users={this.state.users} deleteUser={this.deleteUser} />
+                    <GenresTable genres={this.state.genres} deleteGenre={this.deleteGenre} />
+                </Grid>
+                <Grid item xs={12}>
+                    <Fab color="primary" aria-label="add" className={this.props.classes.addGenreButton} href="genre">
+                        <AddIcon />
+                    </Fab>
                 </Grid>
             </Grid>
         );
     }
 }
 
-export default compose<UsersProps, {}>(
+export default compose<GenresProps, {}>(
     withStyles(useStyles),
     withSnackbar,
-)(Users);
+)(Genres);

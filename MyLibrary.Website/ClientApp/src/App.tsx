@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from 'react';
-import { Route, Router, Switch } from 'react-router';
+import { Route } from 'react-router';
 import { MuiThemeProvider } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
 import Layout from './components/Layout';
@@ -12,6 +12,8 @@ import MyAccount from './pages/user/myAccount/MyAccount';
 import UserPage from './pages/user/User';
 import theme from './config/theme';
 import { AppContextProvider } from './Context';
+import Genres from './pages/genre/Genres';
+import GenrePage from './pages/genre/Genre';
 
 export default () => (
   <AppContextProvider>
@@ -24,6 +26,8 @@ export default () => (
           <Route path="/register" component={Register} />
           <Route path="/account" component={MyAccount} />
           <Route path="/userdetails/:id" component={UserPage} />
+          <Route path="/genres" component={Genres} />
+          <Route path="/genre" component={GenrePage} />
       </Layout>
       </SnackbarProvider>
     </MuiThemeProvider>
