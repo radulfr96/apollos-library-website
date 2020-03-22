@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { NavLink } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Genre } from '../interfaces/genre';
 import TableHelper, { Order } from '../util/TableFunctions';
 
@@ -95,12 +95,13 @@ interface RowProps {
     deleteGenre: Function;
 }
 
-export const Row: React.FC<RowProps> = (props) => {
+const NavCell: React.FC<{
+    genre: Genre;
+    deleteGenre: Function;
+} & RouteComponentProps> = (props) => {
     const classes = useStyles();
-
     return (
-        <TableRow key={props.genre.genreId} hover className={classes.row}>
-            <TableCell>{props.genre.name}</TableCell>
+        <>
             <TableCell>
                 <IconButton onClick={() => {
                     props.deleteGenre(props.genre.genreId);
@@ -108,12 +109,27 @@ export const Row: React.FC<RowProps> = (props) => {
                 >
                     <DeleteIcon className={classes.deleteIcon} />
                 </IconButton>
-                <IconButton>
-                    <NavLink to={`/userdetails/${props.genre.name}`}>
-                        <ChevronRightIcon />
-                    </NavLink>
+                <IconButton onClick={() => {
+                    props.history.push(`genre/${props.genre.genreId}`);
+                }}
+                >
+                    <ChevronRightIcon />
                 </IconButton>
             </TableCell>
+        </>
+    );
+};
+
+export const NavigationCell = withRouter(NavCell);
+
+export const Row: React.FC<RowProps> = (props) => {
+    const classes = useStyles();
+
+    return (
+        <TableRow key={props.genre.genreId} hover className={classes.row}>
+            <TableCell>{props.genre.genreId}</TableCell>
+            <TableCell>{props.genre.name}</TableCell>
+            <NavigationCell genre={props.genre} deleteGenre={props.deleteGenre} />
         </TableRow>
     );
 };

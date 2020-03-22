@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
-    withStyles, Theme, Grid, WithStyles, Button, CircularProgress,
+    withStyles, Theme, Grid, WithStyles, Button, Typography, CircularProgress,
 } from '@material-ui/core';
 import Axios from 'axios';
 import { withRouter, RouteComponentProps, RouteProps } from 'react-router';
@@ -23,6 +23,9 @@ const useStyles = (theme: Theme) => ({
     },
     formButton: {
         marginRight: '10px',
+    },
+    userIdField: {
+        marginBottom: '10px',
     },
 });
 
@@ -45,7 +48,8 @@ class GenrePage extends React.Component<
     constructor(props: any) {
         super(props);
         this.updateGenre = this.updateGenre.bind(this);
-        // this.onChange = this.onChange.bind(this);
+        this.addGenre = this.addGenre.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.renderErrorSnackbar = this.renderErrorSnackbar.bind(this);
         this.renderSuccessSnackbar = this.renderSuccessSnackbar.bind(this);
         this.renderWarningSnackbar = this.renderWarningSnackbar.bind(this);
@@ -57,12 +61,17 @@ class GenrePage extends React.Component<
             },
             newGenre: false,
         };
+    }
 
+    componentDidMount() {
         if (this.props.match.params.id !== undefined && this.props.match.params.id !== null) {
-            Axios.get(`/api/genre/${this.props.match.params.id}`)
+            const { id } = this.props.match.params;
+
+            Axios.get(`/api/genre/${id}`)
                 .then((response) => {
                     this.setState({
                         genre: response.data.genre,
+                        newGenre: false,
                     });
                 });
         } else {
@@ -106,6 +115,28 @@ class GenrePage extends React.Component<
             });
     }
 
+    addGenre(genre: Genre, validateForm: Function) {
+        validateForm()
+            .then((formKeys: any) => {
+                if (Object.keys(formKeys).length === 0) {
+                    Axios.post('api/genre/', genre)
+                        .then((response) => {
+                            if (response.status === 200) {
+                                this.renderSuccessSnackbar('Add successful');
+                                this.props.history.goBack();
+                            }
+                        })
+                        .catch((error) => {
+                            if (error.response.status === 400) {
+                                this.renderWarningSnackbar('Unable to add genre invalid input');
+                            } else {
+                                this.renderErrorSnackbar('Unable to add genre please contact admin');
+                            }
+                        });
+                }
+            });
+    }
+
     renderErrorSnackbar(message: string): void {
         this.props.enqueueSnackbar(message, {
             variant: 'error',
@@ -125,15 +156,36 @@ class GenrePage extends React.Component<
     }
 
     render() {
-        if ((!this.state.newGenre) && this.state.genre === undefined) {
+        if (!this.state.newGenre && this.state.genre.genreId < 1) {
             return (<CircularProgress />);
         }
 
         return (
-            <Grid item xs={9} container justify="center">
+            <Grid item xs={6} container justify="center">
                 <Grid item xs={12}>
-                    <PageHeading headingText="User Details" />
+                    {
+                        !this.state.newGenre && (
+                            <PageHeading headingText="Genre Details" />
+                        )
+                    }
+                    {
+                        this.state.newGenre && (
+                            <PageHeading headingText="New Genre" />
+                        )
+                    }
                 </Grid>
+                {
+                    !this.state.newGenre && (
+                        <Grid item container xs={12} className={this.props.classes.userIdField}>
+                            <Grid item xs={2}>
+                                <Typography>Genre ID:</Typography>
+                            </Grid>
+                            <Grid item xs={10}>
+                                <Typography>{this.state.genre.genreId}</Typography>
+                            </Grid>
+                        </Grid>
+                    )
+                }
                 <Grid item xs={12}>
                     <Formik
                         initialValues={this.state.genre}
@@ -167,7 +219,7 @@ class GenrePage extends React.Component<
                                         />
                                     </Grid>
                                     <Grid item xs={12} style={{ paddingTop: '10px' }}>
-                                        {this.state.newGenre && (
+                                        {!this.state.newGenre && (
                                             <Button
                                                 className={this.props.classes.formButton}
                                                 variant="contained"
@@ -180,6 +232,21 @@ class GenrePage extends React.Component<
                                                 }}
                                             >
                                                 Update
+                                            </Button>
+                                        )}
+                                        {this.state.newGenre && (
+                                            <Button
+                                                className={this.props.classes.formButton}
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    if (errors !== null) {
+                                                        this.addGenre(values, validateForm);
+                                                    }
+                                                }}
+                                            >
+                                                Add
                                             </Button>
                                         )}
 

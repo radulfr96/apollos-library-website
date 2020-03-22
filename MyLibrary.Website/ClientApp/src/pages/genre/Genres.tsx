@@ -6,6 +6,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Axios from 'axios';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
 import { compose } from 'recompose';
+import { withRouter, RouteProps, RouteComponentProps } from 'react-router';
 import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/PageHeading';
 import GenresTable from '../../components/GenresTable';
@@ -21,6 +22,10 @@ const useStyles = createStyles({
         marginTop: '10px',
         float: 'right',
     },
+    navLink: {
+        color: '#FFFFFF',
+        textDecoration: 'none',
+    },
 });
 
 interface GenresState {
@@ -30,6 +35,8 @@ interface GenresState {
 export class Genres extends React.Component<
     GenresProps
     & WithStyles<typeof useStyles>
+    & RouteProps
+    & RouteComponentProps
     & WithSnackbarProps
     , GenresState> {
     constructor(props: any) {
@@ -97,7 +104,14 @@ export class Genres extends React.Component<
                     <GenresTable genres={this.state.genres} deleteGenre={this.deleteGenre} />
                 </Grid>
                 <Grid item xs={12}>
-                    <Fab color="primary" aria-label="add" className={this.props.classes.addGenreButton} href="genre">
+                    <Fab
+                        color="primary"
+                        aria-label="add"
+                        className={this.props.classes.addGenreButton}
+                        onClick={() => {
+                            this.props.history.push('addgenre');
+                        }}
+                    >
                         <AddIcon />
                     </Fab>
                 </Grid>
@@ -108,5 +122,6 @@ export class Genres extends React.Component<
 
 export default compose<GenresProps, {}>(
     withStyles(useStyles),
+    withRouter,
     withSnackbar,
 )(Genres);

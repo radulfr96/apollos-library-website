@@ -48,12 +48,12 @@ export default function AdminMenu(): JSX.Element {
                 onClose={handleClose}
             >
                 <NavLink className={classes.navLink} to="/user">
-                    <MenuItem>
+                    <MenuItem onClick={handleClose}>
                         Users
                     </MenuItem>
                 </NavLink>
                 <NavLink className={classes.navLink} to="/genres">
-                    <MenuItem>
+                    <MenuItem onClick={handleClose}>
                         Genres
                     </MenuItem>
                 </NavLink>

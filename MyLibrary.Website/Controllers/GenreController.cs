@@ -97,7 +97,7 @@ namespace MyLibrary.Website.Controllers
 
                 if (restResponse.IsSuccessStatusCode)
                 {
-                    GetGenresResponse response = JsonConvert.DeserializeObject<GetGenresResponse>(await restResponse.Content.ReadAsStringAsync());
+                    GetGenreResponse response = JsonConvert.DeserializeObject<GetGenreResponse>(await restResponse.Content.ReadAsStringAsync());
                     return Ok(response);
                 }
             }

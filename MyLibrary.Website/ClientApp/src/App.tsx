@@ -27,7 +27,8 @@ export default () => (
           <Route path="/account" component={MyAccount} />
           <Route path="/userdetails/:id" component={UserPage} />
           <Route path="/genres" component={Genres} />
-          <Route path="/genre" component={GenrePage} />
+          <Route path="/genre/:id" component={GenrePage} />
+          <Route path="/addgenre" component={GenrePage} />
       </Layout>
       </SnackbarProvider>
     </MuiThemeProvider>
