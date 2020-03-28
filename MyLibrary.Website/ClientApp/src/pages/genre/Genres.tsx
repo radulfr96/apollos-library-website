@@ -41,6 +41,8 @@ export class Genres extends React.Component<
     , GenresState> {
     constructor(props: any) {
         super(props);
+        this.deleteGenre = this.deleteGenre.bind(this);
+        this.getGenres = this.getGenres.bind(this);
         this.renderErrorSnackbar = this.renderErrorSnackbar.bind(this);
         this.renderSuccessSnackbar = this.renderSuccessSnackbar.bind(this);
         this.renderWarningSnackbar = this.renderWarningSnackbar.bind(this);
@@ -60,6 +62,13 @@ export class Genres extends React.Component<
                 this.setState({
                     genres: response.data.genres,
                 });
+            })
+            .catch((error) => {
+                if (error.response.status === 404) {
+                    this.setState({
+                        genres: [],
+                    });
+                }
             });
     }
 

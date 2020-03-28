@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import {
-  AppBar, Toolbar, Typography, makeStyles, Theme,
+  AppBar, Toolbar, Typography, makeStyles, Theme, IconButton,
 } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
+import BusinessIcon from '@material-ui/icons/Business';
 import AccountMenu from './AccountMenu';
 import AdminMenu from './AdminMenu';
 import { AppContext } from '../../Context';
@@ -21,6 +22,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.secondary.main,
     textDecoration: 'none',
   },
+  navLink: {
+    color: '#000000',
+    textDecoration: 'none',
+  },
 }));
 
 export default function NavMenu() {
@@ -35,10 +40,21 @@ export default function NavMenu() {
             My Library
           </NavLink>
         </Typography>
+        <div style={{ display: context.isStandardUser() ? 'block' : 'none' }}>
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+          >
+            <NavLink className={classes.navLink} to="/publishers">
+              <BusinessIcon color="secondary" />
+            </NavLink>
+          </IconButton>
+        </div>
         <div style={{ display: context.isAdmin() ? 'block' : 'none' }}>
           <AdminMenu />
         </div>
-          <AccountMenu />
+        <AccountMenu />
       </Toolbar>
     </AppBar>
   );

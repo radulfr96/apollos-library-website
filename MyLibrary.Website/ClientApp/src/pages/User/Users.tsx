@@ -33,6 +33,7 @@ UsersProps
 , UsersState> {
     constructor(props: any) {
         super(props);
+        this.deleteUser = this.deleteUser.bind(this);
         this.renderErrorSnackbar = this.renderErrorSnackbar.bind(this);
         this.renderSuccessSnackbar = this.renderSuccessSnackbar.bind(this);
         this.renderWarningSnackbar = this.renderWarningSnackbar.bind(this);
