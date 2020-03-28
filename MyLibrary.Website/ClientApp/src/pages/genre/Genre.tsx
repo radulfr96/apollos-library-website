@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
-    withStyles, Theme, Grid, WithStyles, Button, Typography, CircularProgress,
+    withStyles, Theme, Grid, WithStyles, Button, CircularProgress,
 } from '@material-ui/core';
 import Axios from 'axios';
 import { withRouter, RouteComponentProps, RouteProps } from 'react-router';
@@ -174,18 +174,6 @@ class GenrePage extends React.Component<
                         )
                     }
                 </Grid>
-                {
-                    !this.state.newGenre && (
-                        <Grid item container xs={12} className={this.props.classes.userIdField}>
-                            <Grid item xs={2}>
-                                <Typography>Genre ID:</Typography>
-                            </Grid>
-                            <Grid item xs={10}>
-                                <Typography>{this.state.genre.genreId}</Typography>
-                            </Grid>
-                        </Grid>
-                    )
-                }
                 <Grid item xs={12}>
                     <Formik
                         initialValues={this.state.genre}
@@ -206,6 +194,25 @@ class GenrePage extends React.Component<
                             validateForm,
                         }) => (
                                 <Grid container item xs={12}>
+
+                                    {
+                                        !this.state.newGenre && (
+                                            <Grid item xs={12}>
+                                                <InputTextField
+                                                    label="Genre Id"
+                                                    required
+                                                    type="text"
+                                                    keyName="genreId"
+                                                    value={values.genreId}
+                                                    onChange={handleChange}
+                                                    error={!!(errors.genreId)}
+                                                    errorMessage={errors.genreId}
+                                                    readonly
+                                                />
+                                            </Grid>
+                                        )
+                                    }
+
                                     <Grid item xs={12}>
                                         <InputTextField
                                             label="Name"

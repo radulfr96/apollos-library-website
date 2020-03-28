@@ -14,6 +14,7 @@ interface InputTextFieldProps {
     onChange?: any;
     onBlur?: any;
     error?: boolean;
+    readonly?: boolean;
 }
 
 const useStyles = createStyles((theme: Theme) => ({
@@ -40,6 +41,9 @@ export class InputTextField extends React.Component<
                     onChange={this.props.onChange}
                     onBlur={this.props.onBlur}
                     error={this.props.error}
+                    inputProps={{
+                        readOnly: this.props.readonly,
+                    }}
                     fullWidth
                 />
                 <div className={this.props.classes.errorMessage}>{this.props.error ? this.props.errorMessage : ''}</div>
