@@ -14,6 +14,7 @@ import theme from './config/theme';
 import { AppContextProvider } from './Context';
 import Genres from './pages/genre/Genres';
 import GenrePage from './pages/genre/Genre';
+import Publishers from './pages/publishers/publishers';
 
 export default () => (
   <AppContextProvider>
@@ -29,6 +30,7 @@ export default () => (
           <Route path="/genres" component={Genres} />
           <Route path="/genre/:id" component={GenrePage} />
           <Route path="/addgenre" component={GenrePage} />
+          <Route path="/publishers" component={Publishers} />
       </Layout>
       </SnackbarProvider>
     </MuiThemeProvider>

@@ -81,7 +81,7 @@ export class Genres extends React.Component<
                 }
             })
             .catch(() => {
-                this.renderErrorSnackbar('Unable to genre user please contact admin');
+                this.renderErrorSnackbar('Unable to delete genre please contact admin');
             });
     }
 
