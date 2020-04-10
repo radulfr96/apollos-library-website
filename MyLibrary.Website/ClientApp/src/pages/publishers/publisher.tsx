@@ -12,6 +12,7 @@ import { Publisher } from '../../interfaces/publisher';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
 import CountryTypedown from '../../components/shared/countryTypedown';
+import Country from '../../interfaces/country';
 
 interface PublisherProps {
     classes: any;
@@ -32,6 +33,7 @@ const useStyles = (theme: Theme) => ({
 
 interface PublisherState {
     publisher: Publisher;
+    countries: Array<Country>;
     newPublisher: boolean;
 }
 
@@ -56,13 +58,11 @@ class PublisherPage extends React.Component<
         this.renderWarningSnackbar = this.renderWarningSnackbar.bind(this);
 
         this.state = {
+            countries: [],
             publisher: {
                 publisherId: 0,
                 name: '',
-                country: {
-                    countryID: '',
-                    name: '',
-                },
+                countryID: '',
                 website: '',
                 streetAddress: '',
                 city: '',
@@ -90,6 +90,13 @@ class PublisherPage extends React.Component<
                 newPublisher: true,
             });
         }
+
+        Axios.get('/api/reference/countries')
+            .then((response) => {
+                this.setState({
+                    countries: response.data.countries,
+                });
+            });
     }
 
     onChange(key: string, value: any): void {
@@ -201,6 +208,7 @@ class PublisherPage extends React.Component<
                             values,
                             errors,
                             handleChange,
+                            setFieldValue,
                             validateForm,
                         }) => (
                                 <Grid container item xs={12}>
@@ -294,11 +302,15 @@ class PublisherPage extends React.Component<
                                         <CountryTypedown
                                             label="Country"
                                             type="text"
-                                            keyName="country"
-                                            value={values.country}
-                                            onChange={handleChange}
-                                            error={!!(errors.country)}
-                                            errorMessage={errors.country?.name}
+                                            keyName="countryID"
+                                            countries={this.state.countries}
+                                            value={values.countryID}
+                                            onChange={(e: any) => {
+                                                setFieldValue('countryID', this.state.countries.find((c) => c.name
+                                                    === e.target.innerText)?.countryID);
+                                            }}
+                                            error={!!(errors.countryID)}
+                                            errorMessage={errors.countryID}
                                         />
                                     </Grid>
                                     <Grid item xs={12} style={{ paddingTop: '10px' }}>

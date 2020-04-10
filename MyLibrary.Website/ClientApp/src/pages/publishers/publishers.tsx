@@ -7,8 +7,7 @@ import Axios from 'axios';
 import { WithSnackbarProps, withSnackbar } from 'notistack';
 import { compose } from 'recompose';
 import { withRouter, RouteProps, RouteComponentProps } from 'react-router';
-import { PublisherTableItem } from '../../interfaces/publisherTableItem';
-import { Publisher } from '../../interfaces/publisher';
+import { PublisherListItem } from '../../interfaces/publisherListItem';
 import PageHeading from '../../components/shared/PageHeading';
 import PublishersTable from '../../components/PublishersTable';
 import { AppContext } from '../../Context';
@@ -31,7 +30,7 @@ const useStyles = createStyles({
 });
 
 interface PublishersState {
-    publishers: Array<PublisherTableItem>;
+    publishers: Array<PublisherListItem>;
 }
 
 export class Publishers extends React.Component<
@@ -61,16 +60,6 @@ export class Publishers extends React.Component<
     getPubishers() {
         Axios.get('/api/publisher')
             .then((response) => {
-                const listItems = new Array<PublisherTableItem>();
-
-                response.data.publishers.array.forEach((publisher: Publisher) => {
-                    listItems.push({
-                        publisherId: publisher.publisherId,
-                        name: publisher.name,
-                        country: publisher.country.name,
-                    });
-                });
-
                 this.setState({
                     publishers: response.data.publishers,
                 });

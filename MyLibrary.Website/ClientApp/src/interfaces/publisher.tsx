@@ -1,6 +1,4 @@
 /* eslint-disable semi */
-import Country from './country';
-
 export interface Publisher {
     publisherId: number;
     name: string;
@@ -8,6 +6,6 @@ export interface Publisher {
     city: string;
     postcode: string;
     state: string;
-    country: Country;
+    countryID: string;
     website: string;
 }

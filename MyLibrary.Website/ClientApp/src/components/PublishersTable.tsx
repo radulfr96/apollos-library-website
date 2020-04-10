@@ -130,6 +130,7 @@ export const Row: React.FC<RowProps> = (props) => {
 
     return (
         <TableRow key={props.publisher.publisherId} hover className={classes.row}>
+            <TableCell>{props.publisher.publisherId}</TableCell>
             <TableCell>{props.publisher.name}</TableCell>
             <TableCell>{props.publisher.country}</TableCell>
             <NavigationCell publisher={props.publisher} deletePublisher={props.deletePublisher} />
