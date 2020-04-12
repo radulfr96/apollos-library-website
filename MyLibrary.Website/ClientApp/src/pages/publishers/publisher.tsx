@@ -173,7 +173,7 @@ class PublisherPage extends React.Component<
     }
 
     render() {
-        if (!this.state.newPublisher) {
+        if (!this.state.newPublisher && this.state.publisher.publisherId < 1) {
             return (<CircularProgress />);
         }
 
@@ -304,7 +304,9 @@ class PublisherPage extends React.Component<
                                             type="text"
                                             keyName="countryID"
                                             countries={this.state.countries}
-                                            value={values.countryID}
+                                            value={this.state.countries.find(
+                                                (c) => c.countryID === values.countryID,
+                                            )?.name}
                                             onChange={(e: any) => {
                                                 setFieldValue('countryID', this.state.countries.find((c) => c.name
                                                     === e.target.innerText)?.countryID);
@@ -350,7 +352,7 @@ class PublisherPage extends React.Component<
                                             variant="contained"
                                             color="secondary"
                                             onClick={() => {
-                                                this.props.history.push('/genres');
+                                                this.props.history.push('/publishers');
                                             }}
                                         >
                                             Cancel

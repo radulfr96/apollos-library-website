@@ -32,7 +32,7 @@ export default () => (
           <Route path="/genre/:id" component={GenrePage} />
           <Route path="/addgenre" component={GenrePage} />
           <Route path="/publishers" component={Publishers} />
-          <Route path="/publishers/:id" component={PublisherPage} />
+          <Route path="/publisher/:id" component={PublisherPage} />
           <Route path="/addpublisher" component={PublisherPage} />
       </Layout>
       </SnackbarProvider>
