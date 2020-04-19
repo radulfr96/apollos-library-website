@@ -304,9 +304,7 @@ class PublisherPage extends React.Component<
                                             type="text"
                                             keyName="countryID"
                                             countries={this.state.countries}
-                                            value={this.state.countries.find(
-                                                (c) => c.countryID === values.countryID,
-                                            )?.name}
+                                            value={values.countryID}
                                             onChange={(e: any) => {
                                                 setFieldValue('countryID', this.state.countries.find((c) => c.name
                                                     === e.target.innerText)?.countryID);
