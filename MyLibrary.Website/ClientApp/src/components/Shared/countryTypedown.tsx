@@ -47,6 +47,7 @@ export class CountryTypedown extends React.Component<
                     options={
                         this.props.countries
                     }
+                    // required={this.props.required}
                     getOptionLabel={(country) => country.name}
                     renderInput={(params) => (
                         <TextField

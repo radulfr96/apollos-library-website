@@ -8,13 +8,13 @@ import Axios from 'axios';
 import { withRouter, RouteComponentProps, RouteProps } from 'react-router';
 import { withSnackbar, WithSnackbarProps } from 'notistack';
 import compose from 'recompose/compose';
-import { Publisher } from '../../interfaces/publisher';
+import { Author } from '../../interfaces/author';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
 import CountryTypedown from '../../components/shared/countryTypedown';
 import Country from '../../interfaces/country';
 
-interface PublisherProps {
+interface AuthorProps {
     classes: any;
 }
 
@@ -31,27 +31,27 @@ const useStyles = (theme: Theme) => ({
     },
 });
 
-interface PublisherState {
-    publisher: Publisher;
+interface AuthorState {
+    author: Author;
     countries: Array<Country>;
-    newPublisher: boolean;
+    newAuthor: boolean;
 }
 
-interface PublisherParams {
+interface AuthorParams {
     id: string | undefined;
 }
 
-class PublisherPage extends React.Component<
-    PublisherProps
+class AuthorsPage extends React.Component<
+    AuthorProps
     & WithStyles<typeof useStyles>
     & RouteProps
     & WithSnackbarProps
-    & RouteComponentProps<PublisherParams>
-    , PublisherState> {
+    & RouteComponentProps<AuthorParams>
+    , AuthorState> {
     constructor(props: any) {
         super(props);
-        this.updatePublisher = this.updatePublisher.bind(this);
-        this.addPublisher = this.addPublisher.bind(this);
+        this.updateAuthor = this.updateAuthor.bind(this);
+        this.addAuthor = this.addAuthor.bind(this);
         this.onChange = this.onChange.bind(this);
         this.renderErrorSnackbar = this.renderErrorSnackbar.bind(this);
         this.renderSuccessSnackbar = this.renderSuccessSnackbar.bind(this);
@@ -59,17 +59,15 @@ class PublisherPage extends React.Component<
 
         this.state = {
             countries: [],
-            publisher: {
-                publisherId: 0,
-                name: '',
+            author: {
+                authorId: 0,
+                firstname: '',
+                middlename: '',
+                lastname: '',
+                description: '',
                 countryID: '',
-                website: '',
-                streetAddress: '',
-                city: '',
-                postcode: '',
-                state: '',
             },
-            newPublisher: false,
+            newAuthor: false,
         };
     }
 
@@ -77,17 +75,17 @@ class PublisherPage extends React.Component<
         if (this.props.match.params.id !== undefined && this.props.match.params.id !== null) {
             const { id } = this.props.match.params;
 
-            Axios.get(`/api/publisher/${id}`)
+            Axios.get(`/api/author/${id}`)
                 .then((response) => {
                     this.setState({
-                        publisher: response.data.publisher,
-                        newPublisher: false,
+                        author: response.data.author,
+                        newAuthor: false,
                     });
                 });
         } else {
             this.setState({
                 ...this.state,
-                newPublisher: true,
+                newAuthor: true,
             });
         }
 
@@ -103,18 +101,18 @@ class PublisherPage extends React.Component<
         const prevState = this.state;
         this.setState({
             ...this.state,
-            publisher: {
-                ...prevState.publisher,
+            author: {
+                ...prevState.author,
                 [key]: value,
             },
         });
     }
 
-    updatePublisher(publisher: Publisher, validateForm: Function) {
+    updateAuthor(author: Author, validateForm: Function) {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.patch('api/publisher/', publisher)
+                    Axios.patch('api/author/', author)
                         .then((response) => {
                             if (response.status === 200) {
                                 this.renderSuccessSnackbar('Update successful');
@@ -123,20 +121,20 @@ class PublisherPage extends React.Component<
                         })
                         .catch((error) => {
                             if (error.response.status === 400) {
-                                this.renderWarningSnackbar('Unable to update publisher invalid input');
+                                this.renderWarningSnackbar('Unable to update author invalid input');
                             } else {
-                                this.renderErrorSnackbar('Unable to update publisher please contact admin');
+                                this.renderErrorSnackbar('Unable to update author please contact admin');
                             }
                         });
                 }
             });
     }
 
-    addPublisher(publisher: Publisher, validateForm: Function) {
+    addAuthor(author: Author, validateForm: Function) {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.post('api/publisher/', publisher)
+                    Axios.post('api/author/', author)
                         .then((response) => {
                             if (response.status === 200) {
                                 this.renderSuccessSnackbar('Add successful');
@@ -145,9 +143,9 @@ class PublisherPage extends React.Component<
                         })
                         .catch((error) => {
                             if (error.response.status === 400) {
-                                this.renderWarningSnackbar('Unable to add publisher, invalid input');
+                                this.renderWarningSnackbar('Unable to add author, invalid input');
                             } else {
-                                this.renderErrorSnackbar('Unable to add publisher please contact admin');
+                                this.renderErrorSnackbar('Unable to add author please contact admin');
                             }
                         });
                 }
@@ -173,7 +171,7 @@ class PublisherPage extends React.Component<
     }
 
     render() {
-        if (!this.state.newPublisher && this.state.publisher.publisherId < 1) {
+        if (!this.state.newAuthor && this.state.author.authorId < 1) {
             return (<CircularProgress />);
         }
 
@@ -181,26 +179,26 @@ class PublisherPage extends React.Component<
             <Grid item xs={6} container justify="center">
                 <Grid item xs={12}>
                     {
-                        !this.state.newPublisher && (
-                            <PageHeading headingText="Publisher Details" />
+                        !this.state.newAuthor && (
+                            <PageHeading headingText="Author Details" />
                         )
                     }
                     {
-                        this.state.newPublisher && (
-                            <PageHeading headingText="New Publisher" />
+                        this.state.newAuthor && (
+                            <PageHeading headingText="New Author" />
                         )
                     }
                 </Grid>
                 <Grid item xs={12}>
                     <Formik
-                        initialValues={this.state.publisher}
+                        initialValues={this.state.author}
                         onSubmit={(values) => {
                             console.log(values);
                         }}
                         validationSchema={
                             yup.object().shape({
                                 name: yup.string()
-                                    .required('A publisher must have a name'),
+                                    .required('A author must have a firstname or alias'),
                             })
                         }
                     >
@@ -214,17 +212,17 @@ class PublisherPage extends React.Component<
                                 <Grid container item xs={12}>
 
                                     {
-                                        !this.state.newPublisher && (
+                                        !this.state.newAuthor && (
                                             <Grid item xs={12}>
                                                 <InputTextField
-                                                    label="Publisher Id"
+                                                    label="Author Id"
                                                     required
                                                     type="text"
-                                                    keyName="publisherId"
-                                                    value={values.publisherId}
+                                                    keyName="authorId"
+                                                    value={values.authorId}
                                                     onChange={handleChange}
-                                                    error={!!(errors.publisherId)}
-                                                    errorMessage={errors.publisherId}
+                                                    error={!!(errors.authorId)}
+                                                    errorMessage={errors.authorId}
                                                     readonly
                                                 />
                                             </Grid>
@@ -233,77 +231,44 @@ class PublisherPage extends React.Component<
 
                                     <Grid item xs={12}>
                                         <InputTextField
-                                            label="Name"
+                                            label="Firstname"
                                             required
                                             type="text"
-                                            keyName="name"
-                                            value={values.name}
+                                            keyName="firstname"
+                                            value={values.firstname}
                                             onChange={handleChange}
-                                            error={!!(errors.name)}
-                                            errorMessage={errors.name}
+                                            error={!!(errors.firstname)}
+                                            errorMessage={errors.firstname}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <InputTextField
-                                            label="Website"
+                                            label="Middlename"
                                             type="text"
-                                            keyName="website"
-                                            value={values.website}
+                                            keyName="middlename"
+                                            value={values.middlename}
                                             onChange={handleChange}
-                                            error={!!(errors.website)}
-                                            errorMessage={errors.website}
+                                            error={!!(errors.middlename)}
+                                            errorMessage={errors.middlename}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <InputTextField
-                                            label="Street Address"
+                                            label="Lastname"
                                             type="text"
-                                            keyName="streetAddress"
-                                            value={values.streetAddress}
+                                            keyName="lastname"
+                                            value={values.lastname}
                                             onChange={handleChange}
-                                            error={!!(errors.streetAddress)}
-                                            errorMessage={errors.streetAddress}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <InputTextField
-                                            label="City/Town"
-                                            type="text"
-                                            keyName="city"
-                                            value={values.city}
-                                            onChange={handleChange}
-                                            error={!!(errors.city)}
-                                            errorMessage={errors.city}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <InputTextField
-                                            label="Postcode/Zip Code"
-                                            type="text"
-                                            keyName="postcode"
-                                            value={values.postcode}
-                                            onChange={handleChange}
-                                            error={!!(errors.postcode)}
-                                            errorMessage={errors.postcode}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <InputTextField
-                                            label="State/Province"
-                                            type="text"
-                                            keyName="state"
-                                            value={values.state}
-                                            onChange={handleChange}
-                                            error={!!(errors.state)}
-                                            errorMessage={errors.state}
+                                            error={!!(errors.lastname)}
+                                            errorMessage={errors.lastname}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <CountryTypedown
                                             label="Country"
                                             type="text"
-                                            keyName="countryID"
                                             required
+                                            keyName="countryID"
                                             countries={this.state.countries}
                                             value={values.countryID}
                                             onChange={(e: any) => {
@@ -314,8 +279,19 @@ class PublisherPage extends React.Component<
                                             errorMessage={errors.countryID}
                                         />
                                     </Grid>
+                                    <Grid item xs={12}>
+                                        <InputTextField
+                                            label="Description"
+                                            type="text"
+                                            keyName="description"
+                                            value={values.description}
+                                            onChange={handleChange}
+                                            error={!!(errors.description)}
+                                            errorMessage={errors.description}
+                                        />
+                                    </Grid>
                                     <Grid item xs={12} style={{ paddingTop: '10px' }}>
-                                        {!this.state.newPublisher && (
+                                        {!this.state.newAuthor && (
                                             <Button
                                                 className={this.props.classes.formButton}
                                                 variant="contained"
@@ -323,23 +299,21 @@ class PublisherPage extends React.Component<
                                                 onClick={(e) => {
                                                     e.preventDefault();
                                                     if (errors !== null) {
-                                                        this.updatePublisher(values, validateForm);
+                                                        this.updateAuthor(values, validateForm);
                                                     }
                                                 }}
                                             >
                                                 Update
                                             </Button>
                                         )}
-                                        {this.state.newPublisher && (
+                                        {this.state.newAuthor && (
                                             <Button
                                                 className={this.props.classes.formButton}
                                                 variant="contained"
                                                 color="primary"
                                                 onClick={(e) => {
                                                     e.preventDefault();
-                                                    if (errors !== null) {
-                                                        this.addPublisher(values, validateForm);
-                                                    }
+                                                    this.addAuthor(values, validateForm);
                                                 }}
                                             >
                                                 Add
@@ -351,7 +325,7 @@ class PublisherPage extends React.Component<
                                             variant="contained"
                                             color="secondary"
                                             onClick={() => {
-                                                this.props.history.push('/publishers');
+                                                this.props.history.push('/authors');
                                             }}
                                         >
                                             Cancel
@@ -366,8 +340,8 @@ class PublisherPage extends React.Component<
     }
 }
 
-export default compose<PublisherProps, {}>(
+export default compose<AuthorProps, {}>(
     withStyles(useStyles),
     withRouter,
     withSnackbar,
-)(PublisherPage);
+)(AuthorsPage);

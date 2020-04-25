@@ -127,7 +127,7 @@ export class Authors extends React.Component<
                         aria-label="add"
                         className={this.props.classes.addAuthorButton}
                         onClick={() => {
-                            this.props.history.push('addpublisher');
+                            this.props.history.push('addauthor');
                         }}
                     >
                         <AddIcon />
