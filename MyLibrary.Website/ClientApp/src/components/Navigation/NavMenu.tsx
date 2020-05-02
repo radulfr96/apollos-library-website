@@ -4,6 +4,7 @@ import {
 } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 import BusinessIcon from '@material-ui/icons/Business';
+import PersonIcon from '@material-ui/icons/Person';
 import AccountMenu from './AccountMenu';
 import AdminMenu from './AdminMenu';
 import { AppContext } from '../../Context';
@@ -41,6 +42,15 @@ export default function NavMenu() {
           </NavLink>
         </Typography>
         <div style={{ display: context.isStandardUser() ? 'block' : 'none' }}>
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+          >
+            <NavLink className={classes.navLink} to="/authors">
+              <PersonIcon color="secondary" />
+            </NavLink>
+          </IconButton>
           <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"

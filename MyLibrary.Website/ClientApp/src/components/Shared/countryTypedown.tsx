@@ -35,9 +35,9 @@ const useStyles = createStyles((theme: Theme) => ({
 export class CountryTypedown extends React.Component<
     CountryTypedownProps
     & WithStyles<typeof useStyles>> {
-        constructor(props: any) {
-            super(props);
-        }
+    constructor(props: any) {
+        super(props);
+    }
 
     render() {
         return (
@@ -47,9 +47,17 @@ export class CountryTypedown extends React.Component<
                     options={
                         this.props.countries
                     }
+                    // required={this.props.required}
                     getOptionLabel={(country) => country.name}
                     renderInput={(params) => (
-                        <TextField {...params} variant="outlined" label="Country" />
+                        <TextField
+                            {...params}
+                            variant="outlined"
+                            defaultValue={this.props.countries.find(
+                                (c) => c.countryID === this.props.value,
+                            )?.name}
+                            label="Country"
+                        />
                     )}
                     onChange={this.props.onChange}
                 />
