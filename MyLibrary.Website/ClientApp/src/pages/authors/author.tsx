@@ -60,7 +60,7 @@ class AuthorsPage extends React.Component<
         this.state = {
             countries: [],
             author: {
-                authorId: 0,
+                authorID: 0,
                 firstname: '',
                 middlename: '',
                 lastname: '',
@@ -171,7 +171,7 @@ class AuthorsPage extends React.Component<
     }
 
     render() {
-        if (!this.state.newAuthor && this.state.author.authorId < 1) {
+        if (!this.state.newAuthor && this.state.author.authorID < 1) {
             return (<CircularProgress />);
         }
 
@@ -197,8 +197,8 @@ class AuthorsPage extends React.Component<
                         }}
                         validationSchema={
                             yup.object().shape({
-                                name: yup.string()
-                                    .required('A author must have a firstname or alias'),
+                                firstname: yup.string()
+                                    .required('An author must have a firstname or alias'),
                             })
                         }
                     >
@@ -215,14 +215,14 @@ class AuthorsPage extends React.Component<
                                         !this.state.newAuthor && (
                                             <Grid item xs={12}>
                                                 <InputTextField
-                                                    label="Author Id"
+                                                    label="Author ID"
                                                     required
                                                     type="text"
-                                                    keyName="authorId"
-                                                    value={values.authorId}
+                                                    keyName="authorID"
+                                                    value={values.authorID}
                                                     onChange={handleChange}
-                                                    error={!!(errors.authorId)}
-                                                    errorMessage={errors.authorId}
+                                                    error={!!(errors.authorID)}
+                                                    errorMessage={errors.authorID}
                                                     readonly
                                                 />
                                             </Grid>
@@ -265,7 +265,7 @@ class AuthorsPage extends React.Component<
                                     </Grid>
                                     <Grid item xs={12}>
                                         <CountryTypedown
-                                            label="Country"
+                                            label="Country *"
                                             type="text"
                                             required
                                             keyName="countryID"
