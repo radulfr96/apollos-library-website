@@ -1,0 +1,11 @@
+mode: chatops
+branches:
+  - label: enhancement
+    name: develop
+    prefix: feature/
+  - label: bug
+    name: develop
+    prefix: bugfix/
+  - label: urgent bug
+    name: master
+    prefix: hotfix/
