@@ -7,7 +7,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.51",
     "@types/recompose": "^0.30.7",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "connected-react-router": "6.8.0",
     "es6": "0.0.7",
     "eslint-config-airbnb": "^18.1.0",
