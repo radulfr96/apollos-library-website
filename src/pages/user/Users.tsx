@@ -1,13 +1,12 @@
-import * as React from 'react';
 import {
- withStyles, Theme, Grid, WithStyles,
+    Theme, Grid, makeStyles,
 } from '@material-ui/core';
 import Axios from 'axios';
-import { WithSnackbarProps, withSnackbar } from 'notistack';
-import { compose } from 'recompose';
 import { User } from '../../interfaces/user';
 import UsersTable from '../../components/UsersTable';
 import PageHeading from '../../components/shared/PageHeading';
+import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 
 interface UsersProps {
     classes: any;
@@ -15,97 +14,81 @@ interface UsersProps {
     closeSnackbar: any;
 }
 
-const useStyles = (theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     paper: {
         color: theme.palette.primary.main,
         width: '100%',
     },
-});
+}));
 
 interface UsersState {
     users: Array<User>;
 }
 
-export class Users extends React.Component<
-UsersProps
-& WithStyles<typeof useStyles>
-& WithSnackbarProps
-, UsersState> {
-    constructor(props: any) {
-        super(props);
-        this.deleteUser = this.deleteUser.bind(this);
-        this.renderErrorSnackbar = this.renderErrorSnackbar.bind(this);
-        this.renderSuccessSnackbar = this.renderSuccessSnackbar.bind(this);
-        this.renderWarningSnackbar = this.renderWarningSnackbar.bind(this);
+export default function Users(props: UsersProps): JSX.Element {
+    const classes = useStyles();
+    const [usersState, setUsersState] = useState<UsersState>({
+        users: [],
+    });
+    const history = useHistory();
 
-        this.state = {
-            users: [],
-        };
-    }
+    useEffect(() => {
+        getUsers();
+    });
 
-    componentDidMount() {
-        this.getUsers();
-    }
-
-    getUsers() {
+    const getUsers = () => {
         Axios.get('/api/user')
-        .then((response) => {
-            this.setState({
-                users: response.data.users,
+            .then((response) => {
+                setUsersState({
+                    ...usersState,
+                    users: response.data.users,
+                });
             });
-        });
     }
 
-    deleteUser(id: string): void {
+    const deleteUser = (id: string): void => {
         Axios.delete(`api/user/${id}`)
             .then((response) => {
                 if (response.status === 200) {
-                    this.renderSuccessSnackbar('Delete successful');
-                    this.getUsers();
+                    renderSuccessSnackbar('Delete successful');
+                    getUsers();
                 }
             })
             .catch((error) => {
                 if (error.response.status === 400) {
-                    this.renderWarningSnackbar('You cannot delete the current logged in user.');
+                    renderWarningSnackbar('You cannot delete the current logged in user.');
                 } else {
-                    this.renderErrorSnackbar('Unable to delete user please contact admin');
+                    renderErrorSnackbar('Unable to delete user please contact admin');
                 }
             });
     }
 
-    renderErrorSnackbar(message: string): void {
-        this.props.enqueueSnackbar(message, {
+    const renderErrorSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
             variant: 'error',
         });
     }
 
-    renderSuccessSnackbar(message: string): void {
-        this.props.enqueueSnackbar(message, {
+    const renderSuccessSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
             variant: 'success',
         });
     }
 
-    renderWarningSnackbar(message: string): void {
-        this.props.enqueueSnackbar(message, {
+    const renderWarningSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
             variant: 'warning',
         });
     }
 
-    render() {
-        return (
-            <Grid item xs={9} container justify="center">
-                <Grid item xs={12}>
-                    <PageHeading headingText="Users" />
-                </Grid>
-                <Grid item xs={12}>
-                    <UsersTable users={this.state.users} deleteUser={this.deleteUser} />
-                </Grid>
+    return (
+        <Grid item xs={9} container justify="center">
+            <Grid item xs={12}>
+                <PageHeading headingText="Users" />
             </Grid>
-        );
-    }
+            <Grid item xs={12}>
+                <UsersTable users={usersState.users} deleteUser={deleteUser} />
+            </Grid>
+        </Grid>
+    );
 }
-
-export default compose<UsersProps, {}>(
-    withStyles(useStyles),
-    withSnackbar,
-)(Users);

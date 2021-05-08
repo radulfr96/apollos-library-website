@@ -1,16 +1,14 @@
-import * as React from 'react';
 import {
-    withStyles, Grid, WithStyles, Fab, createStyles,
+    Grid, Fab, makeStyles,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Axios from 'axios';
-import { WithSnackbarProps, withSnackbar } from 'notistack';
-import { compose } from 'recompose';
-import { withRouter, RouteProps, RouteComponentProps } from 'react-router';
+import { useHistory } from 'react-router';
 import { PublisherListItem } from '../../interfaces/publisherListItem';
 import PageHeading from '../../components/shared/PageHeading';
 import PublishersTable from '../../components/PublishersTable';
 import { AppContext } from '../../Context';
+import { useContext, useEffect, useState } from 'react';
 
 interface PublishersProps {
     classes: any;
@@ -18,7 +16,7 @@ interface PublishersProps {
     closeSnackbar: any;
 }
 
-const useStyles = createStyles({
+const useStyles = makeStyles({
     addPublisherButton: {
         marginTop: '10px',
         float: 'right',
@@ -33,115 +31,91 @@ interface PublishersState {
     publishers: Array<PublisherListItem>;
 }
 
-export class Publishers extends React.Component<
-    PublishersProps
-    & WithStyles<typeof useStyles>
-    & RouteProps
-    & RouteComponentProps
-    & WithSnackbarProps
-    , PublishersState> {
-    constructor(props: any) {
-        super(props);
-        this.deletePublisher = this.deletePublisher.bind(this);
-        this.getPubishers = this.getPubishers.bind(this);
-        this.renderErrorSnackbar = this.renderErrorSnackbar.bind(this);
-        this.renderSuccessSnackbar = this.renderSuccessSnackbar.bind(this);
-        this.renderWarningSnackbar = this.renderWarningSnackbar.bind(this);
+export default function Publishers(props: PublishersProps): JSX.Element {
 
-        this.state = {
-            publishers: [],
-        };
-    }
+    const [publisherState, setPublisherState] = useState<PublishersState>({
+        publishers: [],
+    });
+    const classes = useStyles();
+    const history = useHistory();
+    const context = useContext(AppContext);
 
-    componentDidMount() {
-        this.getPubishers();
-    }
+    useEffect(() => {
+        getPubishers();
+    });
 
-    getPubishers() {
+    const getPubishers = () => {
         Axios.get('/api/publisher')
             .then((response) => {
-                this.setState({
+                setPublisherState({
+                    ...publisherState,
                     publishers: response.data.publishers,
                 });
             })
-            .catch((error) => {
-                if (error.response.status === 404) {
-                    this.setState({
-                        publishers: [],
-                    });
-                }
+            .catch(() => {
             });
     }
 
-    deletePublisher(id: string): void {
+    const deletePublisher = (id: string): void => {
         Axios.delete(`api/publisher/${id}`)
             .then((response) => {
                 if (response.status === 200) {
-                    this.renderSuccessSnackbar('Delete successful');
-                    this.getPubishers();
+                    renderSuccessSnackbar('Delete successful');
+                    getPubishers();
                 }
             })
             .catch(() => {
-                this.renderErrorSnackbar('Unable to delete publisher please contact admin');
+                renderErrorSnackbar('Unable to delete publisher please contact admin');
             });
     }
 
-    renderErrorSnackbar(message: string): void {
-        this.props.enqueueSnackbar(message, {
+    const renderErrorSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
             variant: 'error',
         });
     }
 
-    renderSuccessSnackbar(message: string): void {
-        this.props.enqueueSnackbar(message, {
+    const renderSuccessSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
             variant: 'success',
         });
     }
 
-    renderWarningSnackbar(message: string): void {
-        this.props.enqueueSnackbar(message, {
+    const renderWarningSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
             variant: 'warning',
         });
     }
 
-    render() {
-        return (
-            <Grid item xs={5} container justify="center">
-                <Grid item xs={12}>
-                    <PageHeading headingText="Publishers" />
-                </Grid>
-                {
-                    this.context.isAdmin() && (
-                        <Grid item xs={12}>
-                            <PublishersTable
-                                publishers={this.state.publishers}
-                                deletePublisher={this.deletePublisher}
-                            />
-                        </Grid>
-                    )
-                }
-
-                <Grid item xs={12}>
-                    <Fab
-                        color="primary"
-                        aria-label="add"
-                        className={this.props.classes.addPublisherButton}
-                        onClick={() => {
-                            this.props.history.push('addpublisher');
-                        }}
-                    >
-                        <AddIcon />
-                    </Fab>
-                </Grid>
+    return (
+        <Grid item xs={5} container justify="center">
+            <Grid item xs={12}>
+                <PageHeading headingText="Publishers" />
             </Grid>
-        );
-    }
+            {
+                context.isAdmin() && (
+                    <Grid item xs={12}>
+                        <PublishersTable
+                            publishers={publisherState.publishers}
+                            deletePublisher={deletePublisher}
+                        />
+                    </Grid>
+                )
+            }
+
+            <Grid item xs={12}>
+                <Fab
+                    color="primary"
+                    aria-label="add"
+                    className={classes.addPublisherButton}
+                    onClick={() => {
+                        history.push('addpublisher');
+                    }}
+                >
+                    <AddIcon />
+                </Fab>
+            </Grid>
+        </Grid>
+    );
 }
 
-Publishers.contextType = AppContext;
-
-export default compose<PublishersProps, {}>(
-    withStyles(useStyles),
-    withRouter,
-    withSnackbar,
-)(Publishers);

@@ -5,18 +5,22 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "lib": [
-      "es2015",
+      "es6",
       "dom"
     ],
-    "skipLibCheck": false
+    "skipLibCheck": false,
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "src"

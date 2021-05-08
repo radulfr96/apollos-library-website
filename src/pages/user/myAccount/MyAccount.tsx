@@ -1,23 +1,18 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import {
-    createStyles, WithStyles, Paper, withStyles, Tabs, Tab, AppBar, Typography, Box,
+    Paper, Tabs, Tab, AppBar, Typography, Box, makeStyles,
 } from '@material-ui/core';
-import {
-    RouteComponentProps, withRouter,
-} from 'react-router';
-import { compose } from 'recompose';
-import { withSnackbar, WithSnackbarProps } from 'notistack';
 import MyDetails from './MyDetails';
 import ChangeUsername from './ChangeUsername';
 import UpdatePassword from './UpdatePassword';
 
 interface TabPanelProps {
-    children?: React.ReactNode;
+    children: React.ReactNode;
     index: any;
     value: any;
 }
 
-function TabPanel(props: TabPanelProps) {
+function TabPanel(props: TabPanelProps): JSX.Element {
     const {
         children, value, index,
     } = props;
@@ -35,17 +30,11 @@ function TabPanel(props: TabPanelProps) {
     );
 }
 
-interface MyAccountProps extends RouteComponentProps<{}> {
-    classes: any;
-    enqueueSnackbar: any;
-    closeSnackbar: any;
-}
-
 interface MyAccountState {
     tab: number;
 }
 
-const useStyles = createStyles({
+const useStyles = makeStyles({
     paper: {
         width: '1000px',
     },
@@ -56,77 +45,40 @@ const useStyles = createStyles({
     },
 });
 
-export class MyAccount extends React.Component<MyAccountProps
-    & WithStyles<typeof useStyles>
-    & WithSnackbarProps
-    , MyAccountState> {
-    constructor(props: MyAccountProps) {
-        super(props);
-        this.renderErrorSnackbar = this.renderErrorSnackbar.bind(this);
-        this.renderSuccessSnackbar = this.renderSuccessSnackbar.bind(this);
-        this.renderWarningSnackbar = this.renderWarningSnackbar.bind(this);
-        this.handleTabChange = this.handleTabChange.bind(this);
-        this.state = {
-            tab: 0,
-        };
-    }
+export default function MyAccount(): JSX.Element {
+    const [myAccountState, setMyAccountState] = useState<MyAccountState>({
+        tab: 1,
+    });
 
-    handleTabChange(event: React.ChangeEvent<{}>, newValue: number) {
-        this.setState({
-            ...this.state,
-            tab: newValue,
-        });
-    }
+    const classes = useStyles();
 
-    renderErrorSnackbar(message: string): void {
-        this.props.enqueueSnackbar(message, {
-            variant: 'error',
-        });
-    }
+    const handleTabChange = (event: React.ChangeEvent, newValue: number) => {
+        setMyAccountState({ ...myAccountState, tab: newValue });
+    };
 
-    renderSuccessSnackbar(message: string): void {
-        this.props.enqueueSnackbar(message, {
-            variant: 'success',
-        });
-    }
-
-    renderWarningSnackbar(message: string): void {
-        this.props.enqueueSnackbar(message, {
-            variant: 'warning',
-        });
-    }
-
-    render() {
-        return (
-            <>
-                <Paper className={this.props.classes.paper}>
-                    <AppBar position="static">
-                        <Tabs
-                            value={this.state.tab}
-                            onChange={this.handleTabChange}
-                        >
-                            <Tab label="My Details" />
-                            <Tab label="Change Username" />
-                            <Tab label="Change Password" />
-                        </Tabs>
-                    </AppBar>
-                    <TabPanel value={this.state.tab} index={0}>
-                        <MyDetails />
-                    </TabPanel>
-                    <TabPanel value={this.state.tab} index={1}>
-                        <ChangeUsername />
-                    </TabPanel>
-                    <TabPanel value={this.state.tab} index={2}>
-                        <UpdatePassword />
-                    </TabPanel>
-                </Paper>
-            </>
-        );
-    }
+    return (
+        <>
+            <Paper className={classes.paper}>
+                <AppBar position="static">
+                    <Tabs
+                        value={myAccountState.tab}
+                        onChange={handleTabChange}
+                    >
+                        <Tab label="My Details" />
+                        <Tab label="Change Username" />
+                        <Tab label="Change Password" />
+                    </Tabs>
+                </AppBar>
+                <TabPanel value={myAccountState.tab} index={0}>
+                    <MyDetails />
+                </TabPanel>
+                <TabPanel value={myAccountState.tab} index={1}>
+                    <ChangeUsername />
+                </TabPanel>
+                <TabPanel value={myAccountState.tab} index={2}>
+                    <UpdatePassword />
+                </TabPanel>
+            </Paper>
+        </>
+    );
 }
-
-export default compose<MyAccountProps, {}>(
-    withStyles(useStyles),
-    withRouter,
-    withSnackbar,
-)(MyAccount);

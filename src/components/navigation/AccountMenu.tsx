@@ -5,7 +5,7 @@ import {
 import { NavLink } from 'react-router-dom';
 import PersonIcon from '@material-ui/icons/Person';
 import Axios from 'axios';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { AppContext } from '../../Context';
 
 const useStyles = makeStyles(() => ({
@@ -15,8 +15,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function AccountMenu(): JSX.Element {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+export default function AccountMenu(props: {}): JSX.Element {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const context = useContext(AppContext);
   const classes = useStyles();

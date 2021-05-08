@@ -1,27 +1,11 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import * as React from 'react';
 import {
-    withStyles, createStyles, WithStyles, Theme, TextField,
+    Theme, TextField, makeStyles,
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import Country from '../../interfaces/country';
+import { useState } from 'react';
 
-interface CountryTypedownProps {
-    label?: string;
-    errorMessage?: string;
-    countries: Array<Country>;
-    type?: string;
-    value?: string | null | undefined;
-    keyName?: any;
-    required?: boolean;
-    classes: any;
-    onChange?: any;
-    onBlur?: any;
-    error?: boolean;
-    readonly?: boolean;
-}
-
-const useStyles = createStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     errorMessage: {
         paddingBottom: '20px',
         color: 'red',
@@ -32,39 +16,44 @@ const useStyles = createStyles((theme: Theme) => ({
     },
 }));
 
-export class CountryTypedown extends React.Component<
-    CountryTypedownProps
-    & WithStyles<typeof useStyles>> {
-    constructor(props: any) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <>
-                <Autocomplete
-                    className={this.props.classes.input}
-                    options={
-                        this.props.countries
-                    }
-                    // required={this.props.required}
-                    getOptionLabel={(country) => country.name}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            variant="outlined"
-                            defaultValue={this.props.countries.find(
-                                (c) => c.countryID === this.props.value,
-                            )?.name}
-                            label="Country"
-                        />
-                    )}
-                    onChange={this.props.onChange}
-                />
-                <div className={this.props.classes.errorMessage}>{this.props.error ? this.props.errorMessage : ''}</div>
-            </>
-        );
-    }
+interface CountryTypedownProps {
+    label?: string;
+    errorMessage?: string;
+    countries: Array<Country>;
+    type?: string;
+    value?: string | null | undefined;
+    keyName?: any;
+    required?: boolean;
+    onChange?: any;
+    onBlur?: any;
+    error?: boolean;
+    readonly?: boolean;
 }
 
-export default withStyles(useStyles)(CountryTypedown);
+export default function CountryTypedown(props: CountryTypedownProps): JSX.Element {
+    const classes = useStyles();
+    return (
+        <>
+            <Autocomplete
+                className={classes.input}
+                options={
+                    props.countries
+                }
+                // required={this.props.required}
+                getOptionLabel={(country: Country) => country.name}
+                renderInput={(params: any) => (
+                    <TextField
+                        {...params}
+                        variant="outlined"
+                        defaultValue={props.countries.find(
+                            (c) => c.countryID === props.value,
+                        )?.name}
+                        label="Country"
+                    />
+                )}
+                onChange={props.onChange}
+            />
+            <div className={classes.errorMessage}>{props.error ? props.errorMessage : ''}</div>
+        </>
+    );
+}

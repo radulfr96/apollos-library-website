@@ -2,21 +2,23 @@ import * as React from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
-    withStyles, Theme, Grid, WithStyles, Button, CircularProgress,
+    withStyles, Theme, Grid, WithStyles, Button, CircularProgress, makeStyles,
 } from '@material-ui/core';
 import Axios from 'axios';
-import { withRouter, RouteComponentProps, RouteProps } from 'react-router';
-import { withSnackbar, WithSnackbarProps } from 'notistack';
-import compose from 'recompose/compose';
+import { useParams } from 'react-router';
 import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
+import { useContext, useEffect, useState } from 'react';
+import { AppContext } from '../../Context';
+import { useHistory } from 'react-router-dom';
 
 interface GenreProps {
-    classes: any;
+    enqueueSnackbar: any;
+    closeSnackbar: any;
 }
 
-const useStyles = (theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     paper: {
         color: theme.palette.primary.main,
         width: '100%',
@@ -27,7 +29,7 @@ const useStyles = (theme: Theme) => ({
     userIdField: {
         marginBottom: '10px',
     },
-});
+}));
 
 interface GenreState {
     genre: Genre;
@@ -38,247 +40,223 @@ interface GenreParams {
     id: string | undefined;
 }
 
-class GenrePage extends React.Component<
-    GenreProps
-    & WithStyles<typeof useStyles>
-    & RouteProps
-    & WithSnackbarProps
-    & RouteComponentProps<GenreParams>
-    , GenreState> {
-    constructor(props: any) {
-        super(props);
-        this.updateGenre = this.updateGenre.bind(this);
-        this.addGenre = this.addGenre.bind(this);
-        this.onChange = this.onChange.bind(this);
-        this.renderErrorSnackbar = this.renderErrorSnackbar.bind(this);
-        this.renderSuccessSnackbar = this.renderSuccessSnackbar.bind(this);
-        this.renderWarningSnackbar = this.renderWarningSnackbar.bind(this);
+export default function GenrePage(props: GenreProps): JSX.Element {
+    const [genreState, setGenreState] = useState<GenreState>({
+        genre: {
+            name: '',
+            genreId: 0,
+        },
+        newGenre: false,
+    });
 
-        this.state = {
-            genre: {
-                genreId: 0,
-                name: '',
-            },
-            newGenre: false,
-        };
-    }
+    const context = useContext(AppContext);
+    const classes = useStyles();
+    const history = useHistory();
+    const params = useParams<GenreParams>();
 
-    componentDidMount() {
-        if (this.props.match.params.id !== undefined && this.props.match.params.id !== null) {
-            const { id } = this.props.match.params;
-
-            Axios.get(`/api/genre/${id}`)
+    useEffect(() => {
+        if (params.id !== undefined && params.id !== null) {
+            Axios.get(`/api/genre/${params.id}`)
                 .then((response) => {
-                    this.setState({
+                    setGenreState({
                         genre: response.data.genre,
                         newGenre: false,
                     });
                 });
         } else {
-            this.setState({
-                ...this.state,
+            setGenreState({
+                ...genreState,
                 newGenre: true,
             });
         }
-    }
+    });
 
-    onChange(key: string, value: any): void {
-        const prevState = this.state;
-        this.setState({
-            ...this.state,
+    const onChange = (key: string, value: any): void => {
+        setGenreState({
+            ...genreState,
             genre: {
-                ...prevState.genre,
+                ...genreState.genre,
                 [key]: value,
             },
         });
     }
 
-    updateGenre(genre: Genre, validateForm: Function) {
+    const updateGenre = (genre: Genre, validateForm: Function) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
                     Axios.patch('api/genre/', genre)
                         .then((response) => {
                             if (response.status === 200) {
-                                this.renderSuccessSnackbar('Update successful');
-                                this.props.history.goBack();
+                                renderSuccessSnackbar('Update successful');
+                                history.goBack();
                             }
                         })
                         .catch((error) => {
                             if (error.response.status === 400) {
-                                this.renderWarningSnackbar('Unable to update genre invalid input');
+                                renderWarningSnackbar('Unable to update genre invalid input');
                             } else {
-                                this.renderErrorSnackbar('Unable to update genre please contact admin');
+                                renderErrorSnackbar('Unable to update genre please contact admin');
                             }
                         });
                 }
             });
     }
 
-    addGenre(genre: Genre, validateForm: Function) {
+    const addGenre = (genre: Genre, validateForm: Function) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
                     Axios.post('api/genre/', genre)
                         .then((response) => {
                             if (response.status === 200) {
-                                this.renderSuccessSnackbar('Add successful');
-                                this.props.history.goBack();
+                                renderSuccessSnackbar('Add successful');
+                                history.goBack();
                             }
                         })
                         .catch((error) => {
                             if (error.response.status === 400) {
-                                this.renderWarningSnackbar('Unable to add genre invalid input');
+                                renderWarningSnackbar('Unable to add genre invalid input');
                             } else {
-                                this.renderErrorSnackbar('Unable to add genre please contact admin');
+                                renderErrorSnackbar('Unable to add genre please contact admin');
                             }
                         });
                 }
             });
     }
 
-    renderErrorSnackbar(message: string): void {
-        this.props.enqueueSnackbar(message, {
+    const renderErrorSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
             variant: 'error',
         });
     }
 
-    renderSuccessSnackbar(message: string): void {
-        this.props.enqueueSnackbar(message, {
+    const renderSuccessSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
             variant: 'success',
         });
     }
 
-    renderWarningSnackbar(message: string): void {
-        this.props.enqueueSnackbar(message, {
+    const renderWarningSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
             variant: 'warning',
         });
     }
 
-    render() {
-        if (!this.state.newGenre && this.state.genre.genreId < 1) {
-            return (<CircularProgress />);
-        }
+    if (!genreState.newGenre && genreState.genre.genreId < 1) {
+        return (<CircularProgress />);
+    }
 
-        return (
-            <Grid item xs={6} container justify="center">
-                <Grid item xs={12}>
-                    {
-                        !this.state.newGenre && (
-                            <PageHeading headingText="Genre Details" />
-                        )
+    return (
+        <Grid item xs={6} container justify="center">
+            <Grid item xs={12}>
+                {
+                    !genreState.newGenre && (
+                        <PageHeading headingText="Genre Details" />
+                    )
+                }
+                {
+                    genreState.newGenre && (
+                        <PageHeading headingText="New Genre" />
+                    )
+                }
+            </Grid>
+            <Grid item xs={12}>
+                <Formik
+                    initialValues={genreState.genre}
+                    onSubmit={(values) => {
+                        console.log(values);
+                    }}
+                    validationSchema={
+                        yup.object().shape({
+                            name: yup.string()
+                                .required('A genre must have a name'),
+                        })
                     }
-                    {
-                        this.state.newGenre && (
-                            <PageHeading headingText="New Genre" />
-                        )
-                    }
-                </Grid>
-                <Grid item xs={12}>
-                    <Formik
-                        initialValues={this.state.genre}
-                        onSubmit={(values) => {
-                            console.log(values);
-                        }}
-                        validationSchema={
-                            yup.object().shape({
-                                name: yup.string()
-                                    .required('A genre must have a name'),
-                            })
-                        }
-                    >
-                        {({
-                            values,
-                            errors,
-                            handleChange,
-                            validateForm,
-                        }) => (
-                                <Grid container item xs={12}>
+                >
+                    {({
+                        values,
+                        errors,
+                        handleChange,
+                        validateForm,
+                    }) => (
+                            <Grid container item xs={12}>
 
-                                    {
-                                        !this.state.newGenre && (
-                                            <Grid item xs={12}>
-                                                <InputTextField
-                                                    label="Genre Id"
-                                                    required
-                                                    type="text"
-                                                    keyName="genreId"
-                                                    value={values.genreId}
-                                                    onChange={handleChange}
-                                                    error={!!(errors.genreId)}
-                                                    errorMessage={errors.genreId}
-                                                    readonly
-                                                />
-                                            </Grid>
-                                        )
-                                    }
+                                {
+                                    !genreState.newGenre && (
+                                        <Grid item xs={12}>
+                                            <InputTextField
+                                                label="Genre Id"
+                                                required
+                                                type="text"
+                                                keyName="genreId"
+                                                value={values.genreId}
+                                                onChange={handleChange}
+                                                error={!!(errors.genreId)}
+                                                errorMessage={errors.genreId}
+                                                readonly
+                                            />
+                                        </Grid>
+                                    )
+                                }
 
-                                    <Grid item xs={12}>
-                                        <InputTextField
-                                            label="Name"
-                                            required
-                                            type="text"
-                                            keyName="name"
-                                            value={values.name}
-                                            onChange={handleChange}
-                                            error={!!(errors.name)}
-                                            errorMessage={errors.name}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} style={{ paddingTop: '10px' }}>
-                                        {!this.state.newGenre && (
-                                            <Button
-                                                className={this.props.classes.formButton}
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    if (errors !== null) {
-                                                        this.updateGenre(values, validateForm);
-                                                    }
-                                                }}
-                                            >
-                                                Update
-                                            </Button>
-                                        )}
-                                        {this.state.newGenre && (
-                                            <Button
-                                                className={this.props.classes.formButton}
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    if (errors !== null) {
-                                                        this.addGenre(values, validateForm);
-                                                    }
-                                                }}
-                                            >
-                                                Add
-                                            </Button>
-                                        )}
-
+                                <Grid item xs={12}>
+                                    <InputTextField
+                                        label="Name"
+                                        required
+                                        type="text"
+                                        keyName="name"
+                                        value={values.name}
+                                        onChange={handleChange}
+                                        error={!!(errors.name)}
+                                        errorMessage={errors.name}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} style={{ paddingTop: '10px' }}>
+                                    {!genreState.newGenre && (
                                         <Button
-                                            className={this.props.classes.formButton}
                                             variant="contained"
-                                            color="secondary"
-                                            onClick={() => {
-                                                this.props.history.push('/genres');
+                                            color="primary"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                if (errors !== null) {
+                                                    updateGenre(values, validateForm);
+                                                }
                                             }}
                                         >
-                                            Cancel
+                                            Update
                                         </Button>
-                                    </Grid>
-                                </Grid>
-                            )}
-                    </Formik>
-                </Grid>
-            </Grid>
-        );
-    }
-}
+                                    )}
+                                    {genreState.newGenre && (
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                if (errors !== null) {
+                                                    addGenre(values, validateForm);
+                                                }
+                                            }}
+                                        >
+                                            Add
+                                        </Button>
+                                    )}
 
-export default compose<GenreProps, {}>(
-    withStyles(useStyles),
-    withRouter,
-    withSnackbar,
-)(GenrePage);
+                                    <Button
+                                        className={classes.formButton}
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={() => {
+                                            history.push('/genres');
+                                        }}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        )}
+                </Formik>
+            </Grid>
+        </Grid>
+    );
+}

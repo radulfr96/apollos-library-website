@@ -1,23 +1,20 @@
-import * as React from 'react';
 import {
-    withStyles, Grid, WithStyles, Fab, createStyles,
+    Grid, Fab, makeStyles,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Axios from 'axios';
-import { WithSnackbarProps, withSnackbar } from 'notistack';
-import { compose } from 'recompose';
-import { withRouter, RouteProps, RouteComponentProps } from 'react-router';
+import { useHistory } from 'react-router';
 import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/PageHeading';
 import GenresTable from '../../components/GenresTable';
+import { useEffect, useState } from 'react';
 
 interface GenresProps {
-    classes: any;
     enqueueSnackbar: any;
     closeSnackbar: any;
 }
 
-const useStyles = createStyles({
+const useStyles = makeStyles({
     addGenreButton: {
         marginTop: '10px',
         float: 'right',
@@ -32,105 +29,77 @@ interface GenresState {
     genres: Array<Genre>;
 }
 
-export class Genres extends React.Component<
-    GenresProps
-    & WithStyles<typeof useStyles>
-    & RouteProps
-    & RouteComponentProps
-    & WithSnackbarProps
-    , GenresState> {
-    constructor(props: any) {
-        super(props);
-        this.deleteGenre = this.deleteGenre.bind(this);
-        this.getGenres = this.getGenres.bind(this);
-        this.renderErrorSnackbar = this.renderErrorSnackbar.bind(this);
-        this.renderSuccessSnackbar = this.renderSuccessSnackbar.bind(this);
-        this.renderWarningSnackbar = this.renderWarningSnackbar.bind(this);
+export default function Genres(props: GenresProps): JSX.Element {
+    const [genreState, setGenreState] = useState<GenresState>({
+        genres: [],
+    });
+    const classes = useStyles();
+    const history = useHistory();
 
-        this.state = {
-            genres: [],
-        };
-    }
+    useEffect(() => {
+        getGenres();
+    });
 
-    componentDidMount() {
-        this.getGenres();
-    }
-
-    getGenres() {
+    const getGenres = () => {
         Axios.get('/api/genre')
             .then((response) => {
-                this.setState({
-                    genres: response.data.genres,
-                });
+                setGenreState({...genreState, genres: response.data.genres});
             })
-            .catch((error) => {
-                if (error.response.status === 404) {
-                    this.setState({
-                        genres: [],
-                    });
-                }
+            .catch(() => {
             });
     }
 
-    deleteGenre(id: string): void {
+    const deleteGenre = (id: string): void => {
         Axios.delete(`api/genre/${id}`)
             .then((response) => {
                 if (response.status === 200) {
-                    this.renderSuccessSnackbar('Delete successful');
-                    this.getGenres();
+                    renderSuccessSnackbar('Delete successful');
+                    getGenres();
                 }
             })
             .catch(() => {
-                this.renderErrorSnackbar('Unable to delete genre please contact admin');
+                renderErrorSnackbar('Unable to delete genre please contact admin');
             });
     }
 
-    renderErrorSnackbar(message: string): void {
-        this.props.enqueueSnackbar(message, {
+    const renderErrorSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
             variant: 'error',
         });
     }
 
-    renderSuccessSnackbar(message: string): void {
-        this.props.enqueueSnackbar(message, {
+    const renderSuccessSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
             variant: 'success',
         });
     }
 
-    renderWarningSnackbar(message: string): void {
-        this.props.enqueueSnackbar(message, {
+    const renderWarningSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
             variant: 'warning',
         });
     }
 
-    render() {
-        return (
-            <Grid item xs={5} container justify="center">
-                <Grid item xs={12}>
-                    <PageHeading headingText="Genres" />
-                </Grid>
-                <Grid item xs={12}>
-                    <GenresTable genres={this.state.genres} deleteGenre={this.deleteGenre} />
-                </Grid>
-                <Grid item xs={12}>
-                    <Fab
-                        color="primary"
-                        aria-label="add"
-                        className={this.props.classes.addGenreButton}
-                        onClick={() => {
-                            this.props.history.push('addgenre');
-                        }}
-                    >
-                        <AddIcon />
-                    </Fab>
-                </Grid>
+    return (
+        <Grid item xs={5} container justify="center">
+            <Grid item xs={12}>
+                <PageHeading headingText="Genres" />
             </Grid>
-        );
-    }
+            <Grid item xs={12}>
+                <GenresTable genres={genreState.genres} deleteGenre={deleteGenre} />
+            </Grid>
+            <Grid item xs={12}>
+                <Fab
+                    color="primary"
+                    aria-label="add"
+                    className={classes.addGenreButton}
+                    onClick={() => {
+                        history.push('addgenre');
+                    }}
+                >
+                    <AddIcon />
+                </Fab>
+            </Grid>
+        </Grid>
+    );
 }
-
-export default compose<GenresProps, {}>(
-    withStyles(useStyles),
-    withRouter,
-    withSnackbar,
-)(Genres);
