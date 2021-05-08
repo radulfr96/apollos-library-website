@@ -1,11 +1,13 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
-    withStyles, Theme, Grid, WithStyles, Button, CircularProgress, makeStyles, SnackbarProps,
+    Grid, Button, CircularProgress,
 } from '@material-ui/core';
 import Axios from 'axios';
 import { useParams } from 'react-router';
+import { useHistory } from 'react-router-dom';
+import { WithSnackbarProps } from 'notistack';
 import { User } from '../../interfaces/user';
 import { UpdateUserInfo } from '../../interfaces/updateUserInfo';
 import PageHeading from '../../components/shared/PageHeading';
@@ -13,24 +15,6 @@ import InputTextField from '../../components/shared/InputTextField';
 import { Role } from '../../interfaces/role';
 import RoleSelector from '../../components/RoleSelector';
 import UserHelper from './UserHelper';
-import { useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { AppContext } from '../../Context';
-import { WithSnackbarProps } from 'notistack';
-
-interface UserProps {
-    classes: any;
-}
-
-const useStyles = makeStyles((theme: Theme) => ({
-    paper: {
-        color: theme.palette.primary.main,
-        width: '100%',
-    },
-    formButton: {
-        marginRight: '10px',
-    },
-}));
 
 interface UserState {
     user: User | undefined;
@@ -42,7 +26,7 @@ interface UserParams {
     id: string | undefined;
 }
 
-export default function UserPage(props: UserProps & WithSnackbarProps) {
+export default function UserPage(props: WithSnackbarProps) {
     const [userState, setUserState] = useState<UserState>({
         user: undefined,
         updateInfo: {
@@ -54,9 +38,8 @@ export default function UserPage(props: UserProps & WithSnackbarProps) {
         },
         roles: [],
     });
-    const classes = useStyles();
+
     const history = useHistory();
-    const context = useContext(AppContext);
     const params = useParams<UserParams>();
 
     useEffect(() => {
@@ -76,17 +59,25 @@ export default function UserPage(props: UserProps & WithSnackbarProps) {
             });
     });
 
-    const onChange = (key: string, value: any): void => {
-        setUserState({
-            ...userState,
-            updateInfo: {
-                ...userState.updateInfo,
-                [key]: value,
-            },
+    const renderErrorSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
+            variant: 'error',
         });
-    }
+    };
 
-    const updateUser = (user: UpdateUserInfo, validateForm: Function) => {
+    const renderSuccessSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
+            variant: 'success',
+        });
+    };
+
+    const renderWarningSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
+            variant: 'warning',
+        });
+    };
+
+    const updateUser = (user: UpdateUserInfo, validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
@@ -106,7 +97,7 @@ export default function UserPage(props: UserProps & WithSnackbarProps) {
                         });
                 }
             });
-    }
+    };
 
     const checkUserIsUnique = (username: string) => {
         const helper = new UserHelper();
@@ -119,25 +110,7 @@ export default function UserPage(props: UserProps & WithSnackbarProps) {
                 renderSuccessSnackbar('Username is availiable');
             }
         });
-    }
-
-    const renderErrorSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'error',
-        });
-    }
-
-    const renderSuccessSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'success',
-        });
-    }
-
-    const renderWarningSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'warning',
-        });
-    }
+    };
 
     if (userState.user === undefined) {
         return (<CircularProgress />);

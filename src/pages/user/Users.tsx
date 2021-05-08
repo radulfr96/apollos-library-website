@@ -1,39 +1,18 @@
-import {
-    Theme, Grid, makeStyles,
-} from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Grid } from '@material-ui/core';
 import Axios from 'axios';
+import { WithSnackbarProps } from 'notistack';
 import { User } from '../../interfaces/user';
 import UsersTable from '../../components/UsersTable';
 import PageHeading from '../../components/shared/PageHeading';
-import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
-
-interface UsersProps {
-    classes: any;
-    enqueueSnackbar: any;
-    closeSnackbar: any;
-}
-
-const useStyles = makeStyles((theme: Theme) => ({
-    paper: {
-        color: theme.palette.primary.main,
-        width: '100%',
-    },
-}));
 
 interface UsersState {
     users: Array<User>;
 }
 
-export default function Users(props: UsersProps): JSX.Element {
-    const classes = useStyles();
+export default function Users(props: WithSnackbarProps): JSX.Element {
     const [usersState, setUsersState] = useState<UsersState>({
         users: [],
-    });
-    const history = useHistory();
-
-    useEffect(() => {
-        getUsers();
     });
 
     const getUsers = () => {
@@ -44,7 +23,25 @@ export default function Users(props: UsersProps): JSX.Element {
                     users: response.data.users,
                 });
             });
-    }
+    };
+
+    const renderErrorSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
+            variant: 'error',
+        });
+    };
+
+    const renderSuccessSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
+            variant: 'success',
+        });
+    };
+
+    const renderWarningSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
+            variant: 'warning',
+        });
+    };
 
     const deleteUser = (id: string): void => {
         Axios.delete(`api/user/${id}`)
@@ -61,25 +58,11 @@ export default function Users(props: UsersProps): JSX.Element {
                     renderErrorSnackbar('Unable to delete user please contact admin');
                 }
             });
-    }
+    };
 
-    const renderErrorSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'error',
-        });
-    }
-
-    const renderSuccessSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'success',
-        });
-    }
-
-    const renderWarningSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'warning',
-        });
-    }
+    useEffect(() => {
+        getUsers();
+    });
 
     return (
         <Grid item xs={9} container justify="center">

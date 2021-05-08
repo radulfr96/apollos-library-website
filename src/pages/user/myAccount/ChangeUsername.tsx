@@ -1,55 +1,47 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import {
-    Grid, Button, makeStyles,
+    Grid, Button,
 } from '@material-ui/core';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import Axios from 'axios';
+import { WithSnackbarProps } from 'notistack';
 import PageHeading from '../../../components/shared/PageHeading';
 import InputTextField from '../../../components/shared/InputTextField';
 import ChangeUsernameInfo from '../../../interfaces/changeUsernameInfo';
 import UserHelper from '../UserHelper';
-import { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { AppContext } from '../../../Context';
-
-interface ChangeUsernameProps {
-    enqueueSnackbar: any;
-    closeSnackbar: any;
-}
 
 interface ChangeUsernameState {
     changeUsernameInfo: ChangeUsernameInfo;
 }
 
-const useStyles = makeStyles({
-    paper: {
-        paddingTop: '20px',
-        paddingLeft: '40px',
-        paddingRight: '20px',
-    },
-    navPaper: {
-        paddingTop: '20px',
-        paddingLeft: '40px',
-        paddingRight: '20px',
-        marginRight: '20px',
-        width: '150px',
-    },
-});
-
-export default function ChangeUsername(props: ChangeUsernameProps): JSX.Element {
-    const context = useContext(AppContext);
-    const classes = useStyles();
-    const history = useHistory();
-    
-    const [changeUsernameState, setChangeUsernameState] = useState<ChangeUsernameState>({
+export default function ChangeUsername(props: WithSnackbarProps): JSX.Element {
+    const [changeUsernameState] = useState<ChangeUsernameState>({
         changeUsernameInfo: {
             newUsername: '',
             password: '',
         },
     });
 
-    const updateUsername = (usernameInfo: ChangeUsernameInfo, validateForm: Function) => {
+    const renderErrorSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
+            variant: 'error',
+        });
+    };
+
+    const renderSuccessSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
+            variant: 'success',
+        });
+    };
+
+    const renderWarningSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
+            variant: 'warning',
+        });
+    };
+
+    const updateUsername = (usernameInfo: ChangeUsernameInfo, validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
                 if ((Object.keys(formKeys).length) === 0) {
@@ -70,7 +62,7 @@ export default function ChangeUsername(props: ChangeUsernameProps): JSX.Element 
                         });
                 }
             });
-    }
+    };
 
     const checkUserIsUnique = (username: string) => {
         const helper = new UserHelper();
@@ -83,25 +75,7 @@ export default function ChangeUsername(props: ChangeUsernameProps): JSX.Element 
                 renderSuccessSnackbar('Username is availiable');
             }
         });
-    }
-
-    const renderErrorSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'error',
-        });
-    }
-
-    const renderSuccessSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'success',
-        });
-    }
-
-    const renderWarningSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'warning',
-        });
-    }
+    };
 
     return (
         <Grid container item xs={12}>
