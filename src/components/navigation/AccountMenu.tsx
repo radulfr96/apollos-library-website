@@ -7,6 +7,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import Axios from 'axios';
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../../Context';
+import userManager from '../../util/userManager';
 
 const useStyles = makeStyles(() => ({
   navLink: {
@@ -72,9 +73,9 @@ export default function AccountMenu(): JSX.Element {
           </NavLink>
         </MenuItem>
         <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={handleClose}>
-          <NavLink className={classes.navLink} to="/login">
+          <button type="button" className={classes.navLink} onClick={userManager.signinRedirect}>
             Log in
-          </NavLink>
+          </button>
         </MenuItem>
         <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={handleClose}>
           <NavLink className={classes.navLink} to="/register">
