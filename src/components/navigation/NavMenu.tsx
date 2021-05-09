@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export default function NavMenu() {
+export default function NavMenu(): JSX.Element {
   const classes = useStyles();
   const context = useContext(AppContext);
 

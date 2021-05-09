@@ -11,7 +11,7 @@ const useStyles = makeStyles(({
   },
 }));
 
-export default function Layout(props: { children?: React.ReactNode }) {
+export default function Layout(props: { children: React.ReactNode | undefined }): JSX.Element {
   const classes = useStyles();
 
   return (

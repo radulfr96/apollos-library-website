@@ -5,7 +5,7 @@ import {
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import Axios from 'axios';
-import { WithSnackbarProps } from 'notistack';
+import { useSnackbar } from 'notistack';
 import PageHeading from '../../../components/shared/PageHeading';
 import InputTextField from '../../../components/shared/InputTextField';
 import ChangePasswordInfo from '../../../interfaces/changePasswordInfo';
@@ -29,7 +29,7 @@ interface ChangePasswordState {
 //     },
 // });
 
-export default function UpdatePassword(props: WithSnackbarProps): JSX.Element {
+export default function UpdatePassword(): JSX.Element {
     const [updatePasswordState] = useState<ChangePasswordState>({
         changePasswordInfo: {
             password: '',
@@ -38,20 +38,22 @@ export default function UpdatePassword(props: WithSnackbarProps): JSX.Element {
         },
     });
 
+    const snackbar = useSnackbar();
+
     const renderErrorSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
+        snackbar.enqueueSnackbar(message, {
             variant: 'error',
         });
     };
 
     const renderSuccessSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
+        snackbar.enqueueSnackbar(message, {
             variant: 'success',
         });
     };
 
     const renderWarningSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
+        snackbar.enqueueSnackbar(message, {
             variant: 'warning',
         });
     };

@@ -1,21 +1,15 @@
-import * as React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
-    withStyles, Grid, WithStyles, Fab, createStyles, makeStyles,
+    Grid, Fab, makeStyles,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Axios from 'axios';
-import { withRouter, RouteProps, RouteComponentProps, useHistory } from 'react-router';
+import { useHistory } from 'react-router';
+import { WithSnackbarProps } from 'notistack';
 import { AuthorListItem } from '../../interfaces/authorListItem';
 import PageHeading from '../../components/shared/PageHeading';
 import AuthorsTable from '../../components/AuthorsTable';
 import { AppContext } from '../../Context';
-import { useContext, useEffect } from 'react';
-import { useState } from 'react';
-
-interface AuthorsProps extends History {
-    enqueueSnackbar: any;
-    closeSnackbar: any;
-}
 
 const useStyles = makeStyles({
     addAuthorButton: {
@@ -32,8 +26,7 @@ interface AuthorsState {
     authors: Array<AuthorListItem>;
 }
 
-export default function AuthorsPage(props: AuthorsProps & History): JSX.Element {
-
+export default function AuthorsPage(props: WithSnackbarProps): JSX.Element {
     const [authorsState, setAuthorsState] = useState<AuthorsState>({
         authors: [],
     });
@@ -49,13 +42,11 @@ export default function AuthorsPage(props: AuthorsProps & History): JSX.Element 
     const getAuthors = () => {
         Axios.get('/api/author')
             .then((response) => {
-                setAuthorsState({...authorsState, authors: response.data.authors});
-            })
-            .catch(() => {
+                setAuthorsState({ ...authorsState, authors: response.data.authors });
             });
-    }
+    };
 
-    const deleteAuthor = (id: string): void => {
+    const deleteAuthor = (id: number): void => {
         Axios.delete(`api/author/${id}`)
             .then((response) => {
                 if (response.status === 200) {
@@ -66,25 +57,19 @@ export default function AuthorsPage(props: AuthorsProps & History): JSX.Element 
             .catch(() => {
                 renderErrorSnackbar('Unable to delete author please contact admin');
             });
-    }
+    };
 
     const renderErrorSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'error',
         });
-    }
+    };
 
     const renderSuccessSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'success',
         });
-    }
-
-    const renderWarningSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'warning',
-        });
-    }
+    };
 
     return (
         <Grid item xs={5} container justify="center">

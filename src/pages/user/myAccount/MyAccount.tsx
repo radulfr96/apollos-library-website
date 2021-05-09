@@ -46,15 +46,15 @@ const useStyles = makeStyles({
 });
 
 export default function MyAccount(): JSX.Element {
-    const [myAccountState, setMyAccountState] = useState<MyAccountState>({
+    const [myAccountState] = useState<MyAccountState>({
         tab: 1,
     });
 
     const classes = useStyles();
 
-    const handleTabChange = (event: React.ChangeEvent, newValue: number) => {
-        setMyAccountState({ ...myAccountState, tab: newValue });
-    };
+    // const handleTabChange = (event: React.ChangeEvent, newValue: number) => {
+    //     setMyAccountState({ ...myAccountState, tab: newValue });
+    // };
 
     return (
         <>
@@ -62,7 +62,6 @@ export default function MyAccount(): JSX.Element {
                 <AppBar position="static">
                     <Tabs
                         value={myAccountState.tab}
-                        onChange={handleTabChange}
                     >
                         <Tab label="My Details" />
                         <Tab label="Change Username" />

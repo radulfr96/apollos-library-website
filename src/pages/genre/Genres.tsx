@@ -1,18 +1,14 @@
+import React, { useEffect, useState } from 'react';
 import {
     Grid, Fab, makeStyles,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Axios from 'axios';
 import { useHistory } from 'react-router';
+import { WithSnackbarProps } from 'notistack';
 import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/PageHeading';
 import GenresTable from '../../components/GenresTable';
-import { useEffect, useState } from 'react';
-
-interface GenresProps {
-    enqueueSnackbar: any;
-    closeSnackbar: any;
-}
 
 const useStyles = makeStyles({
     addGenreButton: {
@@ -29,7 +25,7 @@ interface GenresState {
     genres: Array<Genre>;
 }
 
-export default function Genres(props: GenresProps): JSX.Element {
+export default function Genres(props: WithSnackbarProps): JSX.Element {
     const [genreState, setGenreState] = useState<GenresState>({
         genres: [],
     });
@@ -43,13 +39,11 @@ export default function Genres(props: GenresProps): JSX.Element {
     const getGenres = () => {
         Axios.get('/api/genre')
             .then((response) => {
-                setGenreState({...genreState, genres: response.data.genres});
-            })
-            .catch(() => {
+                setGenreState({ ...genreState, genres: response.data.genres });
             });
-    }
+    };
 
-    const deleteGenre = (id: string): void => {
+    const deleteGenre = (id: number): void => {
         Axios.delete(`api/genre/${id}`)
             .then((response) => {
                 if (response.status === 200) {
@@ -60,25 +54,19 @@ export default function Genres(props: GenresProps): JSX.Element {
             .catch(() => {
                 renderErrorSnackbar('Unable to delete genre please contact admin');
             });
-    }
+    };
 
     const renderErrorSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'error',
         });
-    }
+    };
 
     const renderSuccessSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'success',
         });
-    }
-
-    const renderWarningSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'warning',
-        });
-    }
+    };
 
     return (
         <Grid item xs={5} container justify="center">

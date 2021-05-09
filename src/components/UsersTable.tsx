@@ -93,7 +93,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
 interface RowProps {
     user: User;
-    deleteUser: Function;
+    deleteUser: (userId: string) => void;
 }
 
 export const Row: React.FC<RowProps> = (props) => {
@@ -123,7 +123,7 @@ export const Row: React.FC<RowProps> = (props) => {
 
 const UsersTable: React.FC<{
     users: Array<User>;
-    deleteUser: Function;
+    deleteUser: (userId: string) => void;
 }> = ({ users, deleteUser }) => {
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');

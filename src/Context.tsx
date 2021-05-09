@@ -21,7 +21,11 @@ interface State {
   userInfo: UserInfo | null;
 }
 
-export const AppContextProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+interface AppContextProviderProps {
+  children: JSX.Element,
+}
+
+export function AppContextProvider(props: AppContextProviderProps): JSX.Element {
   const [state, setState] = useState<State>({
     userInfo: null,
   });
@@ -75,7 +79,7 @@ export const AppContextProvider: React.FC<React.PropsWithChildren<{}>> = ({ chil
 
   return (
     <AppContext.Provider value={contextValue}>
-      {children}
+      {props.children}
     </AppContext.Provider>
   );
-};
+}

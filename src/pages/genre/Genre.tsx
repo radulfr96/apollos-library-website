@@ -1,22 +1,16 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
-    withStyles, Theme, Grid, WithStyles, Button, CircularProgress, makeStyles,
+    Theme, Grid, Button, CircularProgress, makeStyles,
 } from '@material-ui/core';
 import Axios from 'axios';
 import { useParams } from 'react-router';
+import { useHistory } from 'react-router-dom';
+import { WithSnackbarProps } from 'notistack';
 import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
-import { useContext, useEffect, useState } from 'react';
-import { AppContext } from '../../Context';
-import { useHistory } from 'react-router-dom';
-
-interface GenreProps {
-    enqueueSnackbar: any;
-    closeSnackbar: any;
-}
 
 const useStyles = makeStyles((theme: Theme) => ({
     paper: {
@@ -40,7 +34,7 @@ interface GenreParams {
     id: string | undefined;
 }
 
-export default function GenrePage(props: GenreProps): JSX.Element {
+export default function GenrePage(props: WithSnackbarProps): JSX.Element {
     const [genreState, setGenreState] = useState<GenreState>({
         genre: {
             name: '',
@@ -49,7 +43,6 @@ export default function GenrePage(props: GenreProps): JSX.Element {
         newGenre: false,
     });
 
-    const context = useContext(AppContext);
     const classes = useStyles();
     const history = useHistory();
     const params = useParams<GenreParams>();
@@ -71,17 +64,7 @@ export default function GenrePage(props: GenreProps): JSX.Element {
         }
     });
 
-    const onChange = (key: string, value: any): void => {
-        setGenreState({
-            ...genreState,
-            genre: {
-                ...genreState.genre,
-                [key]: value,
-            },
-        });
-    }
-
-    const updateGenre = (genre: Genre, validateForm: Function) => {
+    const updateGenre = (genre: Genre, validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
@@ -101,9 +84,9 @@ export default function GenrePage(props: GenreProps): JSX.Element {
                         });
                 }
             });
-    }
+    };
 
-    const addGenre = (genre: Genre, validateForm: Function) => {
+    const addGenre = (genre: Genre, validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
@@ -123,25 +106,25 @@ export default function GenrePage(props: GenreProps): JSX.Element {
                         });
                 }
             });
-    }
+    };
 
     const renderErrorSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'error',
         });
-    }
+    };
 
     const renderSuccessSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'success',
         });
-    }
+    };
 
     const renderWarningSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'warning',
         });
-    }
+    };
 
     if (!genreState.newGenre && genreState.genre.genreId < 1) {
         return (<CircularProgress />);

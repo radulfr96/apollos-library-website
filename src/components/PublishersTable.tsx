@@ -95,12 +95,12 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
 interface RowProps {
     publisher: PublisherTableItem;
-    deletePublisher: Function;
+    deletePublisher: (publisherId: number) => void;
 }
 
 const NavCell: React.FC<{
     publisher: PublisherTableItem;
-    deletePublisher: Function;
+    deletePublisher: (publisherId: number) => void;
 } & RouteComponentProps> = (props) => {
     const classes = useStyles();
     return (
@@ -140,7 +140,7 @@ export const Row: React.FC<RowProps> = (props) => {
 
 const PublishersTable: React.FC<{
     publishers: Array<PublisherTableItem>;
-    deletePublisher: Function;
+    deletePublisher: (publisherId: number) => void;
 }> = ({ publishers, deletePublisher }) => {
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');

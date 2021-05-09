@@ -1,11 +1,12 @@
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
     Paper, Grid, Button, makeStyles,
 } from '@material-ui/core';
 import Axios from 'axios';
-import { RouteComponentProps, useHistory } from 'react-router';
+import { useHistory } from 'react-router';
+import { WithSnackbarProps } from 'notistack';
 import InputTextField from '../../components/shared/InputTextField';
 import { LoginInfo } from '../../interfaces/loginInfo';
 import PageHeading from '../../components/shared/PageHeading';
@@ -13,11 +14,6 @@ import { AppContext } from '../../Context';
 
 interface LoginState {
     loginInfo: LoginInfo;
-}
-
-interface LoginProps extends RouteComponentProps<{}> {
-    enqueueSnackbar: any;
-    closeSnackbar: any;
 }
 
 const useStyles = makeStyles({
@@ -33,18 +29,18 @@ const useStyles = makeStyles({
     },
 });
 
-export default function Login(props: LoginProps) {
+export default function Login(props: WithSnackbarProps): JSX.Element {
     const context = useContext(AppContext);
     const classes = useStyles();
     const history = useHistory();
-    const [loginState, setLogState] = useState<LoginState>({
+    const [loginState] = useState<LoginState>({
         loginInfo: {
             username: '',
-            password: ','
-        }
+            password: '',
+        },
     });
 
-    const login = (loginInfo: LoginInfo, validateForm: Function) => {
+    const login = (loginInfo: LoginInfo, validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
@@ -65,25 +61,25 @@ export default function Login(props: LoginProps) {
                         });
                 }
             });
-    }
+    };
 
     const renderErrorSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'error',
         });
-    }
+    };
 
     const renderSuccessSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'success',
         });
-    }
+    };
 
     const renderWarningSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'warning',
         });
-    }
+    };
 
     return (
         <Paper className={classes.paper}>
@@ -152,7 +148,7 @@ export default function Login(props: LoginProps) {
                                     variant="contained"
                                     color="secondary"
                                     onClick={() => {
-                                        props.history.push('/');
+                                        history.push('/');
                                     }}
                                 >
                                     Cancel

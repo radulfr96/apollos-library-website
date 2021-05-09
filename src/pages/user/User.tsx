@@ -26,7 +26,7 @@ interface UserParams {
     id: string | undefined;
 }
 
-export default function UserPage(props: WithSnackbarProps) {
+export default function UserPage(props: WithSnackbarProps): JSX.Element {
     const [userState, setUserState] = useState<UserState>({
         user: undefined,
         updateInfo: {

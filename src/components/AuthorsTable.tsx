@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { AuthorListItem } from '../interfaces/authorListItem';
 import TableHelper, { Order } from '../util/TableFunctions';
 
@@ -49,20 +49,17 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 }));
 
 interface EnhancedTableProps {
-    classes: ReturnType<typeof useStyles>;
+    classes: any;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof AuthorListItem) => void;
     order: Order;
     orderBy: string;
 }
 
-function EnhancedTableHead(props: EnhancedTableProps) {
-    const {
-        classes, onRequestSort, order, orderBy,
-    } = props;
+function EnhancedTableHead(props: EnhancedTableProps): JSX.Element {
     const createSortHandler = (
         property: keyof AuthorListItem,
-        ) => (event: React.MouseEvent<unknown>) => {
-        onRequestSort(event, property);
+    ) => (event: React.MouseEvent<unknown>) => {
+        props.onRequestSort(event, property);
     };
 
     return (
@@ -71,17 +68,17 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
-                        sortDirection={orderBy === headCell.id ? order : false}
+                        sortDirection={props.orderBy === headCell.id ? props.order : false}
                     >
                         <TableSortLabel
-                            active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : 'asc'}
+                            active={props.orderBy === headCell.id}
+                            direction={props.orderBy === headCell.id ? props.order : 'asc'}
                             onClick={createSortHandler(headCell.id)}
                         >
                             {headCell.label}
-                            {orderBy === headCell.id ? (
-                                <span className={classes.visuallyHidden}>
-                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                            {props.orderBy === headCell.id ? (
+                                <span className={props.classes.visuallyHidden}>
+                                    {props.order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                                 </span>
                             ) : null}
                         </TableSortLabel>
@@ -93,27 +90,26 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     );
 }
 
-interface RowProps {
-    publisher: AuthorListItem;
-    deletePublisher: Function;
+interface NavCellProps {
+    classes: any;
+    author: AuthorListItem;
+    deleteAuthor: (authorId: number) => void;
 }
 
-const NavCell: React.FC<{
-    publisher: AuthorListItem;
-    deletePublisher: Function;
-} & RouteComponentProps> = (props) => {
-    const classes = useStyles();
+function NavigationCell(props: NavCellProps): JSX.Element {
+    const history = useHistory();
+
     return (
         <>
             <TableCell>
                 <IconButton onClick={() => {
-                    props.deletePublisher(props.publisher.authorId);
+                    props.deleteAuthor(props.author.authorId);
                 }}
                 >
-                    <DeleteIcon className={classes.deleteIcon} />
+                    <DeleteIcon className={props.classes.deleteIcon} />
                 </IconButton>
                 <IconButton onClick={() => {
-                    props.history.push(`author/${props.publisher.authorId}`);
+                    history.push(`author/${props.author.authorId}`);
                 }}
                 >
                     <ChevronRightIcon />
@@ -121,27 +117,35 @@ const NavCell: React.FC<{
             </TableCell>
         </>
     );
-};
+}
 
-export const NavigationCell = withRouter(NavCell);
+interface RowProps {
+    classes: any;
+    deleteAuthor: (authorId: number) => void;
+    author: AuthorListItem;
+}
 
-export const Row: React.FC<RowProps> = (props) => {
-    const classes = useStyles();
-
+function Row(props: RowProps): JSX.Element {
     return (
-        <TableRow key={props.publisher.authorId} hover className={classes.row}>
-            <TableCell>{props.publisher.authorId}</TableCell>
-            <TableCell>{props.publisher.name}</TableCell>
-            <TableCell>{props.publisher.country}</TableCell>
-            <NavigationCell publisher={props.publisher} deletePublisher={props.deletePublisher} />
+        <TableRow key={props.author.authorId} hover className={props.classes.row}>
+            <TableCell>{props.author.authorId}</TableCell>
+            <TableCell>{props.author.name}</TableCell>
+            <TableCell>{props.author.country}</TableCell>
+            <NavigationCell
+                classes={props.classes}
+                author={props.author}
+                deleteAuthor={props.deleteAuthor}
+            />
         </TableRow>
     );
-};
+}
 
-const AuthorsTable: React.FC<{
+interface AuthorsTableProps {
     authors: Array<AuthorListItem>;
-    deleteAuthor: Function;
-}> = ({ authors: publishers, deleteAuthor: deletePublisher }) => {
+    deleteAuthor: (authorId: number) => void;
+}
+
+export default function AuthorsTable(props: AuthorsTableProps): JSX.Element {
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof AuthorListItem>('authorId');
@@ -150,16 +154,16 @@ const AuthorsTable: React.FC<{
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
         property: keyof AuthorListItem,
-        ) => {
+    ) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
     };
 
-    let tableContent = null;
-    tableContent = tableHelper.stableSort(publishers, tableHelper.getSorting(order, orderBy))
+    const tableContent = tableHelper
+        .stableSort(props.authors, tableHelper.getSorting(order, orderBy))
         .map((row: AuthorListItem) => (
-            <Row publisher={row} deletePublisher={deletePublisher} />
+            <Row classes={classes} author={row} deleteAuthor={props.deleteAuthor} />
         ));
 
     return (
@@ -183,6 +187,4 @@ const AuthorsTable: React.FC<{
             </TableContainer>
         </>
     );
-};
-
-export default AuthorsTable;
+}

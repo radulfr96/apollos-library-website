@@ -28,7 +28,7 @@ const useStyles = createStyles((theme: Theme) => ({
 export class InputTextField extends React.Component<
     InputTextFieldProps
     & WithStyles<typeof useStyles>> {
-    render() {
+    render(): JSX.Element {
         return (
             <>
                 <TextField

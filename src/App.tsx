@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import * as React from 'react';
+import React from 'react';
 import { Route } from 'react-router';
 import { MuiThemeProvider } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
@@ -19,7 +19,7 @@ import PublisherPage from './pages/publishers/publisher';
 import Authors from './pages/authors/authors';
 import AuthorPage from './pages/authors/author';
 
-export default () => (
+export default (): JSX.Element => (
   <AppContextProvider>
     <MuiThemeProvider theme={theme}>
       <SnackbarProvider maxSnack={10}>

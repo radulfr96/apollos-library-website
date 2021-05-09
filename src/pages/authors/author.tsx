@@ -1,18 +1,17 @@
+import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
-    Theme, Grid, Button, CircularProgress, makeStyles, SnackbarProps, createStyles,
+    Theme, Grid, Button, CircularProgress, makeStyles,
 } from '@material-ui/core';
 import Axios from 'axios';
-import { RouteComponentProps, RouteProps } from 'react-router';
+import { useHistory } from 'react-router';
 import { WithSnackbarProps } from 'notistack';
 import { Author } from '../../interfaces/author';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
 import CountryTypedown from '../../components/shared/countryTypedown';
 import Country from '../../interfaces/country';
-import { AppContext } from '../../Context';
-import { useContext, useState } from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
     paper: {
@@ -27,25 +26,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-
-interface AuthorProps {
-}
-
 interface AuthorState {
     countries: Country[],
     author: Author,
-    newAuthor: Boolean
+    newAuthor: boolean
 }
 
-interface AuthorParams {
-    id: string | undefined;
-}
-
-export default function AuthorsPage(props: AuthorProps
-    & RouteProps
-    & WithSnackbarProps
-    & RouteComponentProps<AuthorParams>): JSX.Element {
-    const [authorState, setAuthorState] = useState<AuthorState>({
+export default function AuthorsPage(props: WithSnackbarProps): JSX.Element {
+    const [authorState] = useState<AuthorState>({
         countries: [],
         author: {
             authorID: 0,
@@ -57,14 +45,10 @@ export default function AuthorsPage(props: AuthorProps
         },
         newAuthor: false,
     });
-    const context = useContext(AppContext);
+    const history = useHistory();
     const classes = useStyles();
-    
-    const handleChange = (e: Event) => {
-        setAuthorState({...authorState, [(e.target as HTMLFormElement).name]: (e.target as HTMLFormElement).value})
-     }
 
-    const updateAuthor = (author: Author, validateForm: Function) => {
+    const updateAuthor = (author: Author, validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
@@ -72,7 +56,7 @@ export default function AuthorsPage(props: AuthorProps
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');
-                                props.history.goBack();
+                                history.goBack();
                             }
                         })
                         .catch((error) => {
@@ -84,9 +68,9 @@ export default function AuthorsPage(props: AuthorProps
                         });
                 }
             });
-    }
+    };
 
-    const addAuthor = (author: Author, validateForm: Function) => {
+    const addAuthor = (author: Author, validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
@@ -94,7 +78,7 @@ export default function AuthorsPage(props: AuthorProps
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Add successful');
-                                props.history.goBack();
+                                history.goBack();
                             }
                         })
                         .catch((error) => {
@@ -106,25 +90,25 @@ export default function AuthorsPage(props: AuthorProps
                         });
                 }
             });
-    }
+    };
 
     const renderErrorSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'error',
         });
-    }
+    };
 
     const renderSuccessSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'success',
         });
-    }
+    };
 
     const renderWarningSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'warning',
         });
-    }
+    };
 
     if (!authorState.newAuthor && authorState.author.authorID < 1) {
         return (<CircularProgress />);
@@ -220,14 +204,12 @@ export default function AuthorsPage(props: AuthorProps
                             </Grid>
                             <Grid item xs={12}>
                                 <CountryTypedown
-                                    label="Country *"
-                                    type="text"
                                     required
-                                    keyName="countryID"
                                     countries={authorState.countries}
                                     value={values.countryID}
+                                    onBlur={undefined}
                                     onChange={(e: Event) => {
-                                        var field = e.target as HTMLInputElement;
+                                        const field = e.target as HTMLInputElement;
                                         setFieldValue('countryID', authorState.countries.find((c) => c.name
                                             === field.innerText)?.countryID);
                                     }}
@@ -281,11 +263,11 @@ export default function AuthorsPage(props: AuthorProps
                                     variant="contained"
                                     color="secondary"
                                     onClick={() => {
-                                        props.history.push('/authors');
+                                        history.push('/authors');
                                     }}
                                 >
                                     Cancel
-                                    </Button>
+                                </Button>
                             </Grid>
                         </Grid>
                     )}

@@ -4,7 +4,7 @@ import {
 } from '@material-ui/core';
 import Axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import { WithSnackbarProps } from 'notistack';
+import { useSnackbar } from 'notistack';
 import PageHeading from '../../../components/shared/PageHeading';
 import ReadOnlyLabel from '../../../components/shared/ReadOnlyLabel';
 import ReadOnlyText from '../../../components/shared/ReadOnlyText';
@@ -29,25 +29,26 @@ const useStyles = makeStyles({
     },
 });
 
-export default function MyDetails(props: WithSnackbarProps): JSX.Element {
+export default function MyDetails(): JSX.Element {
     const context = useContext(AppContext);
     const classes = useStyles();
     const history = useHistory();
+    const snackbar = useSnackbar();
 
     const renderErrorSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
+        snackbar.enqueueSnackbar(message, {
             variant: 'error',
         });
     };
 
     const renderSuccessSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
+        snackbar.enqueueSnackbar(message, {
             variant: 'success',
         });
     };
 
     const renderWarningSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
+        snackbar.enqueueSnackbar(message, {
             variant: 'warning',
         });
     };

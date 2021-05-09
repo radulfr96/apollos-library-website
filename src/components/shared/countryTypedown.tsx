@@ -1,9 +1,9 @@
+import React from 'react';
 import {
     Theme, TextField, makeStyles,
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import Country from '../../interfaces/country';
-import { useState } from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
     errorMessage: {
@@ -17,17 +17,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface CountryTypedownProps {
-    label?: string;
-    errorMessage?: string;
+    errorMessage: string | undefined;
     countries: Array<Country>;
-    type?: string;
-    value?: string | null | undefined;
-    keyName?: any;
-    required?: boolean;
-    onChange?: any;
-    onBlur?: any;
-    error?: boolean;
-    readonly?: boolean;
+    value: string | undefined;
+    required: boolean | undefined;
+    onChange: any | undefined;
+    onBlur: any | undefined;
+    error: boolean | undefined;
 }
 
 export default function CountryTypedown(props: CountryTypedownProps): JSX.Element {
@@ -39,11 +35,12 @@ export default function CountryTypedown(props: CountryTypedownProps): JSX.Elemen
                 options={
                     props.countries
                 }
-                // required={this.props.required}
                 getOptionLabel={(country: Country) => country.name}
-                renderInput={(params: any) => (
+                renderInput={() => (
                     <TextField
-                        {...params}
+                        onBlur={props.onBlur}
+                        required={props.required}
+                        value={props.value}
                         variant="outlined"
                         defaultValue={props.countries.find(
                             (c) => c.countryID === props.value,

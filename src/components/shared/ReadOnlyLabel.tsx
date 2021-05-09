@@ -1,14 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 import {
-    withStyles, createStyles, WithStyles, Theme, Typography,
+    Theme, Typography, makeStyles,
 } from '@material-ui/core';
 
 interface ReadOnlyLabelProps {
-    text?: string;
-    classes?: any;
+    text: string | undefined;
 }
 
-const useStyles = createStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     text: {
         fontFamily: theme.typography.fontFamily,
         fontSize: '22px',
@@ -16,18 +15,14 @@ const useStyles = createStyles((theme: Theme) => ({
     },
 }));
 
-export class ReadOnlyLabel extends React.Component<
-    ReadOnlyLabelProps
-    & WithStyles<typeof useStyles>> {
-    render() {
-        return (
-            <>
-                <Typography className={this.props.classes.text}>
-                    {this.props.text}
-                </Typography>
-            </>
-        );
-    }
-}
+export default function ReadOnlyLabel(props: ReadOnlyLabelProps): JSX.Element {
+    const classes = useStyles();
 
-export default withStyles(useStyles)(ReadOnlyLabel);
+    return (
+        <>
+            <Typography className={classes.text}>
+                {props.text}
+            </Typography>
+        </>
+    );
+}

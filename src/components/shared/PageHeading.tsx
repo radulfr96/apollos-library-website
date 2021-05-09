@@ -1,29 +1,25 @@
 import React from 'react';
 import {
-    withStyles, createStyles, Theme, WithStyles, Typography,
+    Theme, Typography, makeStyles,
 } from '@material-ui/core';
 
 interface PageHeadingProps {
-    classes: any;
-    headingText?: string;
+    headingText: string | undefined;
 }
 
-const useStyles = createStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     heading: {
         ...theme.typography.h4,
         paddingBottom: '20px',
     },
 }));
 
-export class PageHeading extends React.Component<PageHeadingProps
-& WithStyles<typeof useStyles>> {
-    render() {
-        return (
-            <Typography className={this.props.classes.heading}>
-                {this.props.headingText}
-            </Typography>
-        );
-    }
-}
+export default function PageHeading(props: PageHeadingProps): JSX.Element {
+    const classes = useStyles();
 
-export default withStyles(useStyles)(PageHeading);
+    return (
+        <Typography className={classes.heading}>
+            {props.headingText}
+        </Typography>
+    );
+}

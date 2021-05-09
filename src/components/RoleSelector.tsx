@@ -18,20 +18,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-const RoleSelector: React.FC<{
+interface RoleSelectorProps {
     roles: Array<string>;
     selectedRoles: Array<string>;
-    updateUserRoles: Function;
-    error?: boolean;
-    errorMessage?: string;
-}> = ({
-    roles, selectedRoles, updateUserRoles, error, errorMessage,
-}) => {
-        const classes = useStyles();
-        const inputLabel = React.useRef<HTMLLabelElement>(null);
+    updateUserRoles: (newRoleNames: string[]) => void;
+    error: boolean | undefined;
+    errorMessage: string | undefined;
+}
+
+export default function RoleSelector(props: RoleSelectorProps): JSX.Element {
+    const classes = useStyles();
+    const inputLabel = React.useRef<HTMLLabelElement>(null);
 
         const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-            updateUserRoles(event.target.value);
+            props.updateUserRoles(event.target.value as string[]);
         };
 
         return (
@@ -45,7 +45,7 @@ const RoleSelector: React.FC<{
                             multiple
                             name="roles"
                             className={classes.roleChipSection}
-                            value={selectedRoles}
+                            value={props.selectedRoles}
                             onChange={handleChange}
                             input={<Input id="selectMultipleRoles" />}
                             renderValue={(selected) => (
@@ -56,17 +56,15 @@ const RoleSelector: React.FC<{
                                 </div>
                             )}
                         >
-                            {roles.map((role) => (
+                            {props.roles.map((role: string) => (
                                 <MenuItem key={role} value={role}>
                                     {role}
                                 </MenuItem>
                             ))}
                         </Select>
                     </FormControl>
-                    <div className={classes.errorMessage}>{error ? errorMessage : ''}</div>
+                    <div className={classes.errorMessage}>{props.error ? props.errorMessage : ''}</div>
                 </Grid>
             </Grid>
         );
-    };
-
-export default RoleSelector;
+}

@@ -1,22 +1,17 @@
+import React, { useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
     Theme, Grid, Button, CircularProgress, makeStyles,
 } from '@material-ui/core';
 import Axios from 'axios';
+import { WithSnackbarProps } from 'notistack';
 import { Publisher } from '../../interfaces/publisher';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
 import CountryTypedown from '../../components/shared/countryTypedown';
 import Country from '../../interfaces/country';
-import { useContext, useEffect, useState } from 'react';
-import { AppContext } from '../../Context';
-import { useHistory, useParams } from 'react-router-dom';
-
-interface PublisherProps {
-    enqueueSnackbar: any;
-    closeSnackbar: any;
-}
 
 const useStyles = makeStyles((theme: Theme) => ({
     paper: {
@@ -41,7 +36,7 @@ interface PublisherParams {
     id: string | undefined;
 }
 
-export default function PublisherPage(props: PublisherProps): JSX.Element {
+export default function PublisherPage(props: WithSnackbarProps): JSX.Element {
     const [publisherState, setPublisherState] = useState<PublisherState>({
         publisher: {
             publisherId: 0,
@@ -57,7 +52,6 @@ export default function PublisherPage(props: PublisherProps): JSX.Element {
         newPublisher: false,
     });
 
-    const context = useContext(AppContext);
     const classes = useStyles();
     const history = useHistory();
     const params = useParams<PublisherParams>();
@@ -88,17 +82,7 @@ export default function PublisherPage(props: PublisherProps): JSX.Element {
             });
     });
 
-    const onChange = (key: string, value: any): void => {
-        setPublisherState({
-            ...publisherState,
-            publisher: {
-                ...publisherState.publisher,
-                [key]: value,
-            },
-        });
-    }
-
-    const updatePublisher = (publisher: Publisher, validateForm: Function) => {
+    const updatePublisher = (publisher: Publisher, validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
@@ -118,9 +102,9 @@ export default function PublisherPage(props: PublisherProps): JSX.Element {
                         });
                 }
             });
-    }
+    };
 
-    const addPublisher = (publisher: Publisher, validateForm: Function) => {
+    const addPublisher = (publisher: Publisher, validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
@@ -140,25 +124,25 @@ export default function PublisherPage(props: PublisherProps): JSX.Element {
                         });
                 }
             });
-    }
+    };
 
     const renderErrorSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'error',
         });
-    }
+    };
 
     const renderSuccessSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'success',
         });
-    }
+    };
 
     const renderWarningSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'warning',
         });
-    }
+    };
 
     if (!publisherState.newPublisher && publisherState.publisher.publisherId < 1) {
         return (<CircularProgress />);
@@ -287,12 +271,10 @@ export default function PublisherPage(props: PublisherProps): JSX.Element {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <CountryTypedown
-                                        label="Country"
-                                        type="text"
-                                        keyName="countryID"
                                         required
                                         countries={publisherState.countries}
                                         value={values.countryID}
+                                        onBlur=""
                                         onChange={(e: any) => {
                                             setFieldValue('countryID', publisherState.countries.find((c) => c.name
                                                 === e.target.innerText)?.countryID);

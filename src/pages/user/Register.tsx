@@ -1,28 +1,20 @@
-import { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { useHistory } from 'react-router-dom';
 import {
     Paper, Grid, Button, makeStyles,
 } from '@material-ui/core';
 import Axios from 'axios';
-import { RouteComponentProps } from 'react-router';
+import { WithSnackbarProps } from 'notistack';
 import InputTextField from '../../components/shared/InputTextField';
 import { RegisterInfo } from '../../interfaces/registerInfo';
-import YupExtensions from '../../util/YupExtensions';
 import PageHeading from '../../components/shared/PageHeading';
 import UserHelper from './UserHelper';
 import { AppContext } from '../../Context';
-import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 interface RegisterState {
     registrationInfo: RegisterInfo;
-}
-
-interface RegisterProps extends RouteComponentProps<{}> {
-    classes: any;
-    enqueueSnackbar: any;
-    closeSnackbar: any;
 }
 
 const useStyles = makeStyles({
@@ -38,9 +30,9 @@ const useStyles = makeStyles({
     },
 });
 
-export default function Register(props: RegisterProps): JSX.Element {
+export default function Register(props: WithSnackbarProps): JSX.Element {
     const classes = useStyles();
-    const [registerState, setRegisterState] = useState<RegisterState>({
+    const [registerState] = useState<RegisterState>({
         registrationInfo: {
             username: '',
             password: '',
@@ -49,6 +41,24 @@ export default function Register(props: RegisterProps): JSX.Element {
     });
     const history = useHistory();
     const context = useContext(AppContext);
+
+    const renderErrorSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
+            variant: 'error',
+        });
+    };
+
+    const renderSuccessSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
+            variant: 'success',
+        });
+    };
+
+    const renderWarningSnackbar = (message: string): void => {
+        props.enqueueSnackbar(message, {
+            variant: 'warning',
+        });
+    };
 
     const checkUserIsUnique = (username: string) => {
         const helper = new UserHelper();
@@ -61,9 +71,9 @@ export default function Register(props: RegisterProps): JSX.Element {
                 renderSuccessSnackbar('Username is availiable');
             }
         });
-    }
+    };
 
-    const register = (registrationInfo: RegisterInfo, validateForm: Function) => {
+    const register = (registrationInfo: RegisterInfo, validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
@@ -72,7 +82,7 @@ export default function Register(props: RegisterProps): JSX.Element {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Registration successful');
                                 context.getUserInfo();
-                                props.history.push('/');
+                                history.push('/');
                             }
                         })
                         .catch((error) => {
@@ -84,25 +94,7 @@ export default function Register(props: RegisterProps): JSX.Element {
                         });
                 }
             });
-    }
-
-    const renderErrorSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'error',
-        });
-    }
-
-    const renderSuccessSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'success',
-        });
-    }
-
-    const renderWarningSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'warning',
-        });
-    }
+    };
 
     return (
         <Paper className={classes.paper}>
@@ -112,19 +104,17 @@ export default function Register(props: RegisterProps): JSX.Element {
                 onSubmit={(values) => {
                     console.log(values);
                 }}
-                validationSchema={() => {
-                    yup.addMethod(yup.string, 'equalTo', YupExtensions.equalTo);
-                    return yup.object().shape({
+                validationSchema={() => yup.object().shape({
                         username: yup.string()
-                            .required('You must enter a username to register'),
+                        .required('You must enter a username to register'),
                         password: yup.string()
-                            .required('You must enter your a password to register')
-                            .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Password must be at least 6 characters long and contain one number and uppercase character.'),
+                        .required('You must enter your a password to register')
+                        .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Password must be at least 6 characters long and contain one number and uppercase character.'),
                         confirmationPassword: yup.string()
-                            .oneOf([yup.ref('password')], 'Confirm password must matched password')
-                            .required('You must enter your password confirmation to register'),
-                    });
-                }}
+                        .oneOf([yup.ref('password')], 'Confirm password must matched password')
+                        .required('You must enter your password confirmation to register'),
+                    })}
+                    // yup.addMethod(yup.string, 'equalTo', YupExtensions.equalTo);
             >
                 {({
                     values,
@@ -133,73 +123,71 @@ export default function Register(props: RegisterProps): JSX.Element {
                     handleBlur,
                     validateForm,
                 }) => (
-                        <Grid container item xs={12}>
-                            <Grid item xs={12}>
-                                <InputTextField
-                                    label="Username"
-                                    required
-                                    type="text"
-                                    keyName="username"
-                                    value={values.username}
-                                    onChange={handleChange}
-                                    onBlur={() => {
-                                        checkUserIsUnique(values.username);
-                                    }}
-                                    error={!!(errors.username)}
-                                    errorMessage={errors.username}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <InputTextField
-                                    label="Password"
-                                    required
-                                    type="password"
-                                    keyName="password"
-                                    value={values.password}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={!!(errors.password)}
-                                    errorMessage={errors.password}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <InputTextField
-                                    label="Confirm Password"
-                                    required
-                                    type="password"
-                                    keyName="confirmationPassword"
-                                    value={values.confirmationPassword}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={!!(errors.confirmationPassword)}
-                                    errorMessage={errors.confirmationPassword}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Button
-                                    className={props.classes.formButton}
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        register(values, validateForm);
-                                    }}
-                                >
-                                    Register
-                                </Button>
-                                <Button
-                                    className={props.classes.formButton}
-                                    variant="contained"
-                                    color="secondary"
-                                    onClick={() => {
-                                        history.push('/');
-                                    }}
-                                >
-                                    Cancel
-                                </Button>
-                            </Grid>
+                    <Grid container item xs={12}>
+                        <Grid item xs={12}>
+                            <InputTextField
+                                label="Username"
+                                required
+                                type="text"
+                                keyName="username"
+                                value={values.username}
+                                onChange={handleChange}
+                                onBlur={() => {
+                                    checkUserIsUnique(values.username);
+                                }}
+                                error={!!(errors.username)}
+                                errorMessage={errors.username}
+                            />
                         </Grid>
-                    )}
+                        <Grid item xs={12}>
+                            <InputTextField
+                                label="Password"
+                                required
+                                type="password"
+                                keyName="password"
+                                value={values.password}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={!!(errors.password)}
+                                errorMessage={errors.password}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <InputTextField
+                                label="Confirm Password"
+                                required
+                                type="password"
+                                keyName="confirmationPassword"
+                                value={values.confirmationPassword}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={!!(errors.confirmationPassword)}
+                                errorMessage={errors.confirmationPassword}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    register(values, validateForm);
+                                }}
+                            >
+                                Register
+                            </Button>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                onClick={() => {
+                                    history.push('/');
+                                }}
+                            >
+                                Cancel
+                            </Button>
+                        </Grid>
+                    </Grid>
+                )}
             </Formik>
         </Paper>
     );

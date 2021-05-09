@@ -92,12 +92,12 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
 interface RowProps {
     genre: Genre;
-    deleteGenre: Function;
+    deleteGenre: (genreId: number) => void;
 }
 
 const NavCell: React.FC<{
     genre: Genre;
-    deleteGenre: Function;
+    deleteGenre: (genreId: number) => void;
 } & RouteComponentProps> = (props) => {
     const classes = useStyles();
     return (
@@ -136,7 +136,7 @@ export const Row: React.FC<RowProps> = (props) => {
 
 const GenresTable: React.FC<{
     genres: Array<Genre>;
-    deleteGenre: Function;
+    deleteGenre: (genreId: number) => void;
 }> = ({ genres, deleteGenre }) => {
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');

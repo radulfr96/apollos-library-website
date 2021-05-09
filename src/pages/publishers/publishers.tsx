@@ -1,20 +1,15 @@
+import React, { useContext, useEffect, useState } from 'react';
 import {
     Grid, Fab, makeStyles,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Axios from 'axios';
 import { useHistory } from 'react-router';
+import { WithSnackbarProps } from 'notistack';
 import { PublisherListItem } from '../../interfaces/publisherListItem';
 import PageHeading from '../../components/shared/PageHeading';
 import PublishersTable from '../../components/PublishersTable';
 import { AppContext } from '../../Context';
-import { useContext, useEffect, useState } from 'react';
-
-interface PublishersProps {
-    classes: any;
-    enqueueSnackbar: any;
-    closeSnackbar: any;
-}
 
 const useStyles = makeStyles({
     addPublisherButton: {
@@ -31,8 +26,7 @@ interface PublishersState {
     publishers: Array<PublisherListItem>;
 }
 
-export default function Publishers(props: PublishersProps): JSX.Element {
-
+export default function Publishers(props: WithSnackbarProps): JSX.Element {
     const [publisherState, setPublisherState] = useState<PublishersState>({
         publishers: [],
     });
@@ -51,12 +45,10 @@ export default function Publishers(props: PublishersProps): JSX.Element {
                     ...publisherState,
                     publishers: response.data.publishers,
                 });
-            })
-            .catch(() => {
             });
-    }
+    };
 
-    const deletePublisher = (id: string): void => {
+    const deletePublisher = (id: number): void => {
         Axios.delete(`api/publisher/${id}`)
             .then((response) => {
                 if (response.status === 200) {
@@ -67,25 +59,19 @@ export default function Publishers(props: PublishersProps): JSX.Element {
             .catch(() => {
                 renderErrorSnackbar('Unable to delete publisher please contact admin');
             });
-    }
+    };
 
     const renderErrorSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'error',
         });
-    }
+    };
 
     const renderSuccessSnackbar = (message: string): void => {
         props.enqueueSnackbar(message, {
             variant: 'success',
         });
-    }
-
-    const renderWarningSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'warning',
-        });
-    }
+    };
 
     return (
         <Grid item xs={5} container justify="center">
@@ -118,4 +104,3 @@ export default function Publishers(props: PublishersProps): JSX.Element {
         </Grid>
     );
 }
-
