@@ -72,10 +72,8 @@ export default function AccountMenu(): JSX.Element {
             Log out
           </NavLink>
         </MenuItem>
-        <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={handleClose}>
-          <button type="button" className={classes.navLink} onClick={userManager.signinRedirect}>
-            Log in
-          </button>
+        <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={userManager.signinRedirect}>
+            <span>Log in</span>
         </MenuItem>
         <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={handleClose}>
           <NavLink className={classes.navLink} to="/register">

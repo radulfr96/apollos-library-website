@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
+// import Axios from 'axios';
 import { UserInfo } from './interfaces/userInfo';
 
 export const AppContext = React.createContext<State & Functions>({
@@ -55,18 +55,18 @@ export function AppContextProvider(props: AppContextProviderProps): JSX.Element 
   };
 
   const getUserInfo = () => {
-    Axios.get('/api/user/userinfo').then((response) => {
-      if (response.data !== null && response.data !== undefined) {
-        setState({
-          userInfo: {
-            username: response.data.username,
-            roles: response.data.roles,
-            userId: response.data.userID,
-            joinDate: response.data.joinDate,
-          },
-        });
-      }
-    });
+    // Axios.get('/api/user/userinfo').then((response) => {
+    //   if (response.data !== null && response.data !== undefined) {
+    //     setState({
+    //       userInfo: {
+    //         username: response.data.username,
+    //         roles: response.data.roles,
+    //         userId: response.data.userID,
+    //         joinDate: response.data.joinDate,
+    //       },
+    //     });
+    //   }
+    // });
   };
 
   const contextValue = {

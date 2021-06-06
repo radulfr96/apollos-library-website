@@ -7,7 +7,7 @@ const userManagerConfig = {
   scope: 'openid profile roles',
   authority: 'https://localhost:5001',
   silent_redirect_uri: `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}/silent_renew.html`,
-  automaticSilentRenew: true,
+  automaticSilentRenew: false,
   filterProtocolClaims: true,
   loadUserInfo: true,
 };
