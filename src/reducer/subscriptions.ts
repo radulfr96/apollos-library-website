@@ -6,7 +6,7 @@ const initialState = {
 };
 
 export default function reducer(action: any, state = initialState): any {
-  switch (action.type) {
+  switch (action) {
     case SESSION_TERMINATED:
     case USER_EXPIRED:
       return { ...state, channels: [] };
