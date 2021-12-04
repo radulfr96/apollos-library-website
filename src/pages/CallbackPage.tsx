@@ -1,6 +1,6 @@
 import React from 'react';
 import { CallbackComponent } from 'redux-oidc';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import userManager from '../util/userManager';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

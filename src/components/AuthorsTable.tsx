@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AuthorListItem } from '../interfaces/authorListItem';
 import TableHelper, { Order } from '../util/TableFunctions';
 
@@ -97,11 +97,10 @@ interface NavCellProps {
 }
 
 function NavigationCell(props: NavCellProps): JSX.Element {
-    const history = useHistory();
+    const history = useNavigate();
 
     return (
-        <>
-            <TableCell>
+        <TableCell>
                 <IconButton onClick={() => {
                     props.deleteAuthor(props.author.authorId);
                 }}
@@ -109,13 +108,12 @@ function NavigationCell(props: NavCellProps): JSX.Element {
                     <DeleteIcon className={props.classes.deleteIcon} />
                 </IconButton>
                 <IconButton onClick={() => {
-                    history.push(`author/${props.author.authorId}`);
+                    history(`author/${props.author.authorId}`);
                 }}
                 >
                     <ChevronRightIcon />
                 </IconButton>
-            </TableCell>
-        </>
+        </TableCell>
     );
 }
 
@@ -167,8 +165,7 @@ export default function AuthorsTable(props: AuthorsTableProps): JSX.Element {
         ));
 
     return (
-        <>
-            <TableContainer component={Paper}>
+        <TableContainer component={Paper}>
                 <Table
                     aria-labelledby="tableTitle"
                     aria-label="enhanced table"
@@ -184,7 +181,6 @@ export default function AuthorsTable(props: AuthorsTableProps): JSX.Element {
                         {tableContent}
                     </TableBody>
                 </Table>
-            </TableContainer>
-        </>
+        </TableContainer>
     );
 }

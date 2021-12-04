@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { PublisherTableItem } from '../interfaces/publisherTableItem';
 import TableHelper, { Order } from '../util/TableFunctions';
 
@@ -98,14 +98,10 @@ interface RowProps {
     deletePublisher: (publisherId: number) => void;
 }
 
-const NavCell: React.FC<{
-    publisher: PublisherTableItem;
-    deletePublisher: (publisherId: number) => void;
-} & RouteComponentProps> = (props) => {
+function NavCell(props: RowProps & RouteComponentProps) {
     const classes = useStyles();
     return (
-        <>
-            <TableCell>
+        <TableCell>
                 <IconButton onClick={() => {
                     props.deletePublisher(props.publisher.publisherId);
                 }}
@@ -118,14 +114,13 @@ const NavCell: React.FC<{
                 >
                     <ChevronRightIcon />
                 </IconButton>
-            </TableCell>
-        </>
+        </TableCell>
     );
-};
+}
 
 export const NavigationCell = withRouter(NavCell);
 
-export const Row: React.FC<RowProps> = (props) => {
+export function Row(props: RowProps) {
     const classes = useStyles();
 
     return (
@@ -136,12 +131,14 @@ export const Row: React.FC<RowProps> = (props) => {
             <NavigationCell publisher={props.publisher} deletePublisher={props.deletePublisher} />
         </TableRow>
     );
-};
+}
 
-const PublishersTable: React.FC<{
+interface PublishersTableProps {
     publishers: Array<PublisherTableItem>;
     deletePublisher: (publisherId: number) => void;
-}> = ({ publishers, deletePublisher }) => {
+}
+
+function PublishersTable(props: PublishersTableProps) {
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof PublisherTableItem>('publisherId');
@@ -157,14 +154,13 @@ const PublishersTable: React.FC<{
     };
 
     let tableContent = null;
-    tableContent = tableHelper.stableSort(publishers, tableHelper.getSorting(order, orderBy))
+    tableContent = tableHelper.stableSort(props.publishers, tableHelper.getSorting(order, orderBy))
         .map((row: PublisherTableItem) => (
-            <Row publisher={row} deletePublisher={deletePublisher} />
+            <Row publisher={row} deletePublisher={props.deletePublisher} />
         ));
 
     return (
-        <>
-            <TableContainer component={Paper}>
+        <TableContainer component={Paper}>
                 <Table
                     aria-labelledby="tableTitle"
                     aria-label="enhanced table"
@@ -180,9 +176,8 @@ const PublishersTable: React.FC<{
                         {tableContent}
                     </TableBody>
                 </Table>
-            </TableContainer>
-        </>
+        </TableContainer>
     );
-};
+}
 
 export default PublishersTable;

@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { Genre } from '../interfaces/genre';
 import TableHelper, { Order } from '../util/TableFunctions';
 
@@ -95,14 +95,10 @@ interface RowProps {
     deleteGenre: (genreId: number) => void;
 }
 
-const NavCell: React.FC<{
-    genre: Genre;
-    deleteGenre: (genreId: number) => void;
-} & RouteComponentProps> = (props) => {
+function NavCell(props: RowProps & RouteComponentProps) {
     const classes = useStyles();
     return (
-        <>
-            <TableCell>
+        <TableCell>
                 <IconButton onClick={() => {
                     props.deleteGenre(props.genre.genreId);
                 }}
@@ -115,14 +111,13 @@ const NavCell: React.FC<{
                 >
                     <ChevronRightIcon />
                 </IconButton>
-            </TableCell>
-        </>
+        </TableCell>
     );
-};
+}
 
 export const NavigationCell = withRouter(NavCell);
 
-export const Row: React.FC<RowProps> = (props) => {
+export function Row(props: RowProps) {
     const classes = useStyles();
 
     return (
@@ -132,12 +127,14 @@ export const Row: React.FC<RowProps> = (props) => {
             <NavigationCell genre={props.genre} deleteGenre={props.deleteGenre} />
         </TableRow>
     );
-};
+}
 
-const GenresTable: React.FC<{
+interface GenreTableProps {
     genres: Array<Genre>;
     deleteGenre: (genreId: number) => void;
-}> = ({ genres, deleteGenre }) => {
+}
+
+function GenresTable(props: GenreTableProps) {
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof Genre>('genreId');
@@ -150,14 +147,13 @@ const GenresTable: React.FC<{
     };
 
     let tableContent = null;
-    tableContent = tableHelper.stableSort(genres, tableHelper.getSorting(order, orderBy))
+    tableContent = tableHelper.stableSort(props.genres, tableHelper.getSorting(order, orderBy))
         .map((row: Genre) => (
-            <Row genre={row} deleteGenre={deleteGenre} />
+            <Row genre={row} deleteGenre={props.deleteGenre} />
         ));
 
     return (
-        <>
-            <TableContainer component={Paper}>
+        <TableContainer component={Paper}>
                 <Table
                     aria-labelledby="tableTitle"
                     aria-label="enhanced table"
@@ -173,9 +169,8 @@ const GenresTable: React.FC<{
                         {tableContent}
                     </TableBody>
                 </Table>
-            </TableContainer>
-        </>
+        </TableContainer>
     );
-};
+}
 
 export default GenresTable;

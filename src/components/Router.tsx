@@ -1,9 +1,8 @@
 /* eslint-disable max-len */
-import * as React from 'react';
-import { Route, Router } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
-import history from '../util/History';
-import store from '../store';
+import React from 'react';
+import { Route } from 'react-router';
+import { ConnectedRouter } from 'connected-react-router';
+import { createBrowserHistory } from 'history';
 import Home from '../pages/Home';
 import CallbackPage from '../pages/CallbackPage';
 import Users from '../pages/user/Users';
@@ -19,10 +18,10 @@ import Authors from '../pages/authors/authors';
 import AuthorPage from '../pages/authors/author';
 
 export default function MyLibraryRouter(): JSX.Element {
-  const historyInstance = syncHistoryWithStore(history, store);
+  const history = createBrowserHistory();
 
   return (
-    <Router history={historyInstance}>
+    <ConnectedRouter history={history}>
       <Route exact path="/" component={Home} />
       <Route path="/callback" component={CallbackPage} />
       <Route path="/user" component={Users} />
@@ -39,6 +38,6 @@ export default function MyLibraryRouter(): JSX.Element {
       <Route path="/authors" component={Authors} />
       <Route path="/author/:id" component={AuthorPage} />
       <Route path="/addauthor" component={AuthorPage} />
-    </Router>
+    </ConnectedRouter>
   );
 }

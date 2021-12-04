@@ -3,7 +3,7 @@ import {
     Grid, Button, makeStyles,
 } from '@material-ui/core';
 import Axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import PageHeading from '../../../components/shared/PageHeading';
 import ReadOnlyLabel from '../../../components/shared/ReadOnlyLabel';
@@ -32,7 +32,7 @@ const useStyles = makeStyles({
 export default function MyDetails(): JSX.Element {
     const context = useContext(AppContext);
     const classes = useStyles();
-    const history = useHistory();
+    const history = useNavigate();
     const snackbar = useSnackbar();
 
     const renderErrorSnackbar = (message: string): void => {
@@ -59,7 +59,7 @@ export default function MyDetails(): JSX.Element {
                 if (response.status === 200) {
                     renderSuccessSnackbar('Deactivation successful');
                     context.clearUserInfo();
-                    history.push('/');
+                    history('/');
                 }
             })
             .catch((error) => {
@@ -79,7 +79,7 @@ export default function MyDetails(): JSX.Element {
                 if (response.status === 200) {
                     renderSuccessSnackbar('Deletion successful');
                     context.clearUserInfo();
-                    history.push('/');
+                    history('/');
                 }
             })
             .catch((error) => {

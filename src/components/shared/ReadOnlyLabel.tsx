@@ -19,10 +19,8 @@ export default function ReadOnlyLabel(props: ReadOnlyLabelProps): JSX.Element {
     const classes = useStyles();
 
     return (
-        <>
-            <Typography className={classes.text}>
+        <Typography className={classes.text}>
                 {props.text}
-            </Typography>
-        </>
+        </Typography>
     );
 }

@@ -1,6 +1,4 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import { routerMiddleware } from 'react-router-redux';
-import { createBrowserHistory } from 'history';
 import createOidcMiddleware from 'redux-oidc';
 import reducer from './reducer';
 import userManager from './util/userManager';
@@ -11,7 +9,7 @@ const oidcMiddleware = createOidcMiddleware(userManager);
 const initialState = {};
 
 const createStoreWithMiddleware = compose(
-  applyMiddleware(oidcMiddleware, routerMiddleware(createBrowserHistory())),
+  applyMiddleware(oidcMiddleware),
 )(createStore);
 
 const store = createStoreWithMiddleware(reducer, initialState);

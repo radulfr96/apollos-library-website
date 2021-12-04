@@ -1,14 +1,14 @@
-import { routerReducer } from 'react-router-redux';
+import { connectRouter } from 'connected-react-router';
 import { combineReducers } from 'redux';
 import { reducer as oidcReducer } from 'redux-oidc';
 import subscriptionsReducer from './subscriptions';
 
-const reducer = combineReducers(
+const createRootReducer = (history: any) => combineReducers(
   {
-    routing: routerReducer,
+    router: connectRouter(history),
     oidc: oidcReducer,
     subscriptions: subscriptionsReducer,
   },
 );
 
-export default reducer;
+export default createRootReducer;

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React, { useState, useEffect } from 'react';
 // import Axios from 'axios';
 import { UserInfo } from './interfaces/userInfo';

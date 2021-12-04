@@ -57,8 +57,7 @@ export default function MyAccount(): JSX.Element {
     // };
 
     return (
-        <>
-            <Paper className={classes.paper}>
+        <Paper className={classes.paper}>
                 <AppBar position="static">
                     <Tabs
                         value={myAccountState.tab}
@@ -77,7 +76,6 @@ export default function MyAccount(): JSX.Element {
                 <TabPanel value={myAccountState.tab} index={2}>
                     <UpdatePassword />
                 </TabPanel>
-            </Paper>
-        </>
+        </Paper>
     );
 }

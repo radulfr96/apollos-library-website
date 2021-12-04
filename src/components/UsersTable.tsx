@@ -96,7 +96,7 @@ interface RowProps {
     deleteUser: (userId: string) => void;
 }
 
-export const Row: React.FC<RowProps> = (props) => {
+function Row(props: RowProps) {
     const classes = useStyles();
 
     return (
@@ -119,12 +119,14 @@ export const Row: React.FC<RowProps> = (props) => {
             </TableCell>
         </TableRow>
     );
-};
+}
 
-const UsersTable: React.FC<{
+interface UserTableProps {
     users: Array<User>;
     deleteUser: (userId: string) => void;
-}> = ({ users, deleteUser }) => {
+}
+
+function UsersTable(props: UserTableProps) {
     const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof User>('userID');
@@ -137,14 +139,13 @@ const UsersTable: React.FC<{
     };
 
     let tableContent = null;
-    tableContent = tableHelper.stableSort(users, tableHelper.getSorting(order, orderBy))
+    tableContent = tableHelper.stableSort(props.users, tableHelper.getSorting(order, orderBy))
         .map((row: User) => (
-            <Row user={row} deleteUser={deleteUser} />
+            <Row user={row} deleteUser={props.deleteUser} />
         ));
 
     return (
-        <>
-            <TableContainer component={Paper}>
+        <TableContainer component={Paper}>
                 <Table
                     aria-labelledby="tableTitle"
                     aria-label="enhanced table"
@@ -160,9 +161,8 @@ const UsersTable: React.FC<{
                         {tableContent}
                     </TableBody>
                 </Table>
-            </TableContainer>
-        </>
+        </TableContainer>
     );
-};
+}
 
 export default UsersTable;

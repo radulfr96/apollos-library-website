@@ -18,10 +18,8 @@ export default function ReadOnlyText(props: ReadOnlyTextProps): JSX.Element {
     const classes = useStyles();
 
     return (
-        <>
-            <Typography className={classes.text}>
+        <Typography className={classes.text}>
                 {props.text}
-            </Typography>
-        </>
+        </Typography>
     );
 }

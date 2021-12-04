@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import Axios from 'axios';
 import { useParams } from 'react-router';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { WithSnackbarProps } from 'notistack';
 import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/PageHeading';
@@ -44,7 +44,7 @@ export default function GenrePage(props: WithSnackbarProps): JSX.Element {
     });
 
     const classes = useStyles();
-    const history = useHistory();
+    const history = useNavigate();
     const params = useParams<GenreParams>();
 
     useEffect(() => {
@@ -72,7 +72,7 @@ export default function GenrePage(props: WithSnackbarProps): JSX.Element {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');
-                                history.goBack();
+                                history(-1);
                             }
                         })
                         .catch((error) => {
@@ -94,7 +94,7 @@ export default function GenrePage(props: WithSnackbarProps): JSX.Element {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Add successful');
-                                history.goBack();
+                                history(-1);
                             }
                         })
                         .catch((error) => {
@@ -230,7 +230,7 @@ export default function GenrePage(props: WithSnackbarProps): JSX.Element {
                                         variant="contained"
                                         color="secondary"
                                         onClick={() => {
-                                            history.push('/genres');
+                                            history('/genres');
                                         }}
                                     >
                                         Cancel

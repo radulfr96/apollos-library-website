@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
@@ -32,10 +32,6 @@ interface PublisherState {
     newPublisher: boolean;
 }
 
-interface PublisherParams {
-    id: string | undefined;
-}
-
 export default function PublisherPage(props: WithSnackbarProps): JSX.Element {
     const [publisherState, setPublisherState] = useState<PublisherState>({
         publisher: {
@@ -53,8 +49,8 @@ export default function PublisherPage(props: WithSnackbarProps): JSX.Element {
     });
 
     const classes = useStyles();
-    const history = useHistory();
-    const params = useParams<PublisherParams>();
+    const history = useNavigate();
+    const params = useParams();
 
     useEffect(() => {
         if (params.id !== undefined && params.id !== null) {
@@ -90,7 +86,7 @@ export default function PublisherPage(props: WithSnackbarProps): JSX.Element {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');
-                                history.goBack();
+                                history(-1);
                             }
                         })
                         .catch((error) => {
@@ -112,7 +108,7 @@ export default function PublisherPage(props: WithSnackbarProps): JSX.Element {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Add successful');
-                                history.goBack();
+                                history(-1);
                             }
                         })
                         .catch((error) => {
@@ -319,7 +315,7 @@ export default function PublisherPage(props: WithSnackbarProps): JSX.Element {
                                         variant="contained"
                                         color="secondary"
                                         onClick={() => {
-                                            history.push('/publishers');
+                                            history('/publishers');
                                         }}
                                     >
                                         Cancel

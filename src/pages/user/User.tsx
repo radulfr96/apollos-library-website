@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import Axios from 'axios';
 import { useParams } from 'react-router';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { WithSnackbarProps } from 'notistack';
 import { User } from '../../interfaces/user';
 import { UpdateUserInfo } from '../../interfaces/updateUserInfo';
@@ -39,7 +39,7 @@ export default function UserPage(props: WithSnackbarProps): JSX.Element {
         roles: [],
     });
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const params = useParams<UserParams>();
 
     useEffect(() => {
@@ -85,7 +85,7 @@ export default function UserPage(props: WithSnackbarProps): JSX.Element {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');
-                                history.goBack();
+                                navigate(-1);
                             }
                         })
                         .catch((error) => {
@@ -138,13 +138,11 @@ export default function UserPage(props: WithSnackbarProps): JSX.Element {
                                 .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Password must be at least 6 characters long and contain one number and uppercase character.'),
                             confirmationPassword: yup.string()
                                 .oneOf([yup.ref('password')], 'Confirmation password must matched password')
-                                .when(
-                                    'password', {
+                                .when('password', {
                                     // eslint-disable-next-line no-restricted-globals
                                     is: (password: string) => password?.length > 0,
                                     then: yup.string().required('Confirmation password is required'),
-                                },
-                                ),
+                                }),
                         })
                     }
                 >
@@ -245,7 +243,7 @@ export default function UserPage(props: WithSnackbarProps): JSX.Element {
                                         variant="contained"
                                         color="secondary"
                                         onClick={() => {
-                                            history.push('/user');
+                                            navigate('/user');
                                         }}
                                     >
                                         Cancel
