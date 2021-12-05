@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import {
-  AppBar, Toolbar, Typography, makeStyles, Theme, IconButton,
-} from '@material-ui/core';
-import BusinessIcon from '@material-ui/icons/Business';
-import PersonIcon from '@material-ui/icons/Person';
+  AppBar, Toolbar, Typography, makeStyles, Theme, IconButton, Box,
+} from '@mui/material';
+import { Business, Person } from '@mui/icons-material';
 import AccountMenu from './AccountMenu';
 import AdminMenu from './AdminMenu';
 import { AppContext } from '../../Context';
@@ -40,14 +39,14 @@ export default function NavMenu(): JSX.Element {
             My Library
           </a>
         </Typography>
-        <div style={{ display: context.isStandardUser() ? 'block' : 'none' }}>
+        <Box style={{ display: context.isStandardUser() ? 'block' : 'none' }}>
           <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
           >
             <a className={classes.navLink} href="/authors">
-              <PersonIcon color="secondary" />
+              <Person color="secondary" />
             </a>
           </IconButton>
           <IconButton
@@ -56,13 +55,13 @@ export default function NavMenu(): JSX.Element {
             aria-haspopup="true"
           >
             <a className={classes.navLink} href="/publishers">
-              <BusinessIcon color="secondary" />
+              <Business color="secondary" />
             </a>
           </IconButton>
-        </div>
-        <div style={{ display: context.isAdmin() ? 'block' : 'none' }}>
+        </Box>
+        <Box style={{ display: context.isAdmin() ? 'block' : 'none' }}>
           <AdminMenu />
-        </div>
+        </Box>
         <AccountMenu />
       </Toolbar>
     </AppBar>

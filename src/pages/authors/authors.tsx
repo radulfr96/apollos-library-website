@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
-    Grid, Fab, makeStyles,
-} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+    Grid, Fab,
+} from '@mui/material';
+import { Add } from '@mui/icons-material';
 import Axios from 'axios';
 import { useHistory } from 'react-router';
 import { WithSnackbarProps } from 'notistack';
@@ -10,17 +10,6 @@ import { AuthorListItem } from '../../interfaces/authorListItem';
 import PageHeading from '../../components/shared/PageHeading';
 import AuthorsTable from '../../components/AuthorsTable';
 import { AppContext } from '../../Context';
-
-const useStyles = makeStyles({
-    addAuthorButton: {
-        marginTop: '10px',
-        float: 'right',
-    },
-    navLink: {
-        color: '#FFFFFF',
-        textDecoration: 'none',
-    },
-});
 
 interface AuthorsState {
     authors: Array<AuthorListItem>;
@@ -32,7 +21,6 @@ export default function AuthorsPage(props: WithSnackbarProps): JSX.Element {
     });
 
     const context = useContext(AppContext);
-    const classes = useStyles();
     const history = useHistory();
 
     useEffect(() => {
@@ -72,7 +60,7 @@ export default function AuthorsPage(props: WithSnackbarProps): JSX.Element {
     };
 
     return (
-        <Grid item xs={5} container justify="center">
+        <Grid item xs={5} container justifyContent="center">
             <Grid item xs={12}>
                 <PageHeading headingText="Authors" />
             </Grid>
@@ -91,12 +79,15 @@ export default function AuthorsPage(props: WithSnackbarProps): JSX.Element {
                 <Fab
                     color="primary"
                     aria-label="add"
-                    className={classes.addAuthorButton}
+                    sx={{
+                        marginTop: '10px',
+                        float: 'right',
+                    }}
                     onClick={() => {
                         history.push('addauthor');
                     }}
                 >
-                    <AddIcon />
+                    <Add />
                 </Fab>
             </Grid>
         </Grid>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
     Theme, Typography, makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 
 interface ReadOnlyTextProps {
     text: string | number | Date | undefined;

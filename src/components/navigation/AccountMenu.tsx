@@ -1,7 +1,7 @@
 /* eslint-disable linebreak-style */
 import {
   IconButton, Menu, MenuItem, makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import PersonIcon from '@material-ui/icons/Person';
 import Axios from 'axios';
 import React, { useContext, useState } from 'react';
@@ -34,7 +34,7 @@ export default function AccountMenu(): JSX.Element {
   };
 
   return (
-    <div>
+    <Box>
       <IconButton
         aria-label="account of current user"
         aria-controls="menu-appbar"
@@ -72,7 +72,7 @@ export default function AccountMenu(): JSX.Element {
           </a>
         </MenuItem>
         <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={userManager.signinRedirect}>
-            <span>Log in</span>
+            <Typography>Log in</Typography>
         </MenuItem>
         <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={handleClose}>
           <a className={classes.navLink} href="/register">
@@ -80,6 +80,6 @@ export default function AccountMenu(): JSX.Element {
           </a>
         </MenuItem>
       </Menu>
-    </div>
+    </Box>
   );
 }

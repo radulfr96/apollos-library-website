@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import {
     Paper, Grid, Button, makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import Axios from 'axios';
 import { WithSnackbarProps } from 'notistack';
 import InputTextField from '../../components/shared/InputTextField';

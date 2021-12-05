@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import * as React from 'react';
-import { Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Grid } from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 import { AppContext } from '../Context';
 import NavMenu from './navigation/NavMenu';
 

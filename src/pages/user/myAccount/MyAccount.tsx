@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
     Paper, Tabs, Tab, AppBar, Typography, Box, makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import MyDetails from './MyDetails';
 import ChangeUsername from './ChangeUsername';
 import UpdatePassword from './UpdatePassword';

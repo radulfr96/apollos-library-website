@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Theme, TextField, makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Autocomplete } from '@material-ui/lab';
 import Country from '../../interfaces/country';
 
@@ -50,7 +50,7 @@ export default function CountryTypedown(props: CountryTypedownProps): JSX.Elemen
                 )}
                 onChange={props.onChange}
             />
-            <div className={classes.errorMessage}>{props.error ? props.errorMessage : ''}</div>
+            <Box className={classes.errorMessage}>{props.error ? props.errorMessage : ''}</Box>
         </>
     );
 }

@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
     Theme, Grid, Button, CircularProgress, makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import Axios from 'axios';
 import { WithSnackbarProps } from 'notistack';
 import { Publisher } from '../../interfaces/publisher';

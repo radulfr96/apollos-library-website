@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Theme, Typography, makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 
 interface PageHeadingProps {
     headingText: string | undefined;

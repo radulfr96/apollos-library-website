@@ -1,11 +1,9 @@
 import React from 'react';
 import {
-    TableHead, TableRow, TableCell, TableSortLabel,
-    makeStyles, createStyles, Theme, TableContainer,
-    Paper, Table, TableBody, IconButton,
-} from '@material-ui/core';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import DeleteIcon from '@material-ui/icons/Delete';
+    TableHead, TableRow, TableCell, TableSortLabel, TableContainer,
+    Paper, Table, TableBody, IconButton, Typography,
+} from '@mui/material';
+import { ChevronRight, Delete } from '@mui/icons-material';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { PublisherTableItem } from '../interfaces/publisherTableItem';
 import TableHelper, { Order } from '../util/TableFunctions';
@@ -21,35 +19,7 @@ const headCells: HeadCell[] = [
     { id: 'country', label: 'Country' },
 ];
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-    root: {
-        width: '100%',
-    },
-    paper: {
-        width: '100%',
-        marginBottom: theme.spacing(2),
-    },
-    visuallyHidden: {
-        border: 0,
-        clip: 'rect(0 0 0 0)',
-        height: 1,
-        margin: -1,
-        overflow: 'hidden',
-        padding: 0,
-        position: 'absolute',
-        top: 20,
-        width: 1,
-    },
-    row: {
-        transition: 'all 0.4s',
-    },
-    deleteIcon: {
-        color: 'red',
-    },
-}));
-
 interface EnhancedTableProps {
-    classes: ReturnType<typeof useStyles>;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof PublisherTableItem) => void;
     order: Order;
     orderBy: string;
@@ -57,11 +27,11 @@ interface EnhancedTableProps {
 
 function EnhancedTableHead(props: EnhancedTableProps) {
     const {
-        classes, onRequestSort, order, orderBy,
+        onRequestSort, order, orderBy,
     } = props;
     const createSortHandler = (
         property: keyof PublisherTableItem,
-        ) => (event: React.MouseEvent<unknown>) => {
+    ) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
 
@@ -80,9 +50,20 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                         >
                             {headCell.label}
                             {orderBy === headCell.id ? (
-                                <span className={classes.visuallyHidden}>
+                                <Typography sx={{
+                                    border: 0,
+                                    clip: 'rect(0 0 0 0)',
+                                    height: 1,
+                                    margin: -1,
+                                    overflow: 'hidden',
+                                    padding: 0,
+                                    position: 'absolute',
+                                    top: 20,
+                                    width: 1,
+                                }}
+                                >
                                     {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                </span>
+                                </Typography>
                             ) : null}
                         </TableSortLabel>
                     </TableCell>
@@ -99,21 +80,23 @@ interface RowProps {
 }
 
 function NavCell(props: RowProps & RouteComponentProps) {
-    const classes = useStyles();
     return (
         <TableCell>
-                <IconButton onClick={() => {
-                    props.deletePublisher(props.publisher.publisherId);
+            <IconButton onClick={() => {
+                props.deletePublisher(props.publisher.publisherId);
+            }}
+            >
+                <Delete sx={{
+                    color: 'red',
                 }}
-                >
-                    <DeleteIcon className={classes.deleteIcon} />
-                </IconButton>
-                <IconButton onClick={() => {
-                    props.history.push(`publisher/${props.publisher.publisherId}`);
-                }}
-                >
-                    <ChevronRightIcon />
-                </IconButton>
+                />
+            </IconButton>
+            <IconButton onClick={() => {
+                props.history.push(`publisher/${props.publisher.publisherId}`);
+            }}
+            >
+                <ChevronRight />
+            </IconButton>
         </TableCell>
     );
 }
@@ -121,10 +104,14 @@ function NavCell(props: RowProps & RouteComponentProps) {
 export const NavigationCell = withRouter(NavCell);
 
 export function Row(props: RowProps) {
-    const classes = useStyles();
-
     return (
-        <TableRow key={props.publisher.publisherId} hover className={classes.row}>
+        <TableRow
+            key={props.publisher.publisherId}
+            hover
+            sx={{
+                transition: 'all 0.4s',
+            }}
+        >
             <TableCell>{props.publisher.publisherId}</TableCell>
             <TableCell>{props.publisher.name}</TableCell>
             <TableCell>{props.publisher.country}</TableCell>
@@ -139,7 +126,6 @@ interface PublishersTableProps {
 }
 
 function PublishersTable(props: PublishersTableProps) {
-    const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof PublisherTableItem>('publisherId');
     const tableHelper = new TableHelper();
@@ -147,7 +133,7 @@ function PublishersTable(props: PublishersTableProps) {
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
         property: keyof PublisherTableItem,
-        ) => {
+    ) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
@@ -161,21 +147,20 @@ function PublishersTable(props: PublishersTableProps) {
 
     return (
         <TableContainer component={Paper}>
-                <Table
-                    aria-labelledby="tableTitle"
-                    aria-label="enhanced table"
-                    size="small"
-                >
-                    <EnhancedTableHead
-                        classes={classes}
-                        order={order}
-                        orderBy={orderBy}
-                        onRequestSort={handleRequestSort}
-                    />
-                    <TableBody>
-                        {tableContent}
-                    </TableBody>
-                </Table>
+            <Table
+                aria-labelledby="tableTitle"
+                aria-label="enhanced table"
+                size="small"
+            >
+                <EnhancedTableHead
+                    order={order}
+                    orderBy={orderBy}
+                    onRequestSort={handleRequestSort}
+                />
+                <TableBody>
+                    {tableContent}
+                </TableBody>
+            </Table>
         </TableContainer>
     );
 }

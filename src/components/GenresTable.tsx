@@ -1,11 +1,9 @@
 import React from 'react';
 import {
-    TableHead, TableRow, TableCell, TableSortLabel,
-    makeStyles, createStyles, Theme, TableContainer,
-    Paper, Table, TableBody, IconButton,
-} from '@material-ui/core';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import DeleteIcon from '@material-ui/icons/Delete';
+    TableHead, TableRow, TableCell, TableSortLabel, TableContainer,
+    Paper, Table, TableBody, IconButton, Typography,
+} from '@mui/material';
+import { ChevronRight, Delete } from '@mui/icons-material';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Genre } from '../interfaces/genre';
 import TableHelper, { Order } from '../util/TableFunctions';
@@ -20,35 +18,7 @@ const headCells: HeadCell[] = [
     { id: 'name', label: 'Name' },
 ];
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-    root: {
-        width: '100%',
-    },
-    paper: {
-        width: '100%',
-        marginBottom: theme.spacing(2),
-    },
-    visuallyHidden: {
-        border: 0,
-        clip: 'rect(0 0 0 0)',
-        height: 1,
-        margin: -1,
-        overflow: 'hidden',
-        padding: 0,
-        position: 'absolute',
-        top: 20,
-        width: 1,
-    },
-    row: {
-        transition: 'all 0.4s',
-    },
-    deleteIcon: {
-        color: 'red',
-    },
-}));
-
 interface EnhancedTableProps {
-    classes: ReturnType<typeof useStyles>;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Genre) => void;
     order: Order;
     orderBy: string;
@@ -56,7 +26,7 @@ interface EnhancedTableProps {
 
 function EnhancedTableHead(props: EnhancedTableProps) {
     const {
-        classes, onRequestSort, order, orderBy,
+        onRequestSort, order, orderBy,
     } = props;
     const createSortHandler = (property: keyof Genre) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
@@ -77,9 +47,20 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                         >
                             {headCell.label}
                             {orderBy === headCell.id ? (
-                                <span className={classes.visuallyHidden}>
+                                <Typography sx={{
+                                    border: 0,
+                                    clip: 'rect(0 0 0 0)',
+                                    height: 1,
+                                    margin: -1,
+                                    overflow: 'hidden',
+                                    padding: 0,
+                                    position: 'absolute',
+                                    top: 20,
+                                    width: 1,
+                                }}
+                                >
                                     {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                </span>
+                                </Typography>
                             ) : null}
                         </TableSortLabel>
                     </TableCell>
@@ -96,21 +77,20 @@ interface RowProps {
 }
 
 function NavCell(props: RowProps & RouteComponentProps) {
-    const classes = useStyles();
     return (
         <TableCell>
-                <IconButton onClick={() => {
-                    props.deleteGenre(props.genre.genreId);
-                }}
-                >
-                    <DeleteIcon className={classes.deleteIcon} />
-                </IconButton>
-                <IconButton onClick={() => {
-                    props.history.push(`genre/${props.genre.genreId}`);
-                }}
-                >
-                    <ChevronRightIcon />
-                </IconButton>
+            <IconButton onClick={() => {
+                props.deleteGenre(props.genre.genreId);
+            }}
+            >
+                <Delete sx={{ color: 'red' }} />
+            </IconButton>
+            <IconButton onClick={() => {
+                props.history.push(`genre/${props.genre.genreId}`);
+            }}
+            >
+                <ChevronRight />
+            </IconButton>
         </TableCell>
     );
 }
@@ -118,10 +98,14 @@ function NavCell(props: RowProps & RouteComponentProps) {
 export const NavigationCell = withRouter(NavCell);
 
 export function Row(props: RowProps) {
-    const classes = useStyles();
-
     return (
-        <TableRow key={props.genre.genreId} hover className={classes.row}>
+        <TableRow
+            key={props.genre.genreId}
+            hover
+            sx={{
+                transition: 'all 0.4s',
+            }}
+        >
             <TableCell>{props.genre.genreId}</TableCell>
             <TableCell>{props.genre.name}</TableCell>
             <NavigationCell genre={props.genre} deleteGenre={props.deleteGenre} />
@@ -135,7 +119,6 @@ interface GenreTableProps {
 }
 
 function GenresTable(props: GenreTableProps) {
-    const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof Genre>('genreId');
     const tableHelper = new TableHelper();
@@ -154,21 +137,20 @@ function GenresTable(props: GenreTableProps) {
 
     return (
         <TableContainer component={Paper}>
-                <Table
-                    aria-labelledby="tableTitle"
-                    aria-label="enhanced table"
-                    size="small"
-                >
-                    <EnhancedTableHead
-                        classes={classes}
-                        order={order}
-                        orderBy={orderBy}
-                        onRequestSort={handleRequestSort}
-                    />
-                    <TableBody>
-                        {tableContent}
-                    </TableBody>
-                </Table>
+            <Table
+                aria-labelledby="tableTitle"
+                aria-label="enhanced table"
+                size="small"
+            >
+                <EnhancedTableHead
+                    order={order}
+                    orderBy={orderBy}
+                    onRequestSort={handleRequestSort}
+                />
+                <TableBody>
+                    {tableContent}
+                </TableBody>
+            </Table>
         </TableContainer>
     );
 }

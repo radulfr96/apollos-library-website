@@ -444,7 +444,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <Box>
         <button onClick={this.handleClick}>Load</button>
       </div>
     );
@@ -483,7 +483,7 @@ import './Button.css'; // Tell Webpack that Button.js uses these styles
 class Button extends Component {
   render() {
     // You can use them as regular CSS styles
-    return <div className="Button" />;
+    return <Box className="Button" />;
   }
 }
 ```
@@ -828,7 +828,7 @@ in the environment inside a `<form>`:
 ```jsx
 render() {
   return (
-    <div>
+    <Box>
       <small>You are running this application in <b>{process.env.NODE_ENV}</b> mode.</small>
       <form>
         <input type="hidden" defaultValue={process.env.REACT_APP_SECRET_CODE} />
@@ -843,7 +843,7 @@ During the build, `process.env.REACT_APP_SECRET_CODE` will be replaced with the 
 When you load the app in the browser and inspect the `<input>`, you will see its value set to `abcdef`, and the bold text will show the environment provided when using `npm start`:
 
 ```html
-<div>
+<Box>
   <small>You are running this application in <b>development</b> mode.</small>
   <form>
     <input type="hidden" value="abcdef" />

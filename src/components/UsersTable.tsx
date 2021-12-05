@@ -3,7 +3,7 @@ import {
     TableHead, TableRow, TableCell, TableSortLabel,
     makeStyles, createStyles, Theme, TableContainer,
     Paper, Table, TableBody, IconButton,
-} from '@material-ui/core';
+} from '@mui/material';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { User } from '../interfaces/user';
@@ -77,9 +77,9 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                         >
                             {headCell.label}
                             {orderBy === headCell.id ? (
-                                <span className={classes.visuallyHidden}>
+                                <Typography className={classes.visuallyHidden}>
                                     {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                </span>
+                                </Typography>
                             ) : null}
                         </TableSortLabel>
                     </TableCell>

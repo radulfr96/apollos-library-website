@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import Axios from 'axios';
 import { WithSnackbarProps } from 'notistack';
 import { User } from '../../interfaces/user';

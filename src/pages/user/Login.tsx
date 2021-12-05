@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
     Paper, Grid, Button, makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import Axios from 'axios';
 import { useHistory } from 'react-router';
 import { WithSnackbarProps } from 'notistack';

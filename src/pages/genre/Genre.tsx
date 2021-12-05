@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
     Theme, Grid, Button, CircularProgress, makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import Axios from 'axios';
 import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';

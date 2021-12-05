@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router';
-import { MuiThemeProvider } from '@material-ui/core';
+import { ThemeProvider } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
 import Layout from './components/Layout';
 import CallbackPage from './pages/CallbackPage';
@@ -33,7 +33,7 @@ const store = configureStore({});
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            <MuiThemeProvider theme={theme}>
+            <ThemeProvider theme={theme}>
                 <SnackbarProvider maxSnack={10}>
                     <Layout>
                         <ConnectedRouter history={history}>
@@ -58,7 +58,7 @@ ReactDOM.render(
                         </ConnectedRouter>
                     </Layout>
                 </SnackbarProvider>
-            </MuiThemeProvider>
+            </ThemeProvider>
         </Provider>
     </React.StrictMode>,
     document.getElementById('root'),

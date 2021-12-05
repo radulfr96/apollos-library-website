@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
     TextField, withStyles, createStyles, WithStyles, Theme,
-} from '@material-ui/core';
+} from '@mui/material';
 
 interface InputTextFieldProps {
     label?: string;
@@ -46,7 +46,7 @@ export class InputTextField extends React.Component<
                     }}
                     fullWidth
                 />
-                <div className={this.props.classes.errorMessage}>{this.props.error ? this.props.errorMessage : ''}</div>
+                <Box className={this.props.classes.errorMessage}>{this.props.error ? this.props.errorMessage : ''}</Box>
             </>
         );
     }

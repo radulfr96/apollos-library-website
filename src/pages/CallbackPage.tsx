@@ -15,7 +15,7 @@ export default function CallbackPage(props: any): JSX.Element {
                 console.error(error);
             }}
         >
-            <div>Redirecting...</div>
+            <Box>Redirecting...</Box>
         </CallbackComponent>
     );
 }

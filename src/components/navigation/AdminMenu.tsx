@@ -1,7 +1,7 @@
 /* eslint-disable linebreak-style */
 import {
     IconButton, makeStyles, Menu, MenuItem,
-} from '@material-ui/core';
+} from '@mui/material';
 import SettingsIcon from '@material-ui/icons/Settings';
 import React from 'react';
 
@@ -26,7 +26,7 @@ export default function AdminMenu(): JSX.Element {
     };
 
     return (
-        <div>
+        <Box>
             <IconButton
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
@@ -57,6 +57,6 @@ export default function AdminMenu(): JSX.Element {
                     </MenuItem>
                 </a>
             </Menu>
-        </div>
+        </Box>
     );
 }
