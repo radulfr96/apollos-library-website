@@ -6,7 +6,6 @@ import {
 } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { NavLink } from 'react-router-dom';
 import { User } from '../interfaces/user';
 import TableHelper, { Order } from '../util/TableFunctions';
 
@@ -112,9 +111,9 @@ function Row(props: RowProps) {
                     <DeleteIcon className={classes.deleteIcon} />
                 </IconButton>
                 <IconButton>
-                    <NavLink to={`/userdetails/${props.user.userID}`}>
+                    <a href={`/userdetails/${props.user.userID}`}>
                         <ChevronRightIcon />
-                    </NavLink>
+                    </a>
                 </IconButton>
             </TableCell>
         </TableRow>

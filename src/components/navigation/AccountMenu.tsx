@@ -2,7 +2,6 @@
 import {
   IconButton, Menu, MenuItem, makeStyles,
 } from '@material-ui/core';
-import { NavLink } from 'react-router-dom';
 import PersonIcon from '@material-ui/icons/Person';
 import Axios from 'axios';
 import React, { useContext, useState } from 'react';
@@ -55,11 +54,11 @@ export default function AccountMenu(): JSX.Element {
         open={open}
         onClose={handleClose}
       >
-        <NavLink className={classes.navLink} to="/account">
+        <a className={classes.navLink} href="/account">
           <MenuItem style={{ display: context.userInfo?.username !== undefined ? 'block' : 'none' }} onClick={handleClose}>
             My Account
           </MenuItem>
-        </NavLink>
+        </a>
         <MenuItem
           style={{ display: context.userInfo?.username !== undefined ? 'block' : 'none' }}
           onClick={() => {
@@ -68,17 +67,17 @@ export default function AccountMenu(): JSX.Element {
             handleClose();
           }}
         >
-          <NavLink className={classes.navLink} to="/">
+          <a className={classes.navLink} href="/">
             Log out
-          </NavLink>
+          </a>
         </MenuItem>
         <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={userManager.signinRedirect}>
             <span>Log in</span>
         </MenuItem>
         <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={handleClose}>
-          <NavLink className={classes.navLink} to="/register">
+          <a className={classes.navLink} href="/register">
             Sign Up
-          </NavLink>
+          </a>
         </MenuItem>
       </Menu>
     </div>

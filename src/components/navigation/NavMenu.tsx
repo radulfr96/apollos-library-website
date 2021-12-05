@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import {
   AppBar, Toolbar, Typography, makeStyles, Theme, IconButton,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
 import BusinessIcon from '@material-ui/icons/Business';
 import PersonIcon from '@material-ui/icons/Person';
 import AccountMenu from './AccountMenu';
@@ -37,9 +36,9 @@ export default function NavMenu(): JSX.Element {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" className={classes.title}>
-          <Link to="/" className={classes.homeLink}>
+          <a href="/" className={classes.homeLink}>
             My Library
-          </Link>
+          </a>
         </Typography>
         <div style={{ display: context.isStandardUser() ? 'block' : 'none' }}>
           <IconButton
@@ -47,18 +46,18 @@ export default function NavMenu(): JSX.Element {
             aria-controls="menu-appbar"
             aria-haspopup="true"
           >
-            <Link className={classes.navLink} to="/authors">
+            <a className={classes.navLink} href="/authors">
               <PersonIcon color="secondary" />
-            </Link>
+            </a>
           </IconButton>
           <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
           >
-            <Link className={classes.navLink} to="/publishers">
+            <a className={classes.navLink} href="/publishers">
               <BusinessIcon color="secondary" />
-            </Link>
+            </a>
           </IconButton>
         </div>
         <div style={{ display: context.isAdmin() ? 'block' : 'none' }}>

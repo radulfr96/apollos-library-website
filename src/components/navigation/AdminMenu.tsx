@@ -4,7 +4,6 @@ import {
 } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
     navLink: {
@@ -47,16 +46,16 @@ export default function AdminMenu(): JSX.Element {
                 open={open}
                 onClose={handleClose}
             >
-                <Link className={classes.navLink} to="/user">
+                <a className={classes.navLink} href="/user">
                     <MenuItem onClick={handleClose}>
                         Users
                     </MenuItem>
-                </Link>
-                <Link className={classes.navLink} to="/genres">
+                </a>
+                <a className={classes.navLink} href="/genres">
                     <MenuItem onClick={handleClose}>
                         Genres
                     </MenuItem>
-                </Link>
+                </a>
             </Menu>
         </div>
     );
