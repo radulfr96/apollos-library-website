@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import {
   AppBar, Toolbar, Typography, makeStyles, Theme, IconButton,
 } from '@material-ui/core';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import BusinessIcon from '@material-ui/icons/Business';
 import PersonIcon from '@material-ui/icons/Person';
 import AccountMenu from './AccountMenu';
@@ -37,9 +37,9 @@ export default function NavMenu(): JSX.Element {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" className={classes.title}>
-          <NavLink to="/" className={classes.homeLink}>
+          <Link to="/" className={classes.homeLink}>
             My Library
-          </NavLink>
+          </Link>
         </Typography>
         <div style={{ display: context.isStandardUser() ? 'block' : 'none' }}>
           <IconButton
@@ -47,18 +47,18 @@ export default function NavMenu(): JSX.Element {
             aria-controls="menu-appbar"
             aria-haspopup="true"
           >
-            <NavLink className={classes.navLink} to="/authors">
+            <Link className={classes.navLink} to="/authors">
               <PersonIcon color="secondary" />
-            </NavLink>
+            </Link>
           </IconButton>
           <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
           >
-            <NavLink className={classes.navLink} to="/publishers">
+            <Link className={classes.navLink} to="/publishers">
               <BusinessIcon color="secondary" />
-            </NavLink>
+            </Link>
           </IconButton>
         </div>
         <div style={{ display: context.isAdmin() ? 'block' : 'none' }}>

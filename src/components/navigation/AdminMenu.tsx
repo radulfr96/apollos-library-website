@@ -1,10 +1,10 @@
 /* eslint-disable linebreak-style */
 import {
-    IconButton, Menu, MenuItem, makeStyles,
+    IconButton, makeStyles, Menu, MenuItem,
 } from '@material-ui/core';
-import { NavLink } from 'react-router-dom';
 import SettingsIcon from '@material-ui/icons/Settings';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
     navLink: {
@@ -47,16 +47,16 @@ export default function AdminMenu(): JSX.Element {
                 open={open}
                 onClose={handleClose}
             >
-                <NavLink className={classes.navLink} to="/user">
+                <Link className={classes.navLink} to="/user">
                     <MenuItem onClick={handleClose}>
                         Users
                     </MenuItem>
-                </NavLink>
-                <NavLink className={classes.navLink} to="/genres">
+                </Link>
+                <Link className={classes.navLink} to="/genres">
                     <MenuItem onClick={handleClose}>
                         Genres
                     </MenuItem>
-                </NavLink>
+                </Link>
             </Menu>
         </div>
     );
