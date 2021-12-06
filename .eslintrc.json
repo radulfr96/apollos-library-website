@@ -34,6 +34,7 @@
                 ]
             }
         ],
+        "react/require-default-props": [0],
         "react/function-component-definition": [
             2,
             {

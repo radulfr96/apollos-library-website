@@ -1,20 +1,8 @@
 import React from 'react';
 import {
-    Theme, TextField, makeStyles,
+    TextField, Autocomplete, Box,
 } from '@mui/material';
-import { Autocomplete } from '@material-ui/lab';
 import Country from '../../interfaces/country';
-
-const useStyles = makeStyles((theme: Theme) => ({
-    errorMessage: {
-        paddingBottom: '20px',
-        color: 'red',
-        fontFamily: theme.typography.fontFamily,
-    },
-    input: {
-        width: '100%',
-    },
-}));
 
 interface CountryTypedownProps {
     errorMessage: string | undefined;
@@ -27,11 +15,10 @@ interface CountryTypedownProps {
 }
 
 export default function CountryTypedown(props: CountryTypedownProps): JSX.Element {
-    const classes = useStyles();
     return (
         <>
             <Autocomplete
-                className={classes.input}
+                sx={{ width: '100%' }}
                 options={
                     props.countries
                 }
@@ -50,7 +37,13 @@ export default function CountryTypedown(props: CountryTypedownProps): JSX.Elemen
                 )}
                 onChange={props.onChange}
             />
-            <Box className={classes.errorMessage}>{props.error ? props.errorMessage : ''}</Box>
+            <Box sx={{
+                paddingBottom: '20px',
+                color: 'red',
+            }}
+            >
+                {props.error ? props.errorMessage : ''}
+            </Box>
         </>
     );
 }

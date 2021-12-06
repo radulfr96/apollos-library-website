@@ -1,21 +1,14 @@
 /* eslint-disable linebreak-style */
 import {
-    IconButton, makeStyles, Menu, MenuItem,
+    Box,
+    IconButton, Link, Menu, MenuItem,
 } from '@mui/material';
-import SettingsIcon from '@material-ui/icons/Settings';
+import { Settings } from '@mui/icons-material';
 import React from 'react';
-
-const useStyles = makeStyles(() => ({
-    navLink: {
-        color: '#000000',
-        textDecoration: 'none',
-    },
-}));
 
 export default function AdminMenu(): JSX.Element {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-    const classes = useStyles();
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -33,7 +26,7 @@ export default function AdminMenu(): JSX.Element {
                 aria-haspopup="true"
                 onClick={handleMenu}
             >
-                <SettingsIcon color="secondary" />
+                <Settings color="secondary" />
             </IconButton>
             <Menu
                 id="menu-appbar"
@@ -46,16 +39,28 @@ export default function AdminMenu(): JSX.Element {
                 open={open}
                 onClose={handleClose}
             >
-                <a className={classes.navLink} href="/user">
+                <Link
+                    sx={{
+                        color: '#000000',
+                        textDecoration: 'none',
+                    }}
+                    href="/user"
+                >
                     <MenuItem onClick={handleClose}>
                         Users
                     </MenuItem>
-                </a>
-                <a className={classes.navLink} href="/genres">
+                </Link>
+                <Link
+                    sx={{
+                        color: '#000000',
+                        textDecoration: 'none',
+                    }}
+                    href="/genres"
+                >
                     <MenuItem onClick={handleClose}>
                         Genres
                     </MenuItem>
-                </a>
+                </Link>
             </Menu>
         </Box>
     );

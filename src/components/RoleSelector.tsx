@@ -1,22 +1,7 @@
 import React from 'react';
 import {
-    Grid, InputLabel, Select, MenuItem, FormControl, Input, Chip, Theme,
+    Grid, InputLabel, Select, MenuItem, FormControl, Input, Chip, Box,
 } from '@mui/material';
-
-const styles = theme => ({
-    roleChipSection: {
-        paddingTop: '10px',
-        width: '100%',
-    },
-    roleChip: {
-        marginRight: '5px',
-    },
-    errorMessage: {
-        paddingBottom: '20px',
-        color: 'red',
-        fontFamily: theme.typography.fontFamily,
-    },
-});
 
 interface RoleSelectorProps {
     roles: Array<string>;
@@ -27,24 +12,30 @@ interface RoleSelectorProps {
 }
 
 export default function RoleSelector(props: RoleSelectorProps): JSX.Element {
-    const classes = useClasses();
     const inputLabel = React.useRef<HTMLLabelElement>(null);
 
-    const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const handleChange = (event: any) => {
         props.updateUserRoles(event.target.value as string[]);
     };
 
     return (
         <Grid container item xs={12}>
             <Grid item xs={12}>
-                <FormControl className={classes.roleChipSection}>
+                <FormControl sx={{
+                    paddingTop: '10px',
+                    width: '100%',
+                }}
+                >
                     <InputLabel ref={inputLabel} id="roleSelectLabel">Roles</InputLabel>
                     <Select
                         labelId="roleSelectLabel"
                         id="roleSelect"
                         multiple
                         name="roles"
-                        className={classes.roleChipSection}
+                        sx={{
+                            paddingTop: '10px',
+                            width: '100%',
+                        }}
                         value={props.selectedRoles}
                         onChange={handleChange}
                         input={<Input id="selectMultipleRoles" />}
@@ -52,9 +43,10 @@ export default function RoleSelector(props: RoleSelectorProps): JSX.Element {
                             <Box style={{
                                 paddingTop: '10px',
                                 width: '100%',
-                            }}>
+                            }}
+                            >
                                 {(selected as string[]).map((value) => (
-                                    <Chip color="primary" key={value} label={value} className={classes.roleChip} />
+                                    <Chip color="primary" key={value} label={value} sx={{ marginRight: '5px' }} />
                                 ))}
                             </Box>
                         )}
@@ -66,7 +58,14 @@ export default function RoleSelector(props: RoleSelectorProps): JSX.Element {
                         ))}
                     </Select>
                 </FormControl>
-                <Box className={classes.errorMessage}>{props.error ? props.errorMessage : ''}</Box>
+                <Box
+                    sx={{
+                        paddingBottom: '20px',
+                        color: 'red',
+                    }}
+                >
+                    {props.error ? props.errorMessage : ''}
+                </Box>
             </Grid>
         </Grid>
     );

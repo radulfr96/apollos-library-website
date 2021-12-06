@@ -1,24 +1,15 @@
 import React from 'react';
 import {
-    Theme, Typography, makeStyles,
+    Typography,
 } from '@mui/material';
 
 interface PageHeadingProps {
     headingText: string | undefined;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-    heading: {
-        ...theme.typography.h4,
-        paddingBottom: '20px',
-    },
-}));
-
 export default function PageHeading(props: PageHeadingProps): JSX.Element {
-    const classes = useStyles();
-
     return (
-        <Typography className={classes.heading}>
+        <Typography sx={{ paddingBottom: '20px' }}>
             {props.headingText}
         </Typography>
     );

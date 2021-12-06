@@ -1,11 +1,9 @@
 import React from 'react';
 import {
-    TableHead, TableRow, TableCell, TableSortLabel,
-    makeStyles, createStyles, Theme, TableContainer,
-    Paper, Table, TableBody, IconButton,
+    TableHead, TableRow, TableCell, TableSortLabel, TableContainer,
+    Paper, Table, TableBody, IconButton, Typography,
 } from '@mui/material';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { ChevronRight, Delete } from '@mui/icons-material';
 import { User } from '../interfaces/user';
 import TableHelper, { Order } from '../util/TableFunctions';
 
@@ -20,35 +18,7 @@ const headCells: HeadCell[] = [
     { id: 'isActive', label: ' User is Active' },
 ];
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-    root: {
-        width: '100%',
-    },
-    paper: {
-        width: '100%',
-        marginBottom: theme.spacing(2),
-    },
-    visuallyHidden: {
-        border: 0,
-        clip: 'rect(0 0 0 0)',
-        height: 1,
-        margin: -1,
-        overflow: 'hidden',
-        padding: 0,
-        position: 'absolute',
-        top: 20,
-        width: 1,
-    },
-    row: {
-        transition: 'all 0.4s',
-    },
-    deleteIcon: {
-        color: 'red',
-    },
-}));
-
 interface EnhancedTableProps {
-    classes: ReturnType<typeof useStyles>;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof User) => void;
     order: Order;
     orderBy: string;
@@ -56,7 +26,7 @@ interface EnhancedTableProps {
 
 function EnhancedTableHead(props: EnhancedTableProps) {
     const {
-        classes, onRequestSort, order, orderBy,
+        onRequestSort, order, orderBy,
     } = props;
     const createSortHandler = (property: keyof User) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
@@ -77,7 +47,18 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                         >
                             {headCell.label}
                             {orderBy === headCell.id ? (
-                                <Typography className={classes.visuallyHidden}>
+                                <Typography sx={{
+                                    border: 0,
+                                    clip: 'rect(0 0 0 0)',
+                                    height: 1,
+                                    margin: -1,
+                                    overflow: 'hidden',
+                                    padding: 0,
+                                    position: 'absolute',
+                                    top: 20,
+                                    width: 1,
+                                }}
+                                >
                                     {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                                 </Typography>
                             ) : null}
@@ -96,10 +77,14 @@ interface RowProps {
 }
 
 function Row(props: RowProps) {
-    const classes = useStyles();
-
     return (
-        <TableRow key={props.user.userID} hover className={classes.row}>
+        <TableRow
+            key={props.user.userID}
+            hover
+            sx={{
+                transition: 'all 0.4s',
+            }}
+        >
             <TableCell>{props.user.userID}</TableCell>
             <TableCell>{props.user.username}</TableCell>
             <TableCell>{props.user.isActive}</TableCell>
@@ -108,11 +93,14 @@ function Row(props: RowProps) {
                     props.deleteUser(props.user.userID);
                 }}
                 >
-                    <DeleteIcon className={classes.deleteIcon} />
+                    <Delete sx={{
+                        color: 'red',
+                    }}
+                    />
                 </IconButton>
                 <IconButton>
                     <a href={`/userdetails/${props.user.userID}`}>
-                        <ChevronRightIcon />
+                        <ChevronRight />
                     </a>
                 </IconButton>
             </TableCell>
@@ -126,7 +114,6 @@ interface UserTableProps {
 }
 
 function UsersTable(props: UserTableProps) {
-    const classes = useStyles();
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof User>('userID');
     const tableHelper = new TableHelper();
@@ -145,21 +132,20 @@ function UsersTable(props: UserTableProps) {
 
     return (
         <TableContainer component={Paper}>
-                <Table
-                    aria-labelledby="tableTitle"
-                    aria-label="enhanced table"
-                    size="small"
-                >
-                    <EnhancedTableHead
-                        classes={classes}
-                        order={order}
-                        orderBy={orderBy}
-                        onRequestSort={handleRequestSort}
-                    />
-                    <TableBody>
-                        {tableContent}
-                    </TableBody>
-                </Table>
+            <Table
+                aria-labelledby="tableTitle"
+                aria-label="enhanced table"
+                size="small"
+            >
+                <EnhancedTableHead
+                    order={order}
+                    orderBy={orderBy}
+                    onRequestSort={handleRequestSort}
+                />
+                <TableBody>
+                    {tableContent}
+                </TableBody>
+            </Table>
         </TableContainer>
     );
 }

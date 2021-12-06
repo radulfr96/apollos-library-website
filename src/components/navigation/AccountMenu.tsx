@@ -1,25 +1,17 @@
 /* eslint-disable linebreak-style */
 import {
-  IconButton, Menu, MenuItem, makeStyles,
+  IconButton, Menu, MenuItem, Box, Typography, Link,
 } from '@mui/material';
-import PersonIcon from '@material-ui/icons/Person';
+import { Person } from '@mui/icons-material';
 import Axios from 'axios';
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../../Context';
 import userManager from '../../util/userManager';
 
-const useStyles = makeStyles(() => ({
-  navLink: {
-    color: '#000000',
-    textDecoration: 'none',
-  },
-}));
-
 export default function AccountMenu(): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const context = useContext(AppContext);
-  const classes = useStyles();
 
   const logOut = () => {
     Axios.post('/api/user/logout');
@@ -41,7 +33,7 @@ export default function AccountMenu(): JSX.Element {
         aria-haspopup="true"
         onClick={handleMenu}
       >
-        <PersonIcon color="secondary" />
+        <Person color="secondary" />
       </IconButton>
       <Menu
         id="menu-appbar"
@@ -54,11 +46,17 @@ export default function AccountMenu(): JSX.Element {
         open={open}
         onClose={handleClose}
       >
-        <a className={classes.navLink} href="/account">
+        <Link
+          sx={{
+            color: '#000000',
+            textDecoration: 'none',
+          }}
+          href="/account"
+        >
           <MenuItem style={{ display: context.userInfo?.username !== undefined ? 'block' : 'none' }} onClick={handleClose}>
             My Account
           </MenuItem>
-        </a>
+        </Link>
         <MenuItem
           style={{ display: context.userInfo?.username !== undefined ? 'block' : 'none' }}
           onClick={() => {
@@ -67,17 +65,29 @@ export default function AccountMenu(): JSX.Element {
             handleClose();
           }}
         >
-          <a className={classes.navLink} href="/">
+          <Link
+            sx={{
+              color: '#000000',
+              textDecoration: 'none',
+            }}
+            href="/"
+          >
             Log out
-          </a>
+          </Link>
         </MenuItem>
         <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={userManager.signinRedirect}>
-            <Typography>Log in</Typography>
+          <Typography>Log in</Typography>
         </MenuItem>
         <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={handleClose}>
-          <a className={classes.navLink} href="/register">
+          <Link
+            sx={{
+              color: '#000000',
+              textDecoration: 'none',
+            }}
+            href="/register"
+          >
             Sign Up
-          </a>
+          </Link>
         </MenuItem>
       </Menu>
     </Box>

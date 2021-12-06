@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
-    Theme, Grid, Button, CircularProgress, makeStyles,
+    Grid, Button, CircularProgress,
 } from '@mui/material';
 import Axios from 'axios';
 import { useHistory } from 'react-router';
@@ -12,19 +12,6 @@ import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
 import CountryTypedown from '../../components/shared/countryTypedown';
 import Country from '../../interfaces/country';
-
-const useStyles = makeStyles((theme: Theme) => ({
-    paper: {
-        color: theme.palette.primary.main,
-        width: '100%',
-    },
-    formButton: {
-        marginRight: '10px',
-    },
-    publisherIdField: {
-        marginBottom: '10px',
-    },
-}));
 
 interface AuthorState {
     countries: Country[],
@@ -46,7 +33,6 @@ export default function AuthorsPage(props: WithSnackbarProps): JSX.Element {
         newAuthor: false,
     });
     const history = useHistory();
-    const classes = useStyles();
 
     const updateAuthor = (author: Author, validateForm: any) => {
         validateForm()
@@ -115,7 +101,7 @@ export default function AuthorsPage(props: WithSnackbarProps): JSX.Element {
     }
 
     return (
-        <Grid item xs={6} container justify="center">
+        <Grid item xs={6} container justifyContent="center">
             <Grid item xs={12}>
                 {
                     !authorState.newAuthor && (
@@ -231,7 +217,7 @@ export default function AuthorsPage(props: WithSnackbarProps): JSX.Element {
                             <Grid item xs={12} style={{ paddingTop: '10px' }}>
                                 {!authorState.newAuthor && (
                                     <Button
-                                        className={classes.formButton}
+                                        sx={{ marginRight: '10px' }}
                                         variant="contained"
                                         color="primary"
                                         onClick={(e) => {
@@ -246,7 +232,7 @@ export default function AuthorsPage(props: WithSnackbarProps): JSX.Element {
                                 )}
                                 {authorState.newAuthor && (
                                     <Button
-                                        className={classes.formButton}
+                                        sx={{ marginRight: '10px' }}
                                         variant="contained"
                                         color="primary"
                                         onClick={(e) => {
@@ -259,7 +245,7 @@ export default function AuthorsPage(props: WithSnackbarProps): JSX.Element {
                                 )}
 
                                 <Button
-                                    className={classes.formButton}
+                                    sx={{ marginRight: '10px' }}
                                     variant="contained"
                                     color="secondary"
                                     onClick={() => {
