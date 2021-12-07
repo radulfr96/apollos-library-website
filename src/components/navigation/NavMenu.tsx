@@ -14,7 +14,7 @@ export default function NavMenu(): JSX.Element {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          <Link href="/" sx={{ textDecoration: 'none' }}>
+          <Link href="/" sx={{ textDecoration: 'none', color: '#FFFFFFFF' }}>
             My Library
           </Link>
         </Typography>
