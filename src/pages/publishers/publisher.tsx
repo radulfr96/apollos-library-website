@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
-    Theme, Grid, Button, CircularProgress, makeStyles,
+    Grid, Button, CircularProgress,
 } from '@mui/material';
 import Axios from 'axios';
 import { WithSnackbarProps } from 'notistack';
@@ -12,19 +12,6 @@ import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
 import CountryTypedown from '../../components/shared/countryTypedown';
 import Country from '../../interfaces/country';
-
-const useStyles = makeStyles((theme: Theme) => ({
-    paper: {
-        color: theme.palette.primary.main,
-        width: '100%',
-    },
-    formButton: {
-        marginRight: '10px',
-    },
-    publisherIdField: {
-        marginBottom: '10px',
-    },
-}));
 
 interface PublisherState {
     publisher: Publisher;
@@ -48,7 +35,6 @@ export default function PublisherPage(props: WithSnackbarProps): JSX.Element {
         newPublisher: false,
     });
 
-    const classes = useStyles();
     const history = useNavigate();
     const params = useParams();
 
@@ -145,7 +131,7 @@ export default function PublisherPage(props: WithSnackbarProps): JSX.Element {
     }
 
     return (
-        <Grid item xs={6} container justify="center">
+        <Grid item xs={6} container justifyContent="center">
             <Grid item xs={12}>
                 {
                     !publisherState.newPublisher && (
@@ -296,7 +282,7 @@ export default function PublisherPage(props: WithSnackbarProps): JSX.Element {
                                     )}
                                     {publisherState.newPublisher && (
                                         <Button
-                                            className={classes.formButton}
+                                            sx={{ marginRight: '10px' }}
                                             variant="contained"
                                             color="primary"
                                             onClick={(e) => {
@@ -311,7 +297,7 @@ export default function PublisherPage(props: WithSnackbarProps): JSX.Element {
                                     )}
 
                                     <Button
-                                        className={classes.formButton}
+                                        sx={{ marginRight: '10px' }}
                                         variant="contained"
                                         color="secondary"
                                         onClick={() => {

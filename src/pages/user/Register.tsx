@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import {
-    Paper, Grid, Button, makeStyles,
+    Paper, Grid, Button,
 } from '@mui/material';
 import Axios from 'axios';
 import { WithSnackbarProps } from 'notistack';
@@ -17,21 +17,7 @@ interface RegisterState {
     registrationInfo: RegisterInfo;
 }
 
-const useStyles = makeStyles({
-    paper: {
-        paddingTop: '20px',
-        paddingLeft: '40px',
-        paddingRight: '20px',
-    },
-    formButton: {
-        marginBottom: '10px',
-        marginRight: '10px',
-        float: 'right',
-    },
-});
-
 export default function Register(props: WithSnackbarProps): JSX.Element {
-    const classes = useStyles();
     const [registerState] = useState<RegisterState>({
         registrationInfo: {
             username: '',
@@ -97,7 +83,13 @@ export default function Register(props: WithSnackbarProps): JSX.Element {
     };
 
     return (
-        <Paper className={classes.paper}>
+        <Paper
+            sx={{
+                paddingTop: '20px',
+                paddingLeft: '40px',
+                paddingRight: '20px',
+            }}
+        >
             <PageHeading headingText="Sign Up" />
             <Formik
                 initialValues={registerState.registrationInfo}
@@ -105,16 +97,16 @@ export default function Register(props: WithSnackbarProps): JSX.Element {
                     console.log(values);
                 }}
                 validationSchema={() => yup.object().shape({
-                        username: yup.string()
+                    username: yup.string()
                         .required('You must enter a username to register'),
-                        password: yup.string()
+                    password: yup.string()
                         .required('You must enter your a password to register')
                         .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Password must be at least 6 characters long and contain one number and uppercase character.'),
-                        confirmationPassword: yup.string()
+                    confirmationPassword: yup.string()
                         .oneOf([yup.ref('password')], 'Confirm password must matched password')
                         .required('You must enter your password confirmation to register'),
-                    })}
-                    // yup.addMethod(yup.string, 'equalTo', YupExtensions.equalTo);
+                })}
+            // yup.addMethod(yup.string, 'equalTo', YupExtensions.equalTo);
             >
                 {({
                     values,

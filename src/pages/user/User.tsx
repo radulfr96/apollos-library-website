@@ -117,7 +117,7 @@ export default function UserPage(props: WithSnackbarProps): JSX.Element {
     }
 
     return (
-        <Grid item xs={9} container justify="center">
+        <Grid item xs={9} container justifyContent="center">
             <Grid item xs={12}>
                 <PageHeading headingText="User Details" />
             </Grid>

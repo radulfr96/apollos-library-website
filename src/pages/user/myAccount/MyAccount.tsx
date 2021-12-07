@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-    Paper, Tabs, Tab, AppBar, Typography, Box, makeStyles,
+    Paper, Tabs, Tab, AppBar, Typography, Box,
 } from '@mui/material';
 import MyDetails from './MyDetails';
 import ChangeUsername from './ChangeUsername';
@@ -34,30 +34,17 @@ interface MyAccountState {
     tab: number;
 }
 
-const useStyles = makeStyles({
-    paper: {
-        width: '1000px',
-    },
-    formButton: {
-        marginBottom: '10px',
-        marginRight: '10px',
-        float: 'right',
-    },
-});
-
 export default function MyAccount(): JSX.Element {
     const [myAccountState] = useState<MyAccountState>({
         tab: 1,
     });
-
-    const classes = useStyles();
 
     // const handleTabChange = (event: React.ChangeEvent, newValue: number) => {
     //     setMyAccountState({ ...myAccountState, tab: newValue });
     // };
 
     return (
-        <Paper className={classes.paper}>
+        <Paper sx={{ width: '1000px' }}>
                 <AppBar position="static">
                     <Tabs
                         value={myAccountState.tab}

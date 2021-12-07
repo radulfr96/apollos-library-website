@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import {
-    Grid, Button, makeStyles,
+    Grid, Button,
 } from '@mui/material';
 import Axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -10,28 +10,8 @@ import ReadOnlyLabel from '../../../components/shared/ReadOnlyLabel';
 import ReadOnlyText from '../../../components/shared/ReadOnlyText';
 import { AppContext } from '../../../Context';
 
-const useStyles = makeStyles({
-    paper: {
-        paddingTop: '20px',
-        paddingLeft: '40px',
-        paddingRight: '20px',
-    },
-    navPaper: {
-        paddingTop: '20px',
-        paddingLeft: '40px',
-        paddingRight: '20px',
-        marginRight: '20px',
-        width: '150px',
-    },
-    actionButton: {
-        marginRight: '10px',
-        float: 'right',
-    },
-});
-
 export default function MyDetails(): JSX.Element {
     const context = useContext(AppContext);
-    const classes = useStyles();
     const history = useNavigate();
     const snackbar = useSnackbar();
 
@@ -135,7 +115,10 @@ export default function MyDetails(): JSX.Element {
                     }}
                     variant="contained"
                     color="primary"
-                    className={classes.actionButton}
+                    sx={{
+                        marginRight: '10px',
+                        float: 'right',
+                    }}
                 >
                     Deactivate Account
                 </Button>
@@ -143,7 +126,10 @@ export default function MyDetails(): JSX.Element {
                     onClick={() => {
                         deleteUser();
                     }}
-                    className={classes.actionButton}
+                    sx={{
+                        marginRight: '10px',
+                        float: 'right',
+                    }}
                 >
                     Delete Account
                 </Button>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
-    Theme, Grid, Button, CircularProgress, makeStyles,
+    Grid, Button, CircularProgress,
 } from '@mui/material';
 import Axios from 'axios';
 import { useParams } from 'react-router';
@@ -11,19 +11,6 @@ import { WithSnackbarProps } from 'notistack';
 import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
-
-const useStyles = makeStyles((theme: Theme) => ({
-    paper: {
-        color: theme.palette.primary.main,
-        width: '100%',
-    },
-    formButton: {
-        marginRight: '10px',
-    },
-    userIdField: {
-        marginBottom: '10px',
-    },
-}));
 
 interface GenreState {
     genre: Genre;
@@ -43,7 +30,6 @@ export default function GenrePage(props: WithSnackbarProps): JSX.Element {
         newGenre: false,
     });
 
-    const classes = useStyles();
     const history = useNavigate();
     const params = useParams<GenreParams>();
 
@@ -131,7 +117,7 @@ export default function GenrePage(props: WithSnackbarProps): JSX.Element {
     }
 
     return (
-        <Grid item xs={6} container justify="center">
+        <Grid item xs={6} container justifyContent="center">
             <Grid item xs={12}>
                 {
                     !genreState.newGenre && (
@@ -226,7 +212,7 @@ export default function GenrePage(props: WithSnackbarProps): JSX.Element {
                                     )}
 
                                     <Button
-                                        className={classes.formButton}
+                                        sx={{ marginRight: '10px' }}
                                         variant="contained"
                                         color="secondary"
                                         onClick={() => {

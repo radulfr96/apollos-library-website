@@ -1,8 +1,5 @@
 import * as React from 'react';
-import { Typography, withStyles, Grid } from '@mui/material';
-
-const styles = () => ({
-});
+import { Typography, Grid } from '@mui/material';
 
 interface HomeProps {
   classes: any;
@@ -10,12 +7,10 @@ interface HomeProps {
 
 class Home extends React.Component<HomeProps> {
   render() {
-    const { classes } = this.props;
-
     return (
       <Grid item container xs={12}>
         <Grid item xs={12}>
-          <Typography variant="h4" className={classes.title}>
+          <Typography variant="h4">
             Welcome to My Library
           </Typography>
         </Grid>
@@ -31,4 +26,4 @@ class Home extends React.Component<HomeProps> {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Home);
+export default Home;
