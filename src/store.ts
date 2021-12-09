@@ -1,12 +1,9 @@
 import { routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import { createStore, applyMiddleware, compose } from 'redux';
-import createOidcMiddleware from 'redux-oidc';
+import { loadUser } from 'redux-oidc';
 import createRootReducer from './reducer';
 import userManager from './util/userManager';
-
-// create the middleware with the userManager
-const oidcMiddleware = createOidcMiddleware(userManager);
 
 export const history = createBrowserHistory();
 
@@ -17,10 +14,10 @@ export default function configureStore(preloadedState: any) {
     compose(
       applyMiddleware(
         routerMiddleware(history), // for dispatching history actions
-        oidcMiddleware,
       ),
     ),
   );
 
+  loadUser(store, userManager);
   return store;
 }

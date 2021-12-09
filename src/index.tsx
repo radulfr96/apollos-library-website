@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router';
 import { ThemeProvider } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
+import { OidcProvider } from 'redux-oidc';
 import Layout from './components/Layout';
 import CallbackPage from './pages/CallbackPage';
 import GenrePage from './pages/genre/Genre';
@@ -22,6 +23,7 @@ import configureStore from './store';
 import Authors from './pages/authors/authors';
 import AuthorPage from './pages/authors/author';
 import theme from './config/theme';
+import userManager from './util/userManager';
 // Create browser history to use in the Redux store
 
 // Get the application-wide store instance, prepopulating
@@ -33,32 +35,34 @@ const store = configureStore({});
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            <ThemeProvider theme={theme}>
-                <SnackbarProvider maxSnack={10}>
-                    <Layout>
-                        <ConnectedRouter history={history}>
-                            <Switch>
-                                <Route exact path="/" component={Home} />
-                                <Route path="/callback" component={CallbackPage} />
-                                <Route path="/user" component={Users} />
-                                <Route path="/login" component={Login} />
-                                <Route path="/register" component={Register} />
-                                <Route path="/account" component={MyAccount} />
-                                <Route path="/userdetails/:id" component={UserPage} />
-                                <Route path="/genres" component={Genres} />
-                                <Route path="/genre/:id" component={GenrePage} />
-                                <Route path="/addgenre" component={GenrePage} />
-                                <Route path="/publishers" component={Publishers} />
-                                <Route path="/publisher/:id" component={PublisherPage} />
-                                <Route path="/addpublisher" component={PublisherPage} />
-                                <Route path="/authors" component={Authors} />
-                                <Route path="/author/:id" component={AuthorPage} />
-                                <Route path="/addauthor" component={AuthorPage} />
-                            </Switch>
-                        </ConnectedRouter>
-                    </Layout>
-                </SnackbarProvider>
-            </ThemeProvider>
+            <OidcProvider store={store} userManager={userManager}>
+                <ThemeProvider theme={theme}>
+                    <SnackbarProvider maxSnack={10}>
+                        <Layout>
+                            <ConnectedRouter history={history}>
+                                <Switch>
+                                    <Route exact path="/" component={Home} />
+                                    <Route path="/callback" component={CallbackPage} />
+                                    <Route path="/user" component={Users} />
+                                    <Route path="/login" component={Login} />
+                                    <Route path="/register" component={Register} />
+                                    <Route path="/account" component={MyAccount} />
+                                    <Route path="/userdetails/:id" component={UserPage} />
+                                    <Route path="/genres" component={Genres} />
+                                    <Route path="/genre/:id" component={GenrePage} />
+                                    <Route path="/addgenre" component={GenrePage} />
+                                    <Route path="/publishers" component={Publishers} />
+                                    <Route path="/publisher/:id" component={PublisherPage} />
+                                    <Route path="/addpublisher" component={PublisherPage} />
+                                    <Route path="/authors" component={Authors} />
+                                    <Route path="/author/:id" component={AuthorPage} />
+                                    <Route path="/addauthor" component={AuthorPage} />
+                                </Switch>
+                            </ConnectedRouter>
+                        </Layout>
+                    </SnackbarProvider>
+                </ThemeProvider>
+            </OidcProvider>
         </Provider>
     </React.StrictMode>,
     document.getElementById('root'),

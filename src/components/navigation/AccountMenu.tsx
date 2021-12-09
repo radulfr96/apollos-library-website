@@ -25,6 +25,11 @@ export default function AccountMenu(): JSX.Element {
     setAnchorEl(null);
   };
 
+  const handleLogin = (event: any) => {
+    event.preventDefault();
+    userManager.signinRedirect();
+  };
+
   return (
     <Box>
       <IconButton
@@ -75,7 +80,7 @@ export default function AccountMenu(): JSX.Element {
             Log out
           </Link>
         </MenuItem>
-        <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={userManager.signinRedirect}>
+        <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={handleLogin}>
           <Typography>Log in</Typography>
         </MenuItem>
         <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={handleClose}>
