@@ -1,11 +1,12 @@
 import React from 'react';
 import { CallbackComponent } from 'redux-oidc';
+import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import { Box } from '@mui/material';
 import userManager from '../util/userManager';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export default function CallbackPage(props: any): JSX.Element {
+function CallbackPage(props: any): JSX.Element {
     // just redirect to '/' in both cases
     return (
         <CallbackComponent
@@ -20,3 +21,5 @@ export default function CallbackPage(props: any): JSX.Element {
         </CallbackComponent>
     );
 }
+
+export default connect()(CallbackPage);
