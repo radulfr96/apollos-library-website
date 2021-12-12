@@ -1,6 +1,5 @@
 export interface UserInfo {
-    username: string;
+    username: string | undefined;
     roles: Array<string>;
-    userId: number;
-    joinDate: Date;
+    userId: string | undefined;
 }

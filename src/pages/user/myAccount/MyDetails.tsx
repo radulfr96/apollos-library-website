@@ -90,12 +90,12 @@ export default function MyDetails(): JSX.Element {
                 />
                 <ReadOnlyText text={context.userInfo?.username} />
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
                 <ReadOnlyLabel
                     text="Date Joined"
                 />
                 <ReadOnlyText text={context.userInfo?.joinDate} />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
                 <Grid item xs={12}>
                     <Grid item xs={12}>

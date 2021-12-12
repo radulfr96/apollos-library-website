@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 // import Axios from 'axios';
 import { UserInfo } from './interfaces/userInfo';
+import userManager from './util/userManager';
 
 export const AppContext = React.createContext<State & Functions>({
   userInfo: null,
@@ -26,7 +27,7 @@ interface AppContextProviderProps {
   children: JSX.Element,
 }
 
-export function AppContextProvider(props: AppContextProviderProps): JSX.Element {
+function AppContextProvider(props: AppContextProviderProps): JSX.Element {
   const [state, setState] = useState<State>({
     userInfo: null,
   });
@@ -56,18 +57,18 @@ export function AppContextProvider(props: AppContextProviderProps): JSX.Element 
   };
 
   const getUserInfo = () => {
-    // Axios.get('/api/user/userinfo').then((response) => {
-    //   if (response.data !== null && response.data !== undefined) {
-    //     setState({
-    //       userInfo: {
-    //         username: response.data.username,
-    //         roles: response.data.roles,
-    //         userId: response.data.userID,
-    //         joinDate: response.data.joinDate,
-    //       },
-    //     });
-    //   }
-    // });
+    userManager.getUser().then((user) => {
+      if (user !== null) {
+        console.log(user);
+        setState({
+          userInfo: {
+            username: user.profile.name,
+            roles: user.scopes,
+            userId: user.profile.sid,
+          },
+        });
+      }
+    });
   };
 
   const contextValue = {
@@ -75,6 +76,7 @@ export function AppContextProvider(props: AppContextProviderProps): JSX.Element 
   };
 
   useEffect(() => {
+    console.log('effect');
     getUserInfo();
   }, []);
 
@@ -84,3 +86,5 @@ export function AppContextProvider(props: AppContextProviderProps): JSX.Element 
     </AppContext.Provider>
   );
 }
+
+export default AppContextProvider;

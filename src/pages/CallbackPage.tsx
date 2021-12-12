@@ -1,19 +1,21 @@
 import React from 'react';
 import { CallbackComponent } from 'redux-oidc';
 import { connect } from 'react-redux';
-import { push } from 'connected-react-router';
 import { Box } from '@mui/material';
+import { useHistory } from 'react-router';
 import userManager from '../util/userManager';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function CallbackPage(props: any): JSX.Element {
+function CallbackPage(): JSX.Element {
+    const history = useHistory();
+
     // just redirect to '/' in both cases
     return (
         <CallbackComponent
             userManager={userManager}
-            successCallback={() => props.dispatch(push('/'))}
+            successCallback={() => history.push('/')}
             errorCallback={(error) => {
-                props.dispatch(push('/'));
+                history.push('/');
                 console.error(error);
             }}
         >
