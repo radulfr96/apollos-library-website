@@ -18,7 +18,7 @@ export default function NavMenu(): JSX.Element {
             My Library
           </Link>
         </Typography>
-        <Box style={{ display: context.isStandardUser() ? 'block' : 'none' }}>
+        <Box style={{ display: context.isPaidUser() ? 'block' : 'none' }}>
           <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"

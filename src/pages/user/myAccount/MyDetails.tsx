@@ -3,7 +3,7 @@ import {
     Grid, Button,
 } from '@mui/material';
 import Axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { push } from 'connected-react-router';
 import { useSnackbar } from 'notistack';
 import PageHeading from '../../../components/shared/PageHeading';
 import ReadOnlyLabel from '../../../components/shared/ReadOnlyLabel';
@@ -12,7 +12,6 @@ import { AppContext } from '../../../Context';
 
 export default function MyDetails(): JSX.Element {
     const context = useContext(AppContext);
-    const history = useNavigate();
     const snackbar = useSnackbar();
 
     const renderErrorSnackbar = (message: string): void => {
@@ -39,7 +38,7 @@ export default function MyDetails(): JSX.Element {
                 if (response.status === 200) {
                     renderSuccessSnackbar('Deactivation successful');
                     context.clearUserInfo();
-                    history('/');
+                    push('/');
                 }
             })
             .catch((error) => {
@@ -59,7 +58,7 @@ export default function MyDetails(): JSX.Element {
                 if (response.status === 200) {
                     renderSuccessSnackbar('Deletion successful');
                     context.clearUserInfo();
-                    history('/');
+                    push('/');
                 }
             })
             .catch((error) => {

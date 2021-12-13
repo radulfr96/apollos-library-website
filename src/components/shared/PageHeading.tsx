@@ -9,7 +9,7 @@ interface PageHeadingProps {
 
 export default function PageHeading(props: PageHeadingProps): JSX.Element {
     return (
-        <Typography sx={{ paddingBottom: '20px' }}>
+        <Typography variant="h3" sx={{ paddingBottom: '20px' }}>
             {props.headingText}
         </Typography>
     );

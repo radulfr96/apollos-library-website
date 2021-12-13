@@ -7,14 +7,14 @@ import userManager from './util/userManager';
 export const AppContext = React.createContext<State & Functions>({
   userInfo: null,
   isAdmin: () => false,
-  isStandardUser: () => false,
+  isPaidUser: () => false,
   getUserInfo: () => null,
   clearUserInfo: () => null,
 });
 
 interface Functions {
   isAdmin(): boolean;
-  isStandardUser(): boolean;
+  isPaidUser(): boolean;
   getUserInfo(): void;
   clearUserInfo(): void;
 }
@@ -35,16 +35,16 @@ function AppContextProvider(props: AppContextProviderProps): JSX.Element {
   const isAdmin = (): boolean => {
     if (state.userInfo == null) return false;
     if (state.userInfo.roles === undefined) return false;
-    if (state.userInfo.roles.indexOf('Admin') > -1) {
+    if (state.userInfo.roles.indexOf('administrator') > -1) {
       return true;
     }
     return false;
   };
 
-  const isStandardUser = (): boolean => {
+  const isPaidUser = (): boolean => {
     if (state.userInfo == null) return false;
     if (state.userInfo.roles === undefined) return false;
-    if (state.userInfo.roles.indexOf('Standard User') > -1) {
+    if (state.userInfo.roles.indexOf('paidaccount') > -1 || state.userInfo.roles.indexOf('freeaccount') > -1) {
       return true;
     }
     return false;
@@ -59,11 +59,10 @@ function AppContextProvider(props: AppContextProviderProps): JSX.Element {
   const getUserInfo = () => {
     userManager.getUser().then((user) => {
       if (user !== null) {
-        console.log(user);
         setState({
           userInfo: {
-            username: user.profile.name,
-            roles: user.scopes,
+            username: user.profile.username,
+            roles: user.profile.role,
             userId: user.profile.sid,
           },
         });
@@ -72,11 +71,10 @@ function AppContextProvider(props: AppContextProviderProps): JSX.Element {
   };
 
   const contextValue = {
-    ...state, isAdmin, isStandardUser, getUserInfo, clearUserInfo,
+    ...state, isAdmin, isPaidUser, getUserInfo, clearUserInfo,
   };
 
   useEffect(() => {
-    console.log('effect');
     getUserInfo();
   }, []);
 
