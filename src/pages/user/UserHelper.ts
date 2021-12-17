@@ -1,4 +1,3 @@
-/* eslint-disable arrow-body-style */
 import Axios from 'axios';
 
 export default class UserHelper {

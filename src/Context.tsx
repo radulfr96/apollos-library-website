@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserInfo } from './interfaces/userInfo';
 import userManager from './util/userManager';
 
@@ -68,9 +68,10 @@ const AppContextProvider = (props: AppContextProviderProps) => {
         });
     };
 
-    const contextValue = useMemo(() => ({
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
+    const contextValue = {
         ...state, isAdmin, isPaidUser, getUserInfo, clearUserInfo,
-    }), []);
+    };
 
     const { children } = props;
 
