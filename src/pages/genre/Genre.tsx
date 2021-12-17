@@ -4,9 +4,9 @@ import * as yup from 'yup';
 import {
     Grid, Button, CircularProgress,
 } from '@mui/material';
+import { push } from 'connected-react-router';
 import Axios from 'axios';
 import { useParams } from 'react-router';
-import { useNavigate } from 'react-router-dom';
 import { WithSnackbarProps } from 'notistack';
 import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/PageHeading';
@@ -30,7 +30,6 @@ const GenrePage = (props: WithSnackbarProps) => {
         newGenre: false,
     });
 
-    const history = useNavigate();
     const params = useParams<GenreParams>();
     const { enqueueSnackbar } = props;
 
@@ -77,7 +76,7 @@ const GenrePage = (props: WithSnackbarProps) => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');
-                                history(-1);
+                                push('/genres');
                             }
                         })
                         .catch((error) => {
@@ -99,7 +98,7 @@ const GenrePage = (props: WithSnackbarProps) => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Add successful');
-                                history(-1);
+                                push('/genres');
                             }
                         })
                         .catch((error) => {
@@ -215,7 +214,7 @@ const GenrePage = (props: WithSnackbarProps) => {
                                     variant="contained"
                                     color="secondary"
                                     onClick={() => {
-                                        history('/genres');
+                                        push('/genres');
                                     }}
                                 >
                                     Cancel

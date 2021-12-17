@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import { push } from 'connected-react-router';
 import {
     Paper, Grid, Button,
 } from '@mui/material';
@@ -27,8 +27,6 @@ const Register = (props: WithSnackbarProps) => {
     });
 
     const { enqueueSnackbar } = props;
-
-    const history = useNavigate();
     const context = useContext(AppContext);
 
     const renderErrorSnackbar = (message: string): void => {
@@ -70,7 +68,7 @@ const Register = (props: WithSnackbarProps) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Registration successful');
                                 context.getUserInfo();
-                                history('/');
+                                push('/');
                             }
                         })
                         .catch((error) => {
@@ -172,7 +170,7 @@ const Register = (props: WithSnackbarProps) => {
                                 variant="contained"
                                 color="secondary"
                                 onClick={() => {
-                                    history('/');
+                                    push('/');
                                 }}
                             >
                                 Cancel

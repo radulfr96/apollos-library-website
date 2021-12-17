@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
     Grid, Button, CircularProgress,
 } from '@mui/material';
+import { push } from 'connected-react-router';
 import Axios from 'axios';
 import { WithSnackbarProps } from 'notistack';
 import { Publisher } from '../../interfaces/publisher';
@@ -34,8 +35,6 @@ const PublisherPage = (props: WithSnackbarProps) => {
         countries: [],
         newPublisher: false,
     });
-
-    const history = useNavigate();
     const params = useParams();
 
     const { enqueueSnackbar } = props;
@@ -92,7 +91,7 @@ const PublisherPage = (props: WithSnackbarProps) => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');
-                                history(-1);
+                                push('/publishers');
                             }
                         })
                         .catch((error) => {
@@ -114,7 +113,7 @@ const PublisherPage = (props: WithSnackbarProps) => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Add successful');
-                                history(-1);
+                                push('/publishers');
                             }
                         })
                         .catch((error) => {
@@ -301,7 +300,7 @@ const PublisherPage = (props: WithSnackbarProps) => {
                                     variant="contained"
                                     color="secondary"
                                     onClick={() => {
-                                        history('/publishers');
+                                        push('/publishers');
                                     }}
                                 >
                                     Cancel

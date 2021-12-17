@@ -5,7 +5,7 @@ import {
     Paper, Grid, Button,
 } from '@mui/material';
 import Axios from 'axios';
-import { useHistory } from 'react-router';
+import { push } from 'connected-react-router';
 import { WithSnackbarProps } from 'notistack';
 import InputTextField from '../../components/shared/InputTextField';
 import { LoginInfo } from '../../interfaces/loginInfo';
@@ -18,7 +18,6 @@ interface LoginState {
 
 const Login = (props: WithSnackbarProps) => {
     const context = useContext(AppContext);
-    const history = useHistory();
     const [loginState] = useState<LoginState>({
         loginInfo: {
             username: '',
@@ -55,7 +54,7 @@ const Login = (props: WithSnackbarProps) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Login successful');
                                 context.getUserInfo();
-                                history.push('/');
+                                push('/');
                             }
                         })
                         .catch((error) => {
@@ -148,7 +147,7 @@ const Login = (props: WithSnackbarProps) => {
                                 variant="contained"
                                 color="secondary"
                                 onClick={() => {
-                                    history.push('/');
+                                    push('/');
                                 }}
                             >
                                 Cancel

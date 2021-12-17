@@ -31,7 +31,7 @@ import AppContextProvider from './Context';
 // with state from the server where available.
 
 const history = createBrowserHistory();
-const store = configureStore({});
+const store = configureStore({}, history);
 
 ReactDOM.render(
     <React.StrictMode>

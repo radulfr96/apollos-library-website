@@ -4,8 +4,8 @@ import {
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import Axios from 'axios';
-import { useHistory } from 'react-router';
 import { WithSnackbarProps } from 'notistack';
+import { push } from 'connected-react-router';
 import { AuthorListItem } from '../../interfaces/authorListItem';
 import PageHeading from '../../components/shared/PageHeading';
 import AuthorsTable from '../../components/AuthorsTable';
@@ -21,7 +21,6 @@ const AuthorsPage = (props: WithSnackbarProps) => {
     });
 
     const context = useContext(AppContext);
-    const history = useHistory();
     const { enqueueSnackbar } = props;
 
     const renderErrorSnackbar = (message: string): void => {
@@ -85,7 +84,7 @@ const AuthorsPage = (props: WithSnackbarProps) => {
                         float: 'right',
                     }}
                     onClick={() => {
-                        history.push('addauthor');
+                        push('/addauthor');
                     }}
                 >
                     <Add />

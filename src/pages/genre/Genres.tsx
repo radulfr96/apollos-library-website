@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import Axios from 'axios';
-import { useHistory } from 'react-router';
+import { push } from 'connected-react-router';
 import { WithSnackbarProps } from 'notistack';
 import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/PageHeading';
@@ -18,7 +18,6 @@ const Genres = (props: WithSnackbarProps) => {
     const [genreState, setGenreState] = useState<GenresState>({
         genres: [],
     });
-    const history = useHistory();
     const { enqueueSnackbar } = props;
 
     const renderErrorSnackbar = (message: string): void => {
@@ -74,7 +73,7 @@ const Genres = (props: WithSnackbarProps) => {
                         float: 'right',
                     }}
                     onClick={() => {
-                        history.push('addgenre');
+                        push('/addgenre');
                     }}
                 >
                     <Add />

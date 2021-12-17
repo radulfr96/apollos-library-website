@@ -3,7 +3,7 @@ import {
     TableHead, TableRow, TableCell, TableSortLabel, TableContainer,
     Paper, Table, TableBody, IconButton, Typography,
 } from '@mui/material';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import { ChevronRight, Delete } from '@mui/icons-material';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { PublisherTableItem } from '../interfaces/publisherTableItem';

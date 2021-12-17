@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import Axios from 'axios';
-import { useHistory } from 'react-router';
+import { push } from 'connected-react-router';
 import { WithSnackbarProps } from 'notistack';
 import { PublisherListItem } from '../../interfaces/publisherListItem';
 import PageHeading from '../../components/shared/PageHeading';
@@ -19,7 +19,6 @@ const Publishers = (props: WithSnackbarProps) => {
     const [publisherState, setPublisherState] = useState<PublishersState>({
         publishers: [],
     });
-    const history = useHistory();
     const context = useContext(AppContext);
 
     const { enqueueSnackbar } = props;
@@ -88,7 +87,7 @@ const Publishers = (props: WithSnackbarProps) => {
                         float: 'right',
                     }}
                     onClick={() => {
-                        history.push('addpublisher');
+                        push('/addpublisher');
                     }}
                 >
                     <Add />

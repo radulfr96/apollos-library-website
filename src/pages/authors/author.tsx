@@ -5,7 +5,7 @@ import {
     Grid, Button, CircularProgress,
 } from '@mui/material';
 import Axios from 'axios';
-import { useHistory } from 'react-router';
+import { push } from 'connected-react-router';
 import { WithSnackbarProps } from 'notistack';
 import { Author } from '../../interfaces/author';
 import PageHeading from '../../components/shared/PageHeading';
@@ -32,7 +32,6 @@ const AuthorsPage = (props: WithSnackbarProps) => {
         },
         newAuthor: false,
     });
-    const history = useHistory();
     const { enqueueSnackbar } = props;
 
     const renderErrorSnackbar = (message: string): void => {
@@ -61,7 +60,7 @@ const AuthorsPage = (props: WithSnackbarProps) => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');
-                                history.goBack();
+                                push('/authors');
                             }
                         })
                         .catch((error) => {
@@ -83,7 +82,7 @@ const AuthorsPage = (props: WithSnackbarProps) => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Add successful');
-                                history.goBack();
+                                push('/authors');
                             }
                         })
                         .catch((error) => {
@@ -248,7 +247,7 @@ const AuthorsPage = (props: WithSnackbarProps) => {
                                     variant="contained"
                                     color="secondary"
                                     onClick={() => {
-                                        history.push('/authors');
+                                        push('/authors');
                                     }}
                                 >
                                     Cancel
