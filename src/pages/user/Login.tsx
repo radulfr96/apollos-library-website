@@ -80,9 +80,7 @@ const Login = (props: WithSnackbarProps) => {
             <PageHeading headingText="Login" />
             <Formik
                 initialValues={loginState.loginInfo}
-                onSubmit={(values) => {
-                    console.log(values);
-                }}
+                onSubmit={() => { }}
                 validationSchema={
                     yup.object().shape({
                         username: yup.string()

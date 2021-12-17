@@ -4,18 +4,22 @@ import {
 } from '@mui/material';
 
 interface ReadOnlyLabelProps {
-    text: string | undefined;
+    text?: string;
 }
 
-const ReadOnlyLabel = (props: ReadOnlyLabelProps) => (
-    <Typography
-        sx={{
-            fontSize: '22px',
-            paddingTop: '10px',
-        }}
-    >
-        {props.text}
-    </Typography>
-);
+const ReadOnlyLabel = (props: ReadOnlyLabelProps) => {
+    const { text } = props;
+
+    return (
+        <Typography
+            sx={{
+                fontSize: '22px',
+                paddingTop: '10px',
+            }}
+        >
+            {text}
+        </Typography>
+    );
+};
 
 export default ReadOnlyLabel;

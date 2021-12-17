@@ -3,10 +3,11 @@ import {
     TableHead, TableRow, TableCell, TableSortLabel, TableContainer,
     Paper, Table, TableBody, IconButton, Typography,
 } from '@mui/material';
+import { push } from 'react-router-redux';
 import { ChevronRight, Delete } from '@mui/icons-material';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { PublisherTableItem } from '../interfaces/publisherTableItem';
-import TableHelper, { Order } from '../util/TableFunctions.ts';
+import TableHelper, { Order } from '../util/TableFunctions';
 
 interface HeadCell {
     id: keyof PublisherTableItem;
@@ -79,42 +80,49 @@ interface RowProps {
     deletePublisher: (publisherId: number) => void;
 }
 
-const NavCell = (props: RowProps & RouteComponentProps) => (
-    <TableCell>
-        <IconButton onClick={() => {
-            props.deletePublisher(props.publisher.publisherId);
-        }}
-        >
-            <Delete sx={{
-                color: 'red',
+const NavCell = (props: RowProps & RouteComponentProps) => {
+    const { deletePublisher, publisher } = props;
+
+    return (
+        <TableCell>
+            <IconButton onClick={() => {
+                deletePublisher(publisher.publisherId);
             }}
-            />
-        </IconButton>
-        <IconButton onClick={() => {
-            props.history.push(`publisher/${props.publisher.publisherId}`);
-        }}
-        >
-            <ChevronRight />
-        </IconButton>
-    </TableCell>
-);
+            >
+                <Delete sx={{
+                    color: 'red',
+                }}
+                />
+            </IconButton>
+            <IconButton onClick={() => {
+                push(`publisher/${publisher.publisherId}`);
+            }}
+            >
+                <ChevronRight />
+            </IconButton>
+        </TableCell>
+    );
+};
 
 export const NavigationCell = withRouter(NavCell);
 
-export var Row = (props: RowProps) => (
-    <TableRow
-        key={props.publisher.publisherId}
-        hover
-        sx={{
-            transition: 'all 0.4s',
-        }}
-    >
-        <TableCell>{props.publisher.publisherId}</TableCell>
-        <TableCell>{props.publisher.name}</TableCell>
-        <TableCell>{props.publisher.country}</TableCell>
-        <NavigationCell publisher={props.publisher} deletePublisher={props.deletePublisher} />
-    </TableRow>
-);
+export const Row = (props: RowProps) => {
+    const { publisher, deletePublisher } = props;
+    return (
+        <TableRow
+            key={publisher.publisherId}
+            hover
+            sx={{
+                transition: 'all 0.4s',
+            }}
+        >
+            <TableCell>{publisher.publisherId}</TableCell>
+            <TableCell>{publisher.name}</TableCell>
+            <TableCell>{publisher.country}</TableCell>
+            <NavigationCell publisher={publisher} deletePublisher={deletePublisher} />
+        </TableRow>
+    );
+};
 
 interface PublishersTableProps {
     publishers: Array<PublisherTableItem>;
@@ -124,7 +132,7 @@ interface PublishersTableProps {
 const PublishersTable = (props: PublishersTableProps) => {
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof PublisherTableItem>('publisherId');
-    const tableHelper = new TableHelper();
+    const { publishers, deletePublisher } = props;
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
@@ -136,9 +144,9 @@ const PublishersTable = (props: PublishersTableProps) => {
     };
 
     let tableContent = null;
-    tableContent = tableHelper.stableSort(props.publishers, tableHelper.getSorting(order, orderBy))
+    tableContent = TableHelper.stableSort(publishers, TableHelper.getSorting(order, orderBy))
         .map((row: PublisherTableItem) => (
-            <Row publisher={row} deletePublisher={props.deletePublisher} />
+            <Row publisher={row} deletePublisher={deletePublisher} />
         ));
 
     return (

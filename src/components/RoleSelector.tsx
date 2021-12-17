@@ -7,15 +7,18 @@ interface RoleSelectorProps {
     roles: Array<string>;
     selectedRoles: Array<string>;
     updateUserRoles: (newRoleNames: string[]) => void;
-    error: boolean | undefined;
-    errorMessage: string | undefined;
+    error?: boolean;
+    errorMessage?: string;
 }
 
 const RoleSelector = (props: RoleSelectorProps) => {
     const inputLabel = React.useRef<HTMLLabelElement>(null);
+    const {
+        updateUserRoles, selectedRoles, roles, error, errorMessage,
+    } = props;
 
     const handleChange = (event: any) => {
-        props.updateUserRoles(event.target.value as string[]);
+        updateUserRoles(event.target.value as string[]);
     };
 
     return (
@@ -36,7 +39,7 @@ const RoleSelector = (props: RoleSelectorProps) => {
                             paddingTop: '10px',
                             width: '100%',
                         }}
-                        value={props.selectedRoles}
+                        value={selectedRoles}
                         onChange={handleChange}
                         input={<Input id="selectMultipleRoles" />}
                         renderValue={(selected) => (
@@ -51,7 +54,7 @@ const RoleSelector = (props: RoleSelectorProps) => {
                             </Box>
                         )}
                     >
-                        {props.roles.map((role: string) => (
+                        {roles.map((role: string) => (
                             <MenuItem key={role} value={role}>
                                 {role}
                             </MenuItem>
@@ -64,7 +67,7 @@ const RoleSelector = (props: RoleSelectorProps) => {
                         color: 'red',
                     }}
                 >
-                    {props.error ? props.errorMessage : ''}
+                    {error ? errorMessage : ''}
                 </Box>
             </Grid>
         </Grid>

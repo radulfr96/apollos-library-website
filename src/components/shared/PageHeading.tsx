@@ -7,10 +7,14 @@ interface PageHeadingProps {
     headingText: string | undefined;
 }
 
-const PageHeading = (props: PageHeadingProps) => (
-    <Typography variant="h3" sx={{ paddingBottom: '20px' }}>
-        {props.headingText}
-    </Typography>
-);
+const PageHeading = (props: PageHeadingProps) => {
+    const { headingText } = props;
+
+    return (
+        <Typography variant="h3" sx={{ paddingBottom: '20px' }}>
+            {headingText}
+        </Typography>
+    );
+};
 
 export default PageHeading;

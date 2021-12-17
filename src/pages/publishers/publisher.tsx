@@ -149,9 +149,7 @@ const PublisherPage = (props: WithSnackbarProps) => {
             <Grid item xs={12}>
                 <Formik
                     initialValues={publisherState.publisher}
-                    onSubmit={(values) => {
-                        console.log(values);
-                    }}
+                    onSubmit={() => { }}
                     validationSchema={
                         yup.object().shape({
                             name: yup.string()

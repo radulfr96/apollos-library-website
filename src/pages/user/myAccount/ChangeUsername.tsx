@@ -67,8 +67,7 @@ const ChangeUsername = () => {
     };
 
     const checkUserIsUnique = (username: string) => {
-        const helper = new UserHelper();
-        helper.CheckUserIsUnique(username).then((result) => {
+        UserHelper.CheckUserIsUnique(username).then((result) => {
             if (result === null || result === undefined) {
                 renderErrorSnackbar('Unable to check username, please contact admin');
             } else if (result === true) {
@@ -87,9 +86,7 @@ const ChangeUsername = () => {
             <Grid item xs={12}>
                 <Formik
                     initialValues={changeUsernameState.changeUsernameInfo}
-                    onSubmit={(values) => {
-                        console.log(values);
-                    }}
+                    onSubmit={() => { }}
                     validationSchema={
                         yup.object().shape({
                             newUsername: yup.string()

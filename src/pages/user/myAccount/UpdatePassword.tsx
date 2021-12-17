@@ -89,9 +89,7 @@ const UpdatePassword = () => {
             <Grid item xs={12}>
                 <Formik
                     initialValues={updatePasswordState.changePasswordInfo}
-                    onSubmit={(values) => {
-                        console.log(values);
-                    }}
+                    onSubmit={() => { }}
                     validationSchema={
                         yup.object().shape({
                             password: yup.string()

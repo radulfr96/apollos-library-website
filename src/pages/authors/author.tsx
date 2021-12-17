@@ -118,9 +118,7 @@ const AuthorsPage = (props: WithSnackbarProps) => {
             <Grid item xs={12}>
                 <Formik
                     initialValues={authorState.author}
-                    onSubmit={(values) => {
-                        console.log(values);
-                    }}
+                    onSubmit={() => { }}
                     validationSchema={
                         yup.object().shape({
                             firstname: yup.string()

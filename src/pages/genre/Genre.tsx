@@ -134,9 +134,7 @@ const GenrePage = (props: WithSnackbarProps) => {
             <Grid item xs={12}>
                 <Formik
                     initialValues={genreState.genre}
-                    onSubmit={(values) => {
-                        console.log(values);
-                    }}
+                    onSubmit={() => { }}
                     validationSchema={
                         yup.object().shape({
                             name: yup.string()

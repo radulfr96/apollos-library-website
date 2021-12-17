@@ -16,21 +16,25 @@ interface InputTextFieldProps {
     readonly?: boolean;
 }
 
-function InputTextField(props: InputTextFieldProps) {
+const InputTextField = (props: InputTextFieldProps) => {
+    const {
+        keyName, required, label, value, type, onChange, onBlur, error, readonly, errorMessage,
+    } = props;
+
     return (
         <>
             <TextField
-                name={props.keyName}
-                required={props.required}
-                label={props.label}
-                defaultValue={props.value}
+                name={keyName}
+                required={required}
+                label={label}
+                defaultValue={value}
                 variant="outlined"
-                type={props.type}
-                onChange={props.onChange}
-                onBlur={props.onBlur}
-                error={props.error}
+                type={type}
+                onChange={onChange}
+                onBlur={onBlur}
+                error={error}
                 inputProps={{
-                    readOnly: props.readonly,
+                    readOnly: readonly,
                 }}
                 fullWidth
             />
@@ -39,10 +43,10 @@ function InputTextField(props: InputTextFieldProps) {
                 color: 'red',
             }}
             >
-                {props.error ? props.errorMessage : ''}
+                {error ? errorMessage : ''}
             </Box>
         </>
     );
-}
+};
 
 export default InputTextField;

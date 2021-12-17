@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { ChevronRight, Delete } from '@mui/icons-material';
 import { User } from '../interfaces/user';
-import TableHelper, { Order } from '../util/TableFunctions.ts';
+import TableHelper, { Order } from '../util/TableFunctions';
 
 interface HeadCell {
     id: keyof User;
@@ -24,7 +24,7 @@ interface EnhancedTableProps {
     orderBy: string;
 }
 
-function EnhancedTableHead(props: EnhancedTableProps) {
+const EnhancedTableHead = (props: EnhancedTableProps) => {
     const {
         onRequestSort, order, orderBy,
     } = props;
@@ -69,28 +69,30 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             </TableRow>
         </TableHead>
     );
-}
+};
 
 interface RowProps {
     user: User;
     deleteUser: (userId: string) => void;
 }
 
-function Row(props: RowProps) {
+const Row = (props: RowProps) => {
+    const { user, deleteUser } = props;
+
     return (
         <TableRow
-            key={props.user.userID}
+            key={user.userID}
             hover
             sx={{
                 transition: 'all 0.4s',
             }}
         >
-            <TableCell>{props.user.userID}</TableCell>
-            <TableCell>{props.user.username}</TableCell>
-            <TableCell>{props.user.isActive}</TableCell>
+            <TableCell>{user.userID}</TableCell>
+            <TableCell>{user.username}</TableCell>
+            <TableCell>{user.isActive}</TableCell>
             <TableCell>
                 <IconButton onClick={() => {
-                    props.deleteUser(props.user.userID);
+                    deleteUser(user.userID);
                 }}
                 >
                     <Delete sx={{
@@ -99,24 +101,24 @@ function Row(props: RowProps) {
                     />
                 </IconButton>
                 <IconButton>
-                    <a href={`/userdetails/${props.user.userID}`}>
+                    <a href={`/userdetails/${user.userID}`}>
                         <ChevronRight />
                     </a>
                 </IconButton>
             </TableCell>
         </TableRow>
     );
-}
+};
 
 interface UserTableProps {
     users: Array<User>;
     deleteUser: (userId: string) => void;
 }
 
-function UsersTable(props: UserTableProps) {
+const UsersTable = (props: UserTableProps) => {
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof User>('userID');
-    const tableHelper = new TableHelper();
+    const { users, deleteUser } = props;
 
     const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof User) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -125,9 +127,9 @@ function UsersTable(props: UserTableProps) {
     };
 
     let tableContent = null;
-    tableContent = tableHelper.stableSort(props.users, tableHelper.getSorting(order, orderBy))
+    tableContent = TableHelper.stableSort(users, TableHelper.getSorting(order, orderBy))
         .map((row: User) => (
-            <Row user={row} deleteUser={props.deleteUser} />
+            <Row user={row} deleteUser={deleteUser} />
         ));
 
     return (
@@ -148,6 +150,6 @@ function UsersTable(props: UserTableProps) {
             </Table>
         </TableContainer>
     );
-}
+};
 
 export default UsersTable;

@@ -50,8 +50,7 @@ const Register = (props: WithSnackbarProps) => {
     };
 
     const checkUserIsUnique = (username: string) => {
-        const helper = new UserHelper();
-        helper.CheckUserIsUnique(username).then((result) => {
+        UserHelper.CheckUserIsUnique(username).then((result) => {
             if (result === null || result === undefined) {
                 renderErrorSnackbar('Unable to check username, please contact admin');
             } else if (result === true) {
@@ -96,9 +95,7 @@ const Register = (props: WithSnackbarProps) => {
             <PageHeading headingText="Sign Up" />
             <Formik
                 initialValues={registerState.registrationInfo}
-                onSubmit={(values) => {
-                    console.log(values);
-                }}
+                onSubmit={() => { }}
                 validationSchema={() => yup.object().shape({
                     username: yup.string()
                         .required('You must enter a username to register'),

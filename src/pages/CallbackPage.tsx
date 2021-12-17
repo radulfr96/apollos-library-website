@@ -1,6 +1,7 @@
 import React from 'react';
 import { CallbackComponent } from 'redux-oidc';
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 import { Box } from '@mui/material';
 import { useHistory } from 'react-router';
 import userManager from '../util/userManager';
@@ -14,9 +15,8 @@ const CallbackPage = () => {
         <CallbackComponent
             userManager={userManager}
             successCallback={() => history.push('/')}
-            errorCallback={(error) => {
-                history.push('/');
-                console.error(error);
+            errorCallback={() => {
+                push('/');
             }}
         >
             <Box>Redirecting...</Box>
