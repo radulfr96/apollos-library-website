@@ -15,16 +15,26 @@ interface PublishersState {
     publishers: Array<PublisherListItem>;
 }
 
-export default function Publishers(props: WithSnackbarProps): JSX.Element {
+const Publishers = (props: WithSnackbarProps) => {
     const [publisherState, setPublisherState] = useState<PublishersState>({
         publishers: [],
     });
     const history = useHistory();
     const context = useContext(AppContext);
 
-    useEffect(() => {
-        getPubishers();
-    });
+    const { enqueueSnackbar } = props;
+
+    const renderErrorSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'error',
+        });
+    };
+
+    const renderSuccessSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'success',
+        });
+    };
 
     const getPubishers = () => {
         Axios.get('/api/publisher')
@@ -49,17 +59,9 @@ export default function Publishers(props: WithSnackbarProps): JSX.Element {
             });
     };
 
-    const renderErrorSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'error',
-        });
-    };
-
-    const renderSuccessSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'success',
-        });
-    };
+    useEffect(() => {
+        getPubishers();
+    });
 
     return (
         <Grid item xs={5} container justifyContent="center">
@@ -94,4 +96,6 @@ export default function Publishers(props: WithSnackbarProps): JSX.Element {
             </Grid>
         </Grid>
     );
-}
+};
+
+export default Publishers;

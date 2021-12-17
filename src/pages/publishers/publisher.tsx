@@ -19,7 +19,7 @@ interface PublisherState {
     newPublisher: boolean;
 }
 
-export default function PublisherPage(props: WithSnackbarProps): JSX.Element {
+const PublisherPage = (props: WithSnackbarProps) => {
     const [publisherState, setPublisherState] = useState<PublisherState>({
         publisher: {
             publisherId: 0,
@@ -37,6 +37,26 @@ export default function PublisherPage(props: WithSnackbarProps): JSX.Element {
 
     const history = useNavigate();
     const params = useParams();
+
+    const { enqueueSnackbar } = props;
+
+    const renderErrorSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'error',
+        });
+    };
+
+    const renderSuccessSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'success',
+        });
+    };
+
+    const renderWarningSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'warning',
+        });
+    };
 
     useEffect(() => {
         if (params.id !== undefined && params.id !== null) {
@@ -108,24 +128,6 @@ export default function PublisherPage(props: WithSnackbarProps): JSX.Element {
             });
     };
 
-    const renderErrorSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'error',
-        });
-    };
-
-    const renderSuccessSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'success',
-        });
-    };
-
-    const renderWarningSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'warning',
-        });
-    };
-
     if (!publisherState.newPublisher && publisherState.publisher.publisherId < 1) {
         return (<CircularProgress />);
     }
@@ -164,153 +166,155 @@ export default function PublisherPage(props: WithSnackbarProps): JSX.Element {
                         setFieldValue,
                         validateForm,
                     }) => (
-                            <Grid container item xs={12}>
+                        <Grid container item xs={12}>
 
-                                {
-                                    !publisherState.newPublisher && (
-                                        <Grid item xs={12}>
-                                            <InputTextField
-                                                label="Publisher Id"
-                                                required
-                                                type="text"
-                                                keyName="publisherId"
-                                                value={values.publisherId}
-                                                onChange={handleChange}
-                                                error={!!(errors.publisherId)}
-                                                errorMessage={errors.publisherId}
-                                                readonly
-                                            />
-                                        </Grid>
-                                    )
-                                }
+                            {
+                                !publisherState.newPublisher && (
+                                    <Grid item xs={12}>
+                                        <InputTextField
+                                            label="Publisher Id"
+                                            required
+                                            type="text"
+                                            keyName="publisherId"
+                                            value={values.publisherId}
+                                            onChange={handleChange}
+                                            error={!!(errors.publisherId)}
+                                            errorMessage={errors.publisherId}
+                                            readonly
+                                        />
+                                    </Grid>
+                                )
+                            }
 
-                                <Grid item xs={12}>
-                                    <InputTextField
-                                        label="Name"
-                                        required
-                                        type="text"
-                                        keyName="name"
-                                        value={values.name}
-                                        onChange={handleChange}
-                                        error={!!(errors.name)}
-                                        errorMessage={errors.name}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <InputTextField
-                                        label="Website"
-                                        type="text"
-                                        keyName="website"
-                                        value={values.website}
-                                        onChange={handleChange}
-                                        error={!!(errors.website)}
-                                        errorMessage={errors.website}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <InputTextField
-                                        label="Street Address"
-                                        type="text"
-                                        keyName="streetAddress"
-                                        value={values.streetAddress}
-                                        onChange={handleChange}
-                                        error={!!(errors.streetAddress)}
-                                        errorMessage={errors.streetAddress}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <InputTextField
-                                        label="City/Town"
-                                        type="text"
-                                        keyName="city"
-                                        value={values.city}
-                                        onChange={handleChange}
-                                        error={!!(errors.city)}
-                                        errorMessage={errors.city}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <InputTextField
-                                        label="Postcode/Zip Code"
-                                        type="text"
-                                        keyName="postcode"
-                                        value={values.postcode}
-                                        onChange={handleChange}
-                                        error={!!(errors.postcode)}
-                                        errorMessage={errors.postcode}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <InputTextField
-                                        label="State/Province"
-                                        type="text"
-                                        keyName="state"
-                                        value={values.state}
-                                        onChange={handleChange}
-                                        error={!!(errors.state)}
-                                        errorMessage={errors.state}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <CountryTypedown
-                                        required
-                                        countries={publisherState.countries}
-                                        value={values.countryID}
-                                        onBlur=""
-                                        onChange={(e: any) => {
-                                            setFieldValue('countryID', publisherState.countries.find((c) => c.name
-                                                === e.target.innerText)?.countryID);
+                            <Grid item xs={12}>
+                                <InputTextField
+                                    label="Name"
+                                    required
+                                    type="text"
+                                    keyName="name"
+                                    value={values.name}
+                                    onChange={handleChange}
+                                    error={!!(errors.name)}
+                                    errorMessage={errors.name}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <InputTextField
+                                    label="Website"
+                                    type="text"
+                                    keyName="website"
+                                    value={values.website}
+                                    onChange={handleChange}
+                                    error={!!(errors.website)}
+                                    errorMessage={errors.website}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <InputTextField
+                                    label="Street Address"
+                                    type="text"
+                                    keyName="streetAddress"
+                                    value={values.streetAddress}
+                                    onChange={handleChange}
+                                    error={!!(errors.streetAddress)}
+                                    errorMessage={errors.streetAddress}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <InputTextField
+                                    label="City/Town"
+                                    type="text"
+                                    keyName="city"
+                                    value={values.city}
+                                    onChange={handleChange}
+                                    error={!!(errors.city)}
+                                    errorMessage={errors.city}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <InputTextField
+                                    label="Postcode/Zip Code"
+                                    type="text"
+                                    keyName="postcode"
+                                    value={values.postcode}
+                                    onChange={handleChange}
+                                    error={!!(errors.postcode)}
+                                    errorMessage={errors.postcode}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <InputTextField
+                                    label="State/Province"
+                                    type="text"
+                                    keyName="state"
+                                    value={values.state}
+                                    onChange={handleChange}
+                                    error={!!(errors.state)}
+                                    errorMessage={errors.state}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <CountryTypedown
+                                    required
+                                    countries={publisherState.countries}
+                                    value={values.countryID}
+                                    onBlur=""
+                                    onChange={(e: any) => {
+                                        setFieldValue('countryID', publisherState.countries.find((c) => c.name
+                                            === e.target.innerText)?.countryID);
+                                    }}
+                                    error={!!(errors.countryID)}
+                                    errorMessage={errors.countryID}
+                                />
+                            </Grid>
+                            <Grid item xs={12} style={{ paddingTop: '10px' }}>
+                                {!publisherState.newPublisher && (
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            if (errors !== null) {
+                                                updatePublisher(values, validateForm);
+                                            }
                                         }}
-                                        error={!!(errors.countryID)}
-                                        errorMessage={errors.countryID}
-                                    />
-                                </Grid>
-                                <Grid item xs={12} style={{ paddingTop: '10px' }}>
-                                    {!publisherState.newPublisher && (
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                if (errors !== null) {
-                                                    updatePublisher(values, validateForm);
-                                                }
-                                            }}
-                                        >
-                                            Update
-                                        </Button>
-                                    )}
-                                    {publisherState.newPublisher && (
-                                        <Button
-                                            sx={{ marginRight: '10px' }}
-                                            variant="contained"
-                                            color="primary"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                if (errors !== null) {
-                                                    addPublisher(values, validateForm);
-                                                }
-                                            }}
-                                        >
-                                            Add
-                                        </Button>
-                                    )}
-
+                                    >
+                                        Update
+                                    </Button>
+                                )}
+                                {publisherState.newPublisher && (
                                     <Button
                                         sx={{ marginRight: '10px' }}
                                         variant="contained"
-                                        color="secondary"
-                                        onClick={() => {
-                                            history('/publishers');
+                                        color="primary"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            if (errors !== null) {
+                                                addPublisher(values, validateForm);
+                                            }
                                         }}
                                     >
-                                        Cancel
+                                        Add
                                     </Button>
-                                </Grid>
+                                )}
+
+                                <Button
+                                    sx={{ marginRight: '10px' }}
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={() => {
+                                        history('/publishers');
+                                    }}
+                                >
+                                    Cancel
+                                </Button>
                             </Grid>
-                        )}
+                        </Grid>
+                    )}
                 </Formik>
             </Grid>
         </Grid>
     );
-}
+};
+
+export default PublisherPage;

@@ -14,36 +14,42 @@ interface CountryTypedownProps {
     error: boolean | undefined;
 }
 
-export default function CountryTypedown(props: CountryTypedownProps): JSX.Element {
+const CountryTypedown = (props: CountryTypedownProps) => {
+    const {
+        countries, onBlur, required, value, onChange, errorMessage, error,
+    } = props;
+
     return (
         <>
             <Autocomplete
                 sx={{ width: '100%' }}
                 options={
-                    props.countries
+                    countries
                 }
                 getOptionLabel={(country: Country) => country.name}
                 renderInput={() => (
                     <TextField
-                        onBlur={props.onBlur}
-                        required={props.required}
-                        value={props.value}
+                        onBlur={onBlur}
+                        required={required}
+                        value={value}
                         variant="outlined"
-                        defaultValue={props.countries.find(
-                            (c) => c.countryID === props.value,
+                        defaultValue={countries.find(
+                            (c) => c.countryID === value,
                         )?.name}
                         label="Country"
                     />
                 )}
-                onChange={props.onChange}
+                onChange={onChange}
             />
             <Box sx={{
                 paddingBottom: '20px',
                 color: 'red',
             }}
             >
-                {props.error ? props.errorMessage : ''}
+                {error ? errorMessage : ''}
             </Box>
         </>
     );
-}
+};
+
+export default CountryTypedown;

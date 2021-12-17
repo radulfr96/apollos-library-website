@@ -16,7 +16,7 @@ interface LoginState {
     loginInfo: LoginInfo;
 }
 
-export default function Login(props: WithSnackbarProps): JSX.Element {
+const Login = (props: WithSnackbarProps) => {
     const context = useContext(AppContext);
     const history = useHistory();
     const [loginState] = useState<LoginState>({
@@ -25,6 +25,26 @@ export default function Login(props: WithSnackbarProps): JSX.Element {
             password: '',
         },
     });
+
+    const { enqueueSnackbar } = props;
+
+    const renderErrorSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'error',
+        });
+    };
+
+    const renderSuccessSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'success',
+        });
+    };
+
+    const renderWarningSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'warning',
+        });
+    };
 
     const login = (loginInfo: LoginInfo, validateForm: any) => {
         validateForm()
@@ -47,24 +67,6 @@ export default function Login(props: WithSnackbarProps): JSX.Element {
                         });
                 }
             });
-    };
-
-    const renderErrorSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'error',
-        });
-    };
-
-    const renderSuccessSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'success',
-        });
-    };
-
-    const renderWarningSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'warning',
-        });
     };
 
     return (
@@ -160,4 +162,6 @@ export default function Login(props: WithSnackbarProps): JSX.Element {
             </Formik>
         </Paper>
     );
-}
+};
+
+export default Login;

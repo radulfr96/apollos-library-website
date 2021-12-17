@@ -26,7 +26,7 @@ interface UserParams {
     id: string | undefined;
 }
 
-export default function UserPage(props: WithSnackbarProps): JSX.Element {
+const UserPage = (props: WithSnackbarProps) => {
     const [userState, setUserState] = useState<UserState>({
         user: undefined,
         updateInfo: {
@@ -38,6 +38,8 @@ export default function UserPage(props: WithSnackbarProps): JSX.Element {
         },
         roles: [],
     });
+
+    const { enqueueSnackbar } = props;
 
     const navigate = useNavigate();
     const params = useParams<UserParams>();
@@ -60,19 +62,19 @@ export default function UserPage(props: WithSnackbarProps): JSX.Element {
     });
 
     const renderErrorSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
+        enqueueSnackbar(message, {
             variant: 'error',
         });
     };
 
     const renderSuccessSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
+        enqueueSnackbar(message, {
             variant: 'success',
         });
     };
 
     const renderWarningSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
+        enqueueSnackbar(message, {
             variant: 'warning',
         });
     };
@@ -152,108 +154,110 @@ export default function UserPage(props: WithSnackbarProps): JSX.Element {
                         handleChange,
                         validateForm,
                     }) => (
-                            <Grid container item xs={12}>
-                                <Grid item xs={12}>
-                                    <InputTextField
-                                        label="Username"
-                                        required
-                                        type="text"
-                                        keyName="username"
-                                        value={values.username}
-                                        onChange={handleChange}
-                                        onBlur={() => {
-                                            checkUserIsUnique(values.username);
-                                        }}
-                                        error={!!(errors.username)}
-                                        errorMessage={errors.username}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <InputTextField
-                                        label="Password"
-                                        type="password"
-                                        keyName="password"
-                                        value={values.password}
-                                        onChange={handleChange}
-                                        error={!!(errors.password)}
-                                        errorMessage={errors.password}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <InputTextField
-                                        label="Confirmation Password"
-                                        type="password"
-                                        keyName="confirmationPassword"
-                                        value={values.confirmationPassword}
-                                        onChange={handleChange}
-                                        error={!!(errors.confirmationPassword)}
-                                        errorMessage={errors.confirmationPassword}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <RoleSelector
-                                        roles={userState.roles.map(
-                                            (r) => r.name,
-                                        )}
-                                        selectedRoles={values.roles.map(
-                                            (r: Role) => r.name,
-                                        )}
-                                        updateUserRoles={(newRoleNames: string[]) => {
-                                            const newRoles = new Array<Role>();
-                                            newRoleNames.forEach((n) => {
-                                                const role = userState.roles.find(
-                                                    (r) => r.name === n,
-                                                );
-                                                if (role !== undefined) {
-                                                    const newRole: Role = {
-                                                        roleId: role.roleId,
-                                                        name: role.name,
-                                                    };
-                                                    newRoles.push(newRole);
-                                                }
-                                            });
-                                            // eslint-disable-next-line no-param-reassign
-                                            values.roles = newRoles;
-                                            setUserState({
-                                                ...userState,
-                                                updateInfo: {
-                                                    ...userState.updateInfo,
-                                                    roles: newRoles,
-                                                },
-                                            });
-                                        }}
-                                        error={!!(errors.roles)}
-                                        errorMessage="A user must have a role"
-                                    />
-                                </Grid>
-                                <Grid item xs={12} style={{ paddingTop: '10px' }}>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (errors !== null) {
-                                                updateUser(values, validateForm);
-                                            }
-                                        }}
-                                    >
-                                        Update
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        color="secondary"
-                                        onClick={() => {
-                                            navigate('/user');
-                                        }}
-                                    >
-                                        Cancel
-                                    </Button>
-                                </Grid>
+                        <Grid container item xs={12}>
+                            <Grid item xs={12}>
+                                <InputTextField
+                                    label="Username"
+                                    required
+                                    type="text"
+                                    keyName="username"
+                                    value={values.username}
+                                    onChange={handleChange}
+                                    onBlur={() => {
+                                        checkUserIsUnique(values.username);
+                                    }}
+                                    error={!!(errors.username)}
+                                    errorMessage={errors.username}
+                                />
                             </Grid>
+                            <Grid item xs={12}>
+                                <InputTextField
+                                    label="Password"
+                                    type="password"
+                                    keyName="password"
+                                    value={values.password}
+                                    onChange={handleChange}
+                                    error={!!(errors.password)}
+                                    errorMessage={errors.password}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <InputTextField
+                                    label="Confirmation Password"
+                                    type="password"
+                                    keyName="confirmationPassword"
+                                    value={values.confirmationPassword}
+                                    onChange={handleChange}
+                                    error={!!(errors.confirmationPassword)}
+                                    errorMessage={errors.confirmationPassword}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <RoleSelector
+                                    roles={userState.roles.map(
+                                        (r) => r.name,
+                                    )}
+                                    selectedRoles={values.roles.map(
+                                        (r: Role) => r.name,
+                                    )}
+                                    updateUserRoles={(newRoleNames: string[]) => {
+                                        const newRoles = new Array<Role>();
+                                        newRoleNames.forEach((n) => {
+                                            const role = userState.roles.find(
+                                                (r) => r.name === n,
+                                            );
+                                            if (role !== undefined) {
+                                                const newRole: Role = {
+                                                    roleId: role.roleId,
+                                                    name: role.name,
+                                                };
+                                                newRoles.push(newRole);
+                                            }
+                                        });
+                                        // eslint-disable-next-line no-param-reassign
+                                        values.roles = newRoles;
+                                        setUserState({
+                                            ...userState,
+                                            updateInfo: {
+                                                ...userState.updateInfo,
+                                                roles: newRoles,
+                                            },
+                                        });
+                                    }}
+                                    error={!!(errors.roles)}
+                                    errorMessage="A user must have a role"
+                                />
+                            </Grid>
+                            <Grid item xs={12} style={{ paddingTop: '10px' }}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (errors !== null) {
+                                            updateUser(values, validateForm);
+                                        }
+                                    }}
+                                >
+                                    Update
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={() => {
+                                        navigate('/user');
+                                    }}
+                                >
+                                    Cancel
+                                </Button>
+                            </Grid>
+                        </Grid>
 
-                        )}
+                    )}
                 </Formik>
             </Grid>
         </Grid>
     );
-}
+};
+
+export default UserPage;

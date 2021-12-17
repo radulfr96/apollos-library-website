@@ -21,7 +21,7 @@ interface GenreParams {
     id: string | undefined;
 }
 
-export default function GenrePage(props: WithSnackbarProps): JSX.Element {
+const GenrePage = (props: WithSnackbarProps) => {
     const [genreState, setGenreState] = useState<GenreState>({
         genre: {
             name: '',
@@ -32,6 +32,7 @@ export default function GenrePage(props: WithSnackbarProps): JSX.Element {
 
     const history = useNavigate();
     const params = useParams<GenreParams>();
+    const { enqueueSnackbar } = props;
 
     useEffect(() => {
         if (params.id !== undefined && params.id !== null) {
@@ -49,6 +50,24 @@ export default function GenrePage(props: WithSnackbarProps): JSX.Element {
             });
         }
     });
+
+    const renderErrorSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'error',
+        });
+    };
+
+    const renderSuccessSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'success',
+        });
+    };
+
+    const renderWarningSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'warning',
+        });
+    };
 
     const updateGenre = (genre: Genre, validateForm: any) => {
         validateForm()
@@ -94,24 +113,6 @@ export default function GenrePage(props: WithSnackbarProps): JSX.Element {
             });
     };
 
-    const renderErrorSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'error',
-        });
-    };
-
-    const renderSuccessSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'success',
-        });
-    };
-
-    const renderWarningSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'warning',
-        });
-    };
-
     if (!genreState.newGenre && genreState.genre.genreId < 1) {
         return (<CircularProgress />);
     }
@@ -149,83 +150,85 @@ export default function GenrePage(props: WithSnackbarProps): JSX.Element {
                         handleChange,
                         validateForm,
                     }) => (
-                            <Grid container item xs={12}>
+                        <Grid container item xs={12}>
 
-                                {
-                                    !genreState.newGenre && (
-                                        <Grid item xs={12}>
-                                            <InputTextField
-                                                label="Genre Id"
-                                                required
-                                                type="text"
-                                                keyName="genreId"
-                                                value={values.genreId}
-                                                onChange={handleChange}
-                                                error={!!(errors.genreId)}
-                                                errorMessage={errors.genreId}
-                                                readonly
-                                            />
-                                        </Grid>
-                                    )
-                                }
+                            {
+                                !genreState.newGenre && (
+                                    <Grid item xs={12}>
+                                        <InputTextField
+                                            label="Genre Id"
+                                            required
+                                            type="text"
+                                            keyName="genreId"
+                                            value={values.genreId}
+                                            onChange={handleChange}
+                                            error={!!(errors.genreId)}
+                                            errorMessage={errors.genreId}
+                                            readonly
+                                        />
+                                    </Grid>
+                                )
+                            }
 
-                                <Grid item xs={12}>
-                                    <InputTextField
-                                        label="Name"
-                                        required
-                                        type="text"
-                                        keyName="name"
-                                        value={values.name}
-                                        onChange={handleChange}
-                                        error={!!(errors.name)}
-                                        errorMessage={errors.name}
-                                    />
-                                </Grid>
-                                <Grid item xs={12} style={{ paddingTop: '10px' }}>
-                                    {!genreState.newGenre && (
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                if (errors !== null) {
-                                                    updateGenre(values, validateForm);
-                                                }
-                                            }}
-                                        >
-                                            Update
-                                        </Button>
-                                    )}
-                                    {genreState.newGenre && (
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                if (errors !== null) {
-                                                    addGenre(values, validateForm);
-                                                }
-                                            }}
-                                        >
-                                            Add
-                                        </Button>
-                                    )}
-
+                            <Grid item xs={12}>
+                                <InputTextField
+                                    label="Name"
+                                    required
+                                    type="text"
+                                    keyName="name"
+                                    value={values.name}
+                                    onChange={handleChange}
+                                    error={!!(errors.name)}
+                                    errorMessage={errors.name}
+                                />
+                            </Grid>
+                            <Grid item xs={12} style={{ paddingTop: '10px' }}>
+                                {!genreState.newGenre && (
                                     <Button
-                                        sx={{ marginRight: '10px' }}
                                         variant="contained"
-                                        color="secondary"
-                                        onClick={() => {
-                                            history('/genres');
+                                        color="primary"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            if (errors !== null) {
+                                                updateGenre(values, validateForm);
+                                            }
                                         }}
                                     >
-                                        Cancel
+                                        Update
                                     </Button>
-                                </Grid>
+                                )}
+                                {genreState.newGenre && (
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            if (errors !== null) {
+                                                addGenre(values, validateForm);
+                                            }
+                                        }}
+                                    >
+                                        Add
+                                    </Button>
+                                )}
+
+                                <Button
+                                    sx={{ marginRight: '10px' }}
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={() => {
+                                        history('/genres');
+                                    }}
+                                >
+                                    Cancel
+                                </Button>
                             </Grid>
-                        )}
+                        </Grid>
+                    )}
                 </Formik>
             </Grid>
         </Grid>
     );
-}
+};
+
+export default GenrePage;

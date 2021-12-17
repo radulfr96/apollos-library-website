@@ -6,7 +6,7 @@ import { useHistory } from 'react-router';
 import userManager from '../util/userManager';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function CallbackPage(): JSX.Element {
+const CallbackPage = () => {
     const history = useHistory();
 
     // just redirect to '/' in both cases
@@ -22,6 +22,6 @@ function CallbackPage(): JSX.Element {
             <Box>Redirecting...</Box>
         </CallbackComponent>
     );
-}
+};
 
 export default connect()(CallbackPage);

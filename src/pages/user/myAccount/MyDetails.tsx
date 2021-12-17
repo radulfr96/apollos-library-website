@@ -10,7 +10,7 @@ import ReadOnlyLabel from '../../../components/shared/ReadOnlyLabel';
 import ReadOnlyText from '../../../components/shared/ReadOnlyText';
 import { AppContext } from '../../../Context';
 
-export default function MyDetails(): JSX.Element {
+const MyDetails = () => {
     const context = useContext(AppContext);
     const snackbar = useSnackbar();
 
@@ -135,4 +135,6 @@ export default function MyDetails(): JSX.Element {
             </Grid>
         </Grid>
     );
-}
+};
+
+export default MyDetails;

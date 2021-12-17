@@ -29,7 +29,7 @@ interface ChangePasswordState {
 //     },
 // });
 
-export default function UpdatePassword(): JSX.Element {
+const UpdatePassword = () => {
     const [updatePasswordState] = useState<ChangePasswordState>({
         changePasswordInfo: {
             password: '',
@@ -111,61 +111,63 @@ export default function UpdatePassword(): JSX.Element {
                         handleChange,
                         validateForm,
                     }) => (
-                            <Grid container item xs={12}>
-                                <Grid item xs={12}>
-                                    <InputTextField
-                                        label="Password"
-                                        required
-                                        type="password"
-                                        keyName="password"
-                                        value={values.password}
-                                        onChange={handleChange}
-                                        error={!!(errors.password)}
-                                        errorMessage={errors.password}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <InputTextField
-                                        label="New Password"
-                                        required
-                                        type="password"
-                                        keyName="newPassword"
-                                        value={values.newPassword}
-                                        onChange={handleChange}
-                                        error={!!(errors.newPassword)}
-                                        errorMessage={errors.newPassword}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <InputTextField
-                                        label="New Password Confirmation"
-                                        required
-                                        type="password"
-                                        keyName="newPasswordConfirmation"
-                                        value={values.newPasswordConfirmation}
-                                        onChange={handleChange}
-                                        error={!!(errors.newPasswordConfirmation)}
-                                        errorMessage={errors.newPasswordConfirmation}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (errors !== null) {
-                                                updatePassword(values, validateForm);
-                                            }
-                                        }}
-                                    >
-                                        Update
-                                    </Button>
-                                </Grid>
+                        <Grid container item xs={12}>
+                            <Grid item xs={12}>
+                                <InputTextField
+                                    label="Password"
+                                    required
+                                    type="password"
+                                    keyName="password"
+                                    value={values.password}
+                                    onChange={handleChange}
+                                    error={!!(errors.password)}
+                                    errorMessage={errors.password}
+                                />
                             </Grid>
-                        )}
+                            <Grid item xs={12}>
+                                <InputTextField
+                                    label="New Password"
+                                    required
+                                    type="password"
+                                    keyName="newPassword"
+                                    value={values.newPassword}
+                                    onChange={handleChange}
+                                    error={!!(errors.newPassword)}
+                                    errorMessage={errors.newPassword}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <InputTextField
+                                    label="New Password Confirmation"
+                                    required
+                                    type="password"
+                                    keyName="newPasswordConfirmation"
+                                    value={values.newPasswordConfirmation}
+                                    onChange={handleChange}
+                                    error={!!(errors.newPasswordConfirmation)}
+                                    errorMessage={errors.newPasswordConfirmation}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (errors !== null) {
+                                            updatePassword(values, validateForm);
+                                        }
+                                    }}
+                                >
+                                    Update
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    )}
                 </Formik>
             </Grid>
         </Grid>
     );
-}
+};
+
+export default UpdatePassword;

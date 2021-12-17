@@ -15,17 +15,26 @@ interface AuthorsState {
     authors: Array<AuthorListItem>;
 }
 
-export default function AuthorsPage(props: WithSnackbarProps): JSX.Element {
+const AuthorsPage = (props: WithSnackbarProps) => {
     const [authorsState, setAuthorsState] = useState<AuthorsState>({
         authors: [],
     });
 
     const context = useContext(AppContext);
     const history = useHistory();
+    const { enqueueSnackbar } = props;
 
-    useEffect(() => {
-        getAuthors();
-    });
+    const renderErrorSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'error',
+        });
+    };
+
+    const renderSuccessSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'success',
+        });
+    };
 
     const getAuthors = () => {
         Axios.get('/api/author')
@@ -47,17 +56,9 @@ export default function AuthorsPage(props: WithSnackbarProps): JSX.Element {
             });
     };
 
-    const renderErrorSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'error',
-        });
-    };
-
-    const renderSuccessSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'success',
-        });
-    };
+    useEffect(() => {
+        getAuthors();
+    });
 
     return (
         <Grid item xs={5} container justifyContent="center">
@@ -92,4 +93,6 @@ export default function AuthorsPage(props: WithSnackbarProps): JSX.Element {
             </Grid>
         </Grid>
     );
-}
+};
+
+export default AuthorsPage;

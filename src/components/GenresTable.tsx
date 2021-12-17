@@ -6,7 +6,7 @@ import {
 import { ChevronRight, Delete } from '@mui/icons-material';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Genre } from '../interfaces/genre';
-import TableHelper, { Order } from '../util/TableFunctions';
+import TableHelper, { Order } from '../util/TableFunctions.ts';
 
 interface HeadCell {
     id: keyof Genre;
@@ -24,7 +24,7 @@ interface EnhancedTableProps {
     orderBy: string;
 }
 
-function EnhancedTableHead(props: EnhancedTableProps) {
+const EnhancedTableHead = (props: EnhancedTableProps) => {
     const {
         onRequestSort, order, orderBy,
     } = props;
@@ -69,56 +69,52 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             </TableRow>
         </TableHead>
     );
-}
+};
 
 interface RowProps {
     genre: Genre;
     deleteGenre: (genreId: number) => void;
 }
 
-function NavCell(props: RowProps & RouteComponentProps) {
-    return (
-        <TableCell>
-            <IconButton onClick={() => {
-                props.deleteGenre(props.genre.genreId);
-            }}
-            >
-                <Delete sx={{ color: 'red' }} />
-            </IconButton>
-            <IconButton onClick={() => {
-                props.history.push(`genre/${props.genre.genreId}`);
-            }}
-            >
-                <ChevronRight />
-            </IconButton>
-        </TableCell>
-    );
-}
+const NavCell = (props: RowProps & RouteComponentProps) => (
+    <TableCell>
+        <IconButton onClick={() => {
+            props.deleteGenre(props.genre.genreId);
+        }}
+        >
+            <Delete sx={{ color: 'red' }} />
+        </IconButton>
+        <IconButton onClick={() => {
+            props.history.push(`genre/${props.genre.genreId}`);
+        }}
+        >
+            <ChevronRight />
+        </IconButton>
+    </TableCell>
+);
 
 export const NavigationCell = withRouter(NavCell);
 
-export function Row(props: RowProps) {
-    return (
-        <TableRow
-            key={props.genre.genreId}
-            hover
-            sx={{
-                transition: 'all 0.4s',
-            }}
-        >
-            <TableCell>{props.genre.genreId}</TableCell>
-            <TableCell>{props.genre.name}</TableCell>
-            <NavigationCell genre={props.genre} deleteGenre={props.deleteGenre} />
-        </TableRow>
-    );
-}
+export var Row = (props: RowProps) => (
+    <TableRow
+        key={props.genre.genreId}
+        hover
+        sx={{
+            transition: 'all 0.4s',
+        }}
+    >
+        <TableCell>{props.genre.genreId}</TableCell>
+        <TableCell>{props.genre.name}</TableCell>
+        <NavigationCell genre={props.genre} deleteGenre={props.deleteGenre} />
+    </TableRow>
+);
 
 interface GenreTableProps {
     genres: Array<Genre>;
     deleteGenre: (genreId: number) => void;
 }
 
-function GenresTable(props: GenreTableProps) {
+const GenresTable = (props: GenreTableProps) => {
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof Genre>('genreId');
     const tableHelper = new TableHelper();
@@ -153,6 +149,6 @@ function GenresTable(props: GenreTableProps) {
             </Table>
         </TableContainer>
     );
-}
+};
 
 export default GenresTable;

@@ -12,7 +12,7 @@ interface TabPanelProps {
     value: any;
 }
 
-function TabPanel(props: TabPanelProps): JSX.Element {
+const TabPanel = (props: TabPanelProps) => {
     const {
         children, value, index,
     } = props;
@@ -28,13 +28,13 @@ function TabPanel(props: TabPanelProps): JSX.Element {
             {value === index && <Box p={3}>{children}</Box>}
         </Typography>
     );
-}
+};
 
 interface MyAccountState {
     tab: number;
 }
 
-export default function MyAccount(): JSX.Element {
+const MyAccount = () => {
     const [myAccountState, setMyAccountState] = useState<MyAccountState>({
         tab: 1,
     });
@@ -66,4 +66,6 @@ export default function MyAccount(): JSX.Element {
             </TabPanel>
         </Paper>
     );
-}
+};
+
+export default MyAccount;

@@ -14,15 +14,24 @@ interface GenresState {
     genres: Array<Genre>;
 }
 
-export default function Genres(props: WithSnackbarProps): JSX.Element {
+const Genres = (props: WithSnackbarProps) => {
     const [genreState, setGenreState] = useState<GenresState>({
         genres: [],
     });
     const history = useHistory();
+    const { enqueueSnackbar } = props;
 
-    useEffect(() => {
-        getGenres();
-    });
+    const renderErrorSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'error',
+        });
+    };
+
+    const renderSuccessSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'success',
+        });
+    };
 
     const getGenres = () => {
         Axios.get('/api/genre')
@@ -44,17 +53,9 @@ export default function Genres(props: WithSnackbarProps): JSX.Element {
             });
     };
 
-    const renderErrorSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'error',
-        });
-    };
-
-    const renderSuccessSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'success',
-        });
-    };
+    useEffect(() => {
+        getGenres();
+    });
 
     return (
         <Grid item xs={5} container justifyContent="center">
@@ -81,4 +82,6 @@ export default function Genres(props: WithSnackbarProps): JSX.Element {
             </Grid>
         </Grid>
     );
-}
+};
+
+export default Genres;

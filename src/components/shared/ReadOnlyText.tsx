@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
     Typography,
 } from '@mui/material';
@@ -7,10 +7,13 @@ interface ReadOnlyTextProps {
     text: string | number | Date | undefined;
 }
 
-export default function ReadOnlyText(props: ReadOnlyTextProps): JSX.Element {
+const ReadOnlyText = (props: ReadOnlyTextProps) => {
+    const { text } = props;
     return (
         <Typography sx={{ fontSize: '16px' }}>
-                {props.text}
+            {text}
         </Typography>
     );
-}
+};
+
+export default ReadOnlyText;

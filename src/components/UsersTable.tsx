@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { ChevronRight, Delete } from '@mui/icons-material';
 import { User } from '../interfaces/user';
-import TableHelper, { Order } from '../util/TableFunctions';
+import TableHelper, { Order } from '../util/TableFunctions.ts';
 
 interface HeadCell {
     id: keyof User;

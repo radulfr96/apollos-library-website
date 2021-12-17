@@ -1,88 +1,86 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
 import React, { useState, useEffect } from 'react';
-// import Axios from 'axios';
 import { UserInfo } from './interfaces/userInfo';
 import userManager from './util/userManager';
 
 export const AppContext = React.createContext<State & Functions>({
-  userInfo: null,
-  isAdmin: () => false,
-  isPaidUser: () => false,
-  getUserInfo: () => null,
-  clearUserInfo: () => null,
+    userInfo: null,
+    isAdmin: () => false,
+    isPaidUser: () => false,
+    getUserInfo: () => null,
+    clearUserInfo: () => null,
 });
 
 interface Functions {
-  isAdmin(): boolean;
-  isPaidUser(): boolean;
-  getUserInfo(): void;
-  clearUserInfo(): void;
+    isAdmin(): boolean;
+    isPaidUser(): boolean;
+    getUserInfo(): void;
+    clearUserInfo(): void;
 }
 
 interface State {
-  userInfo: UserInfo | null;
+    userInfo: UserInfo | null;
 }
 
 interface AppContextProviderProps {
-  children: JSX.Element,
+    children: JSX.Element,
 }
 
-function AppContextProvider(props: AppContextProviderProps): JSX.Element {
-  const [state, setState] = useState<State>({
-    userInfo: null,
-  });
-
-  const isAdmin = (): boolean => {
-    if (state.userInfo == null) return false;
-    if (state.userInfo.roles === undefined) return false;
-    if (state.userInfo.roles.indexOf('administrator') > -1) {
-      return true;
-    }
-    return false;
-  };
-
-  const isPaidUser = (): boolean => {
-    if (state.userInfo == null) return false;
-    if (state.userInfo.roles === undefined) return false;
-    if (state.userInfo.roles.indexOf('paidaccount') > -1 || state.userInfo.roles.indexOf('freeaccount') > -1) {
-      return true;
-    }
-    return false;
-  };
-
-  const clearUserInfo = () => {
-    setState({
-      userInfo: null,
+const AppContextProvider = (props: AppContextProviderProps) => {
+    const [state, setState] = useState<State>({
+        userInfo: null,
     });
-  };
 
-  const getUserInfo = () => {
-    userManager.getUser().then((user) => {
-      if (user !== null) {
+    const isAdmin = (): boolean => {
+        if (state.userInfo == null) return false;
+        if (state.userInfo.roles === undefined) return false;
+        if (state.userInfo.roles.indexOf('administrator') > -1) {
+            return true;
+        }
+        return false;
+    };
+
+    const isPaidUser = (): boolean => {
+        if (state.userInfo == null) return false;
+        if (state.userInfo.roles === undefined) return false;
+        if (state.userInfo.roles.indexOf('paidaccount') > -1 || state.userInfo.roles.indexOf('freeaccount') > -1) {
+            return true;
+        }
+        return false;
+    };
+
+    const clearUserInfo = () => {
         setState({
-          userInfo: {
-            username: user.profile.username,
-            roles: user.profile.role,
-            userId: user.profile.sid,
-          },
+            userInfo: null,
         });
-      }
-    });
-  };
+    };
 
-  const contextValue = {
-    ...state, isAdmin, isPaidUser, getUserInfo, clearUserInfo,
-  };
+    const getUserInfo = () => {
+        userManager.getUser().then((user) => {
+            if (user !== null) {
+                setState({
+                    userInfo: {
+                        username: user.profile.username,
+                        roles: user.profile.role,
+                        userId: user.profile.sid,
+                    },
+                });
+            }
+        });
+    };
 
-  useEffect(() => {
-    getUserInfo();
-  }, []);
+    const contextValue = {
+        ...state, isAdmin, isPaidUser, getUserInfo, clearUserInfo,
+    };
 
-  return (
-    <AppContext.Provider value={contextValue}>
-      {props.children}
-    </AppContext.Provider>
-  );
-}
+    useEffect(() => {
+        getUserInfo();
+    }, []);
+
+    return (
+        <AppContext.Provider value={contextValue}>
+            {props.children}
+        </AppContext.Provider>
+    );
+};
 
 export default AppContextProvider;

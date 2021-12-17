@@ -11,7 +11,7 @@ interface RoleSelectorProps {
     errorMessage: string | undefined;
 }
 
-export default function RoleSelector(props: RoleSelectorProps): JSX.Element {
+const RoleSelector = (props: RoleSelectorProps) => {
     const inputLabel = React.useRef<HTMLLabelElement>(null);
 
     const handleChange = (event: any) => {
@@ -69,4 +69,6 @@ export default function RoleSelector(props: RoleSelectorProps): JSX.Element {
             </Grid>
         </Grid>
     );
-}
+};
+
+export default RoleSelector;

@@ -4,17 +4,17 @@ import { Grid } from '@mui/material';
 import { AppContext } from '../Context';
 import NavMenu from './navigation/NavMenu';
 
-export default function Layout(props: { children: React.ReactNode | undefined }): JSX.Element {
-  return (
+const Layout = (props: { children: React.ReactNode | undefined }) => (
     <AppContext.Consumer>
-      {() => (
-        <>
-          <NavMenu />
-          <Grid container sx={{ padding: '20px' }}>
-            {props.children}
-          </Grid>
-        </>
-      )}
+        {() => (
+            <>
+                <NavMenu />
+                <Grid container sx={{ padding: '20px' }}>
+                    {props.children}
+                </Grid>
+            </>
+        )}
     </AppContext.Consumer>
-  );
-}
+);
+
+export default Layout;

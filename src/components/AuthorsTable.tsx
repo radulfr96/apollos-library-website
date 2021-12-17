@@ -6,7 +6,7 @@ import {
 import { ChevronRight, Delete } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { AuthorListItem } from '../interfaces/authorListItem';
-import TableHelper, { Order } from '../util/TableFunctions';
+import TableHelper, { Order } from '../util/TableFunctions.ts';
 
 interface HeadCell {
     id: keyof AuthorListItem;
@@ -25,7 +25,7 @@ interface EnhancedTableProps {
     orderBy: string;
 }
 
-function EnhancedTableHead(props: EnhancedTableProps): JSX.Element {
+const EnhancedTableHead = (props: EnhancedTableProps): JSX.Element => {
     const createSortHandler = (
         property: keyof AuthorListItem,
     ) => (event: React.MouseEvent<unknown>) => {
@@ -70,14 +70,14 @@ function EnhancedTableHead(props: EnhancedTableProps): JSX.Element {
             </TableRow>
         </TableHead>
     );
-}
+};
 
 interface NavCellProps {
     author: AuthorListItem;
     deleteAuthor: (authorId: number) => void;
 }
 
-function NavigationCell(props: NavCellProps): JSX.Element {
+const NavigationCell = (props: NavCellProps): JSX.Element => {
     const history = useNavigate();
 
     return (
@@ -96,32 +96,30 @@ function NavigationCell(props: NavCellProps): JSX.Element {
             </IconButton>
         </TableCell>
     );
-}
+};
 
 interface RowProps {
     deleteAuthor: (authorId: number) => void;
     author: AuthorListItem;
 }
 
-function Row(props: RowProps): JSX.Element {
-    return (
-        <TableRow
-            key={props.author.authorId}
-            hover
-            sx={{
-                transition: 'all 0.4s',
-            }}
-        >
-            <TableCell>{props.author.authorId}</TableCell>
-            <TableCell>{props.author.name}</TableCell>
-            <TableCell>{props.author.country}</TableCell>
-            <NavigationCell
-                author={props.author}
-                deleteAuthor={props.deleteAuthor}
-            />
-        </TableRow>
-    );
-}
+const Row = (props: RowProps): JSX.Element => (
+    <TableRow
+        key={props.author.authorId}
+        hover
+        sx={{
+            transition: 'all 0.4s',
+        }}
+    >
+        <TableCell>{props.author.authorId}</TableCell>
+        <TableCell>{props.author.name}</TableCell>
+        <TableCell>{props.author.country}</TableCell>
+        <NavigationCell
+            author={props.author}
+            deleteAuthor={props.deleteAuthor}
+        />
+    </TableRow>
+);
 
 interface AuthorsTableProps {
     authors: Array<AuthorListItem>;

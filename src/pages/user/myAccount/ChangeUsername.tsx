@@ -15,7 +15,7 @@ interface ChangeUsernameState {
     changeUsernameInfo: ChangeUsernameInfo;
 }
 
-export default function ChangeUsername(): JSX.Element {
+const ChangeUsername = () => {
     const [changeUsernameState] = useState<ChangeUsernameState>({
         changeUsernameInfo: {
             newUsername: '',
@@ -105,52 +105,54 @@ export default function ChangeUsername(): JSX.Element {
                         handleChange,
                         validateForm,
                     }) => (
-                            <Grid container item xs={12}>
-                                <Grid item xs={12}>
-                                    <InputTextField
-                                        label="New Username"
-                                        required
-                                        type="text"
-                                        keyName="newUsername"
-                                        value={values.newUsername}
-                                        onChange={handleChange}
-                                        error={!!(errors.newUsername)}
-                                        errorMessage={errors.newUsername}
-                                        onBlur={() => {
-                                            checkUserIsUnique(values.newUsername);
-                                        }}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <InputTextField
-                                        label="Password"
-                                        required
-                                        type="password"
-                                        keyName="password"
-                                        value={values.password}
-                                        onChange={handleChange}
-                                        error={!!(errors.password)}
-                                        errorMessage={errors.password}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (errors !== null) {
-                                                updateUsername(values, validateForm);
-                                            }
-                                        }}
-                                    >
-                                        Update
-                                    </Button>
-                                </Grid>
+                        <Grid container item xs={12}>
+                            <Grid item xs={12}>
+                                <InputTextField
+                                    label="New Username"
+                                    required
+                                    type="text"
+                                    keyName="newUsername"
+                                    value={values.newUsername}
+                                    onChange={handleChange}
+                                    error={!!(errors.newUsername)}
+                                    errorMessage={errors.newUsername}
+                                    onBlur={() => {
+                                        checkUserIsUnique(values.newUsername);
+                                    }}
+                                />
                             </Grid>
-                        )}
+                            <Grid item xs={12}>
+                                <InputTextField
+                                    label="Password"
+                                    required
+                                    type="password"
+                                    keyName="password"
+                                    value={values.password}
+                                    onChange={handleChange}
+                                    error={!!(errors.password)}
+                                    errorMessage={errors.password}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (errors !== null) {
+                                            updateUsername(values, validateForm);
+                                        }
+                                    }}
+                                >
+                                    Update
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    )}
                 </Formik>
             </Grid>
         </Grid>
     );
-}
+};
+
+export default ChangeUsername;

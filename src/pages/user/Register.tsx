@@ -17,7 +17,7 @@ interface RegisterState {
     registrationInfo: RegisterInfo;
 }
 
-export default function Register(props: WithSnackbarProps): JSX.Element {
+const Register = (props: WithSnackbarProps) => {
     const [registerState] = useState<RegisterState>({
         registrationInfo: {
             username: '',
@@ -25,23 +25,26 @@ export default function Register(props: WithSnackbarProps): JSX.Element {
             confirmationPassword: '',
         },
     });
+
+    const { enqueueSnackbar } = props;
+
     const history = useNavigate();
     const context = useContext(AppContext);
 
     const renderErrorSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
+        enqueueSnackbar(message, {
             variant: 'error',
         });
     };
 
     const renderSuccessSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
+        enqueueSnackbar(message, {
             variant: 'success',
         });
     };
 
     const renderWarningSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
+        enqueueSnackbar(message, {
             variant: 'warning',
         });
     };
@@ -183,4 +186,6 @@ export default function Register(props: WithSnackbarProps): JSX.Element {
             </Formik>
         </Paper>
     );
-}
+};
+
+export default Register;

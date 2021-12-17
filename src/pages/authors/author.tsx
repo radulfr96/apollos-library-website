@@ -19,7 +19,7 @@ interface AuthorState {
     newAuthor: boolean
 }
 
-export default function AuthorsPage(props: WithSnackbarProps): JSX.Element {
+const AuthorsPage = (props: WithSnackbarProps) => {
     const [authorState] = useState<AuthorState>({
         countries: [],
         author: {
@@ -33,6 +33,25 @@ export default function AuthorsPage(props: WithSnackbarProps): JSX.Element {
         newAuthor: false,
     });
     const history = useHistory();
+    const { enqueueSnackbar } = props;
+
+    const renderErrorSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'error',
+        });
+    };
+
+    const renderSuccessSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'success',
+        });
+    };
+
+    const renderWarningSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'warning',
+        });
+    };
 
     const updateAuthor = (author: Author, validateForm: any) => {
         validateForm()
@@ -76,24 +95,6 @@ export default function AuthorsPage(props: WithSnackbarProps): JSX.Element {
                         });
                 }
             });
-    };
-
-    const renderErrorSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'error',
-        });
-    };
-
-    const renderSuccessSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'success',
-        });
-    };
-
-    const renderWarningSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
-            variant: 'warning',
-        });
     };
 
     if (!authorState.newAuthor && authorState.author.authorID < 1) {
@@ -261,4 +262,6 @@ export default function AuthorsPage(props: WithSnackbarProps): JSX.Element {
             </Grid>
         </Grid>
     );
-}
+};
+
+export default AuthorsPage;

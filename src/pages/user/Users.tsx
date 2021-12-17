@@ -10,10 +10,12 @@ interface UsersState {
     users: Array<User>;
 }
 
-export default function Users(props: WithSnackbarProps): JSX.Element {
+const Users = (props: WithSnackbarProps) => {
     const [usersState, setUsersState] = useState<UsersState>({
         users: [],
     });
+
+    const { enqueueSnackbar } = props;
 
     const getUsers = () => {
         Axios.get('/api/user')
@@ -26,19 +28,19 @@ export default function Users(props: WithSnackbarProps): JSX.Element {
     };
 
     const renderErrorSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
+        enqueueSnackbar(message, {
             variant: 'error',
         });
     };
 
     const renderSuccessSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
+        enqueueSnackbar(message, {
             variant: 'success',
         });
     };
 
     const renderWarningSnackbar = (message: string): void => {
-        props.enqueueSnackbar(message, {
+        enqueueSnackbar(message, {
             variant: 'warning',
         });
     };
@@ -74,4 +76,6 @@ export default function Users(props: WithSnackbarProps): JSX.Element {
             </Grid>
         </Grid>
     );
-}
+};
+
+export default Users;

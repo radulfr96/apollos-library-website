@@ -6,7 +6,7 @@ import {
 import { Settings } from '@mui/icons-material';
 import React from 'react';
 
-export default function AdminMenu(): JSX.Element {
+const AdminMenu = () => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
@@ -64,4 +64,6 @@ export default function AdminMenu(): JSX.Element {
             </Menu>
         </Box>
     );
-}
+};
+
+export default AdminMenu;

@@ -7,15 +7,15 @@ interface ReadOnlyLabelProps {
     text: string | undefined;
 }
 
-export default function ReadOnlyLabel(props: ReadOnlyLabelProps): JSX.Element {
-    return (
-        <Typography
-            sx={{
-                fontSize: '22px',
-                paddingTop: '10px',
-            }}
-        >
-            {props.text}
-        </Typography>
-    );
-}
+const ReadOnlyLabel = (props: ReadOnlyLabelProps) => (
+    <Typography
+        sx={{
+            fontSize: '22px',
+            paddingTop: '10px',
+        }}
+    >
+        {props.text}
+    </Typography>
+);
+
+export default ReadOnlyLabel;
