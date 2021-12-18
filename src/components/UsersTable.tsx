@@ -15,6 +15,7 @@ interface HeadCell {
 const headCells: HeadCell[] = [
     { id: 'userID', label: 'User ID' },
     { id: 'username', label: 'Username' },
+    { id: 'email', label: 'Email' },
     { id: 'isActive', label: ' User is Active' },
 ];
 
@@ -89,6 +90,7 @@ const Row = (props: RowProps) => {
         >
             <TableCell>{user.userID}</TableCell>
             <TableCell>{user.username}</TableCell>
+            <TableCell>{user.email}</TableCell>
             <TableCell>{user.isActive}</TableCell>
             <TableCell>
                 <IconButton onClick={() => {

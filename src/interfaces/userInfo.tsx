@@ -1,5 +1,6 @@
 export interface UserInfo {
-    username: string | undefined;
+    username?: string;
     roles: Array<string>;
-    userId: string | undefined;
+    userId?: string;
+    token?: string;
 }

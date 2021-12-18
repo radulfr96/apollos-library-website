@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Grid } from '@mui/material';
 import Axios from 'axios';
 import { WithSnackbarProps } from 'notistack';
 import { User } from '../../interfaces/user';
 import UsersTable from '../../components/UsersTable';
 import PageHeading from '../../components/shared/PageHeading';
+import ConfigHelper from '../../config/configHelper';
+import { AppContext } from '../../Context';
 
 interface UsersState {
     users: Array<User>;
@@ -14,11 +16,19 @@ const Users = (props: WithSnackbarProps) => {
     const [usersState, setUsersState] = useState<UsersState>({
         users: [],
     });
+    const context = useContext(AppContext);
+
+    const configHelper = new ConfigHelper();
 
     const { enqueueSnackbar } = props;
 
     const getUsers = () => {
-        Axios.get('/api/user')
+        console.log(context.getToken());
+        Axios.post(`${configHelper.apiUrl}/api/user/users`, {}, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        })
             .then((response) => {
                 setUsersState({
                     ...usersState,
@@ -46,7 +56,7 @@ const Users = (props: WithSnackbarProps) => {
     };
 
     const deleteUser = (id: string): void => {
-        Axios.delete(`api/user/${id}`)
+        Axios.delete(`${process.env.MY_LIBRARY_API}/api/user/${id}`)
             .then((response) => {
                 if (response.status === 200) {
                     renderSuccessSnackbar('Delete successful');

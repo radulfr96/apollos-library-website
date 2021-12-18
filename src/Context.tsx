@@ -8,6 +8,7 @@ export const AppContext = React.createContext<State & Functions>({
     isPaidUser: () => false,
     getUserInfo: () => null,
     clearUserInfo: () => null,
+    getToken: () => '',
 });
 
 interface Functions {
@@ -15,6 +16,7 @@ interface Functions {
     isPaidUser(): boolean;
     getUserInfo(): void;
     clearUserInfo(): void;
+    getToken(): string | undefined;
 }
 
 interface State {
@@ -54,6 +56,8 @@ const AppContextProvider = (props: AppContextProviderProps) => {
         });
     };
 
+    const getToken = () => state.userInfo?.token;
+
     const getUserInfo = () => {
         userManager.getUser().then((user) => {
             if (user !== null) {
@@ -62,6 +66,7 @@ const AppContextProvider = (props: AppContextProviderProps) => {
                         username: user.profile.username,
                         roles: user.profile.role,
                         userId: user.profile.sid,
+                        token: user.access_token,
                     },
                 });
             }
@@ -70,7 +75,7 @@ const AppContextProvider = (props: AppContextProviderProps) => {
 
     // eslint-disable-next-line react/jsx-no-constructed-context-values
     const contextValue = {
-        ...state, isAdmin, isPaidUser, getUserInfo, clearUserInfo,
+        ...state, isAdmin, isPaidUser, getUserInfo, clearUserInfo, getToken,
     };
 
     const { children } = props;
