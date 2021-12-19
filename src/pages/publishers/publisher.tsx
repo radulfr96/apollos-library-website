@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -13,6 +13,8 @@ import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
 import CountryTypedown from '../../components/shared/countryTypedown';
 import Country from '../../interfaces/country';
+import { AppContext } from '../../Context';
+import ConfigHelper from '../../config/configHelper';
 
 interface PublisherState {
     publisher: Publisher;
@@ -38,6 +40,8 @@ const PublisherPage = (props: WithSnackbarProps) => {
     const params = useParams();
 
     const { enqueueSnackbar } = props;
+    const configHelper = new ConfigHelper();
+    const context = useContext(AppContext);
 
     const renderErrorSnackbar = (message: string): void => {
         enqueueSnackbar(message, {
@@ -59,7 +63,11 @@ const PublisherPage = (props: WithSnackbarProps) => {
 
     useEffect(() => {
         if (params.id !== undefined && params.id !== null) {
-            Axios.get(`/api/publisher/${params.id}`)
+            Axios.post(`${configHelper.apiUrl}/api/publisher/${params.id}`, {}, {
+                headers: {
+                    Authorization: `Bearer ${context.getToken()}`,
+                },
+            })
                 .then((response) => {
                     setPublisherState({
                         ...publisherState,
@@ -74,7 +82,11 @@ const PublisherPage = (props: WithSnackbarProps) => {
             });
         }
 
-        Axios.get('/api/reference/countries')
+        Axios.post(`${configHelper.apiUrl}/api/reference/countries`, {}, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        })
             .then((response) => {
                 setPublisherState({
                     ...publisherState,
@@ -87,7 +99,11 @@ const PublisherPage = (props: WithSnackbarProps) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.patch('api/publisher/', publisher)
+                    Axios.patch('api/publisher/', publisher, {
+                        headers: {
+                            Authorization: `Bearer ${context.getToken()}`,
+                        },
+                    })
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');
@@ -109,7 +125,11 @@ const PublisherPage = (props: WithSnackbarProps) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.post('api/publisher/', publisher)
+                    Axios.post(`${configHelper.apiUrl}/api/publisher/`, publisher, {
+                        headers: {
+                            Authorization: `Bearer ${context.getToken()}`,
+                        },
+                    })
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Add successful');

@@ -3,7 +3,6 @@ import {
     IconButton, Menu, MenuItem, Box, Typography, Link,
 } from '@mui/material';
 import { Person } from '@mui/icons-material';
-import Axios from 'axios';
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../../Context';
 import userManager from '../../util/userManager';
@@ -14,7 +13,7 @@ const AccountMenu = () => {
     const context = useContext(AppContext);
 
     const logOut = () => {
-        Axios.post('/api/user/logout');
+        userManager.signoutRedirect();
     };
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {

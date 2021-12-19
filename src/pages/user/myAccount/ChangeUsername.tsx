@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     Grid, Button,
 } from '@mui/material';
@@ -10,6 +10,8 @@ import PageHeading from '../../../components/shared/PageHeading';
 import InputTextField from '../../../components/shared/InputTextField';
 import ChangeUsernameInfo from '../../../interfaces/changeUsernameInfo';
 import UserHelper from '../UserHelper';
+import ConfigHelper from '../../../config/configHelper';
+import { AppContext } from '../../../Context';
 
 interface ChangeUsernameState {
     changeUsernameInfo: ChangeUsernameInfo;
@@ -22,6 +24,8 @@ const ChangeUsername = () => {
             password: '',
         },
     });
+    const configHelper = new ConfigHelper();
+    const context = useContext(AppContext);
 
     const snackbar = useSnackbar();
 
@@ -47,7 +51,11 @@ const ChangeUsername = () => {
         validateForm()
             .then((formKeys: any) => {
                 if ((Object.keys(formKeys).length) === 0) {
-                    Axios.patch('api/user/username', usernameInfo)
+                    Axios.patch(`${configHelper.apiUrl}/api/user/username`, usernameInfo, {
+                        headers: {
+                            Authorization: `Bearer ${context.getToken()}`,
+                        },
+                    })
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update username successful');

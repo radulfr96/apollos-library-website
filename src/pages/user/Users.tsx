@@ -23,7 +23,6 @@ const Users = (props: WithSnackbarProps) => {
     const { enqueueSnackbar } = props;
 
     const getUsers = () => {
-        console.log(context.getToken());
         Axios.post(`${configHelper.apiUrl}/api/user/users`, {}, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,

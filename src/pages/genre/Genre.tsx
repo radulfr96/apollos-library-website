@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
@@ -11,6 +11,8 @@ import { WithSnackbarProps } from 'notistack';
 import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
+import ConfigHelper from '../../config/configHelper';
+import { AppContext } from '../../Context';
 
 interface GenreState {
     genre: Genre;
@@ -31,11 +33,17 @@ const GenrePage = (props: WithSnackbarProps) => {
     });
 
     const params = useParams<GenreParams>();
+    const configHelper = new ConfigHelper();
+    const context = useContext(AppContext);
     const { enqueueSnackbar } = props;
 
     useEffect(() => {
         if (params.id !== undefined && params.id !== null) {
-            Axios.get(`/api/genre/${params.id}`)
+            Axios.get(`${configHelper.apiUrl}/api/genre/${params.id}`, {
+                headers: {
+                    Authorization: `Bearer ${context.getToken()}`,
+                },
+            })
                 .then((response) => {
                     setGenreState({
                         genre: response.data.genre,
@@ -72,7 +80,11 @@ const GenrePage = (props: WithSnackbarProps) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.patch('api/genre/', genre)
+                    Axios.patch(`${configHelper.apiUrl}/api/genre/`, genre, {
+                        headers: {
+                            Authorization: `Bearer ${context.getToken()}`,
+                        },
+                    })
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');
@@ -94,7 +106,11 @@ const GenrePage = (props: WithSnackbarProps) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.post('api/genre/', genre)
+                    Axios.post(`${configHelper.apiUrl}/api/genre/`, genre, {
+                        headers: {
+                            Authorization: `Bearer ${context.getToken()}`,
+                        },
+                    })
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Add successful');

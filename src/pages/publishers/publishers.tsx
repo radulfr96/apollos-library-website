@@ -10,6 +10,7 @@ import { PublisherListItem } from '../../interfaces/publisherListItem';
 import PageHeading from '../../components/shared/PageHeading';
 import PublishersTable from '../../components/PublishersTable';
 import { AppContext } from '../../Context';
+import ConfigHelper from '../../config/configHelper';
 
 interface PublishersState {
     publishers: Array<PublisherListItem>;
@@ -19,6 +20,7 @@ const Publishers = (props: WithSnackbarProps) => {
     const [publisherState, setPublisherState] = useState<PublishersState>({
         publishers: [],
     });
+    const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
 
     const { enqueueSnackbar } = props;
@@ -36,7 +38,11 @@ const Publishers = (props: WithSnackbarProps) => {
     };
 
     const getPubishers = () => {
-        Axios.get('/api/publisher')
+        Axios.post(`${configHelper.apiUrl}/api/publisher`, {}, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        })
             .then((response) => {
                 setPublisherState({
                     ...publisherState,
@@ -46,7 +52,11 @@ const Publishers = (props: WithSnackbarProps) => {
     };
 
     const deletePublisher = (id: number): void => {
-        Axios.delete(`api/publisher/${id}`)
+        Axios.delete(`${configHelper.apiUrl}/api/publisher/${id}`, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        })
             .then((response) => {
                 if (response.status === 200) {
                     renderSuccessSnackbar('Delete successful');

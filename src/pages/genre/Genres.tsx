@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
     Grid, Fab,
 } from '@mui/material';
@@ -9,6 +9,8 @@ import { WithSnackbarProps } from 'notistack';
 import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/PageHeading';
 import GenresTable from '../../components/GenresTable';
+import ConfigHelper from '../../config/configHelper';
+import { AppContext } from '../../Context';
 
 interface GenresState {
     genres: Array<Genre>;
@@ -19,6 +21,8 @@ const Genres = (props: WithSnackbarProps) => {
         genres: [],
     });
     const { enqueueSnackbar } = props;
+    const configHelper = new ConfigHelper();
+    const context = useContext(AppContext);
 
     const renderErrorSnackbar = (message: string): void => {
         enqueueSnackbar(message, {
@@ -33,14 +37,22 @@ const Genres = (props: WithSnackbarProps) => {
     };
 
     const getGenres = () => {
-        Axios.get('/api/genre')
+        Axios.post(`${configHelper.apiUrl}/api/genre`, {}, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        })
             .then((response) => {
                 setGenreState({ ...genreState, genres: response.data.genres });
             });
     };
 
     const deleteGenre = (id: number): void => {
-        Axios.delete(`api/genre/${id}`)
+        Axios.delete(`${configHelper.apiUrl}/api/genre/${id}`, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        })
             .then((response) => {
                 if (response.status === 200) {
                     renderSuccessSnackbar('Delete successful');

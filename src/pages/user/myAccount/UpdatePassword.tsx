@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     Grid, Button,
 } from '@mui/material';
@@ -9,6 +9,8 @@ import { useSnackbar } from 'notistack';
 import PageHeading from '../../../components/shared/PageHeading';
 import InputTextField from '../../../components/shared/InputTextField';
 import ChangePasswordInfo from '../../../interfaces/changePasswordInfo';
+import { AppContext } from '../../../Context';
+import ConfigHelper from '../../../config/configHelper';
 
 interface ChangePasswordState {
     changePasswordInfo: ChangePasswordInfo;
@@ -39,6 +41,8 @@ const UpdatePassword = () => {
     });
 
     const snackbar = useSnackbar();
+    const context = useContext(AppContext);
+    const configHelper = new ConfigHelper();
 
     const renderErrorSnackbar = (message: string): void => {
         snackbar.enqueueSnackbar(message, {
@@ -62,7 +66,11 @@ const UpdatePassword = () => {
         validateForm()
             .then((formKeys: any) => {
                 if ((Object.keys(formKeys).length) === 0) {
-                    Axios.patch('api/user/password', passwordInfo)
+                    Axios.patch(`${configHelper.apiUrl}/api/user/password`, passwordInfo, {
+                        headers: {
+                            Authorization: `Bearer ${context.getToken()}`,
+                        },
+                    })
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update password successful');

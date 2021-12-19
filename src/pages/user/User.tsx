@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
@@ -15,6 +15,8 @@ import InputTextField from '../../components/shared/InputTextField';
 import { Role } from '../../interfaces/role';
 import RoleSelector from '../../components/RoleSelector';
 import UserHelper from './UserHelper';
+import { AppContext } from '../../Context';
+import ConfigHelper from '../../config/configHelper';
 
 interface UserState {
     user: User | undefined;
@@ -43,9 +45,15 @@ const UserPage = (props: WithSnackbarProps) => {
 
     const navigate = useNavigate();
     const params = useParams<UserParams>();
+    const context = useContext(AppContext);
+    const configHelper = new ConfigHelper();
 
     useEffect(() => {
-        Axios.get(`/api/user/${params.id}`)
+        Axios.get(`${configHelper.apiUrl}/api/user/${params.id}`, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        })
             .then((response) => {
                 setUserState({
                     user: response.data.user,
@@ -83,7 +91,11 @@ const UserPage = (props: WithSnackbarProps) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.patch('api/user/', user)
+                    Axios.patch(`${configHelper.apiUrl}/api/user/`, user, {
+                        headers: {
+                            Authorization: `Bearer ${context.getToken()}`,
+                        },
+                    })
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');

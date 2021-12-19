@@ -10,6 +10,7 @@ import { AuthorListItem } from '../../interfaces/authorListItem';
 import PageHeading from '../../components/shared/PageHeading';
 import AuthorsTable from '../../components/AuthorsTable';
 import { AppContext } from '../../Context';
+import ConfigHelper from '../../config/configHelper';
 
 interface AuthorsState {
     authors: Array<AuthorListItem>;
@@ -20,6 +21,7 @@ const AuthorsPage = (props: WithSnackbarProps) => {
         authors: [],
     });
 
+    const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
     const { enqueueSnackbar } = props;
 
@@ -36,14 +38,22 @@ const AuthorsPage = (props: WithSnackbarProps) => {
     };
 
     const getAuthors = () => {
-        Axios.get('/api/author')
+        Axios.get(`${configHelper.apiUrl}/api/author`, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        })
             .then((response) => {
                 setAuthorsState({ ...authorsState, authors: response.data.authors });
             });
     };
 
     const deleteAuthor = (id: number): void => {
-        Axios.delete(`api/author/${id}`)
+        Axios.delete(`${configHelper.apiUrl}/api/author/${id}`, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        })
             .then((response) => {
                 if (response.status === 200) {
                     renderSuccessSnackbar('Delete successful');

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
@@ -12,6 +12,8 @@ import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
 import CountryTypedown from '../../components/shared/countryTypedown';
 import Country from '../../interfaces/country';
+import ConfigHelper from '../../config/configHelper';
+import { AppContext } from '../../Context';
 
 interface AuthorState {
     countries: Country[],
@@ -33,6 +35,8 @@ const AuthorsPage = (props: WithSnackbarProps) => {
         newAuthor: false,
     });
     const { enqueueSnackbar } = props;
+    const configHelper = new ConfigHelper();
+    const context = useContext(AppContext);
 
     const renderErrorSnackbar = (message: string): void => {
         enqueueSnackbar(message, {
@@ -56,7 +60,11 @@ const AuthorsPage = (props: WithSnackbarProps) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.patch('api/author/', author)
+                    Axios.patch(`${configHelper.apiUrl}/api/author`, author, {
+                        headers: {
+                            Authorization: `Bearer ${context.getToken()}`,
+                        },
+                    })
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');
@@ -78,7 +86,11 @@ const AuthorsPage = (props: WithSnackbarProps) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.post('api/author/', author)
+                    Axios.post(`${configHelper.apiUrl}/api/author/`, author, {
+                        headers: {
+                            Authorization: `Bearer ${context.getToken()}`,
+                        },
+                    })
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Add successful');

@@ -9,9 +9,11 @@ import PageHeading from '../../../components/shared/PageHeading';
 import ReadOnlyLabel from '../../../components/shared/ReadOnlyLabel';
 import ReadOnlyText from '../../../components/shared/ReadOnlyText';
 import { AppContext } from '../../../Context';
+import ConfigHelper from '../../../config/configHelper';
 
 const MyDetails = () => {
     const context = useContext(AppContext);
+    const configHelper = new ConfigHelper();
     const snackbar = useSnackbar();
 
     const renderErrorSnackbar = (message: string): void => {
@@ -33,7 +35,11 @@ const MyDetails = () => {
     };
 
     const deactivateUser = () => {
-        Axios.patch('api/user/deactivate')
+        Axios.patch(`${configHelper.apiUrl}/api/user/deactivate`, {}, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        })
             .then((response) => {
                 if (response.status === 200) {
                     renderSuccessSnackbar('Deactivation successful');
@@ -53,7 +59,11 @@ const MyDetails = () => {
     };
 
     const deleteUser = () => {
-        Axios.delete('api/user/')
+        Axios.delete(`${configHelper.apiUrl}/api/user/`, {
+            headers: {
+                Authorization: `Bearer: ${context.getToken()}`,
+            },
+        })
             .then((response) => {
                 if (response.status === 200) {
                     renderSuccessSnackbar('Deletion successful');
