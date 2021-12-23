@@ -2,18 +2,17 @@ import React, { useContext } from 'react';
 import {
     Grid, Button,
 } from '@mui/material';
-import Axios from 'axios';
 import { push } from 'connected-react-router';
+import Axios from 'axios';
 import { useSnackbar } from 'notistack';
 import PageHeading from '../../../components/shared/PageHeading';
-import ReadOnlyLabel from '../../../components/shared/ReadOnlyLabel';
-import ReadOnlyText from '../../../components/shared/ReadOnlyText';
-import { AppContext } from '../../../Context';
 import ConfigHelper from '../../../config/configHelper';
+import { AppContext } from '../../../Context';
 
-const MyDetails = () => {
-    const context = useContext(AppContext);
+const DeactivateAccount = () => {
     const configHelper = new ConfigHelper();
+    const context = useContext(AppContext);
+
     const snackbar = useSnackbar();
 
     const renderErrorSnackbar = (message: string): void => {
@@ -85,37 +84,7 @@ const MyDetails = () => {
     return (
         <Grid container item xs={12}>
             <Grid item xs={12}>
-                <PageHeading headingText="My Details" />
-            </Grid>
-            <Grid item xs={12}>
-                <ReadOnlyLabel
-                    text="User Number"
-                />
-                <ReadOnlyText text={context.userInfo?.userId} />
-            </Grid>
-            <Grid item xs={12}>
-                <ReadOnlyLabel
-                    text="Username"
-                />
-                <ReadOnlyText text={context.userInfo?.username} />
-            </Grid>
-            {/* <Grid item xs={12}>
-                <ReadOnlyLabel
-                    text="Date Joined"
-                />
-                <ReadOnlyText text={context.userInfo?.joinDate} />
-            </Grid> */}
-            <Grid item xs={12}>
-                <Grid item xs={12}>
-                    <Grid item xs={12}>
-                        <ReadOnlyLabel
-                            text="Roles"
-                        />
-                    </Grid>
-                    {context.userInfo?.roles.map((role: string) => (
-                        <ReadOnlyText text={role} />
-                    ))}
-                </Grid>
+                <PageHeading headingText="Deactivate Accounr" />
             </Grid>
             <Grid item xs={12}>
                 <Button
@@ -147,4 +116,4 @@ const MyDetails = () => {
     );
 };
 
-export default MyDetails;
+export default DeactivateAccount;

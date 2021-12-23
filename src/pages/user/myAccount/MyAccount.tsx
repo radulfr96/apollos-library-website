@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import {
     Paper, Tabs, Tab, Typography, Box,
 } from '@mui/material';
-import MyDetails from './MyDetails';
-import ChangeUsername from './ChangeUsername';
+import MyDetails from './AccountDetails';
+import DeactivateAccount from './DeactivateAccount';
 import UpdatePassword from './UpdatePassword';
 
 interface TabPanelProps {
@@ -36,7 +36,7 @@ interface MyAccountState {
 
 const MyAccount = () => {
     const [myAccountState, setMyAccountState] = useState<MyAccountState>({
-        tab: 1,
+        tab: 0,
     });
 
     const handleTabChange = (event: any, newValue: any) => {
@@ -50,19 +50,19 @@ const MyAccount = () => {
                     onChange={handleTabChange}
                     value={myAccountState.tab}
                 >
-                    <Tab label="My Details" />
-                    <Tab label="Change Username" />
-                    <Tab label="Change Password" />
+                    <Tab label="My Account" />
+                    <Tab label="Update Password" />
+                    <Tab label="Deactivate Account" />
                 </Tabs>
             </Box>
             <TabPanel value={myAccountState.tab} index={0}>
                 <MyDetails />
             </TabPanel>
             <TabPanel value={myAccountState.tab} index={1}>
-                <ChangeUsername />
+                <UpdatePassword />
             </TabPanel>
             <TabPanel value={myAccountState.tab} index={2}>
-                <UpdatePassword />
+                <DeactivateAccount />
             </TabPanel>
         </Paper>
     );

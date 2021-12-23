@@ -4,7 +4,7 @@ import ConfigHelper from '../../config/configHelper';
 import { AppContext } from '../../Context';
 
 export default class UserHelper {
-    static CheckUserIsUnique(username: string): Promise<boolean | null> {
+    static CheckUserIsUnique(username?: string): Promise<boolean | null> {
         const context = useContext(AppContext);
 
         const configHelper = new ConfigHelper();
