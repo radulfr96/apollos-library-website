@@ -3,4 +3,5 @@ export interface UserInfo {
     roles: Array<string>;
     userId?: string;
     token?: string;
+    email?: string;
 }

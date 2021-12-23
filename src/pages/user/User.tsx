@@ -114,7 +114,8 @@ const UserPage = (props: WithSnackbarProps) => {
     };
 
     const checkUserIsUnique = (username: string) => {
-        UserHelper.CheckUserIsUnique(username).then((result) => {
+        const helper = new UserHelper(context.getToken());
+        helper.CheckUsernameIsUnique(username).then((result) => {
             if (result === null || result === undefined) {
                 renderErrorSnackbar('Unable to check username, please contact admin');
             } else if (result === true) {

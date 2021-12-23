@@ -1,18 +1,20 @@
 import Axios from 'axios';
-import { useContext } from 'react';
 import ConfigHelper from '../../config/configHelper';
-import { AppContext } from '../../Context';
 
 export default class UserHelper {
-    static CheckUserIsUnique(username?: string): Promise<boolean | null> {
-        const context = useContext(AppContext);
+    token?: string;
 
+    constructor(token?: string) {
+        this.token = token;
+    }
+
+    CheckUsernameIsUnique(username?: string): Promise<boolean | null> {
         const configHelper = new ConfigHelper();
 
         return new Promise<boolean | null>((resolve) => {
-            Axios.get(`${configHelper.apiUrl}/api/user/check/${username}`, {
+            Axios.get(`${configHelper.apiUrl}/api/user/checkselfusername/${username}`, {
                 headers: {
-                    Authorization: `Bearer ${context.getToken()}`,
+                    Authorization: `Bearer ${this.token}`,
                 },
             })
                 .then((response) => {

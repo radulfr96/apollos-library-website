@@ -57,12 +57,12 @@ const AccountMenu = () => {
                     }}
                     href="/account"
                 >
-                    <MenuItem style={{ display: context.userInfo?.username !== undefined ? 'block' : 'none' }} onClick={handleClose}>
+                    <MenuItem style={{ display: context.userInfo?.email !== undefined ? 'block' : 'none' }} onClick={handleClose}>
                         My Account
                     </MenuItem>
                 </Link>
                 <MenuItem
-                    style={{ display: context.userInfo?.username !== undefined ? 'block' : 'none' }}
+                    style={{ display: context.userInfo?.email !== undefined ? 'block' : 'none' }}
                     onClick={() => {
                         logOut();
                         context.clearUserInfo();
@@ -79,10 +79,10 @@ const AccountMenu = () => {
                         Log out
                     </Link>
                 </MenuItem>
-                <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={handleLogin}>
+                <MenuItem style={{ display: context.userInfo?.email === undefined ? 'block' : 'none' }} onClick={handleLogin}>
                     <Typography>Log in</Typography>
                 </MenuItem>
-                <MenuItem style={{ display: context.userInfo?.username === undefined ? 'block' : 'none' }} onClick={handleClose}>
+                <MenuItem style={{ display: context.userInfo?.email === undefined ? 'block' : 'none' }} onClick={handleClose}>
                     <Link
                         sx={{
                             color: '#000000',

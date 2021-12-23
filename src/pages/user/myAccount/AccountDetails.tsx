@@ -12,8 +12,10 @@ import ConfigHelper from '../../../config/configHelper';
 import InputTextField from '../../../components/shared/InputTextField';
 import UserHelper from '../UserHelper';
 import ChangeAccountDetailsInfo from '../../../interfaces/changeAccountDetailsInfo';
+import ReadOnlyText from '../../../components/shared/ReadOnlyText';
+import ReadOnlyLabel from '../../../components/shared/ReadOnlyLabel';
 
-interface ChangeUsernameState {
+interface ChangeAccountDetailsState {
     changeAccountDetailsInfo: ChangeAccountDetailsInfo;
 }
 
@@ -22,7 +24,7 @@ const MyDetails = () => {
     const configHelper = new ConfigHelper();
     const snackbar = useSnackbar();
 
-    const [detailsState] = useState<ChangeUsernameState>({
+    const [detailsState] = useState<ChangeAccountDetailsState>({
         changeAccountDetailsInfo: {
             username: context.userInfo?.username,
         },
@@ -50,7 +52,7 @@ const MyDetails = () => {
         validateForm()
             .then((formKeys: any) => {
                 if ((Object.keys(formKeys).length) === 0) {
-                    Axios.patch(`${configHelper.apiUrl}/api/user/username`, details, {
+                    Axios.patch(`${configHelper.apiUrl}/api/user/selfupdate`, details, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },
@@ -75,7 +77,9 @@ const MyDetails = () => {
 
     const checkUserIsUnique = (username?: string) => {
         if (username !== undefined) {
-            UserHelper.CheckUserIsUnique(username).then((result) => {
+            const helper = new UserHelper(context.getToken());
+
+            helper.CheckUsernameIsUnique(username).then((result) => {
                 if (result === null || result === undefined) {
                     renderErrorSnackbar('Unable to check username, please contact admin');
                 } else if (result === true) {
@@ -99,7 +103,7 @@ const MyDetails = () => {
                 onSubmit={() => { }}
                 validationSchema={
                     yup.object().shape({
-                        newUsername: yup.string()
+                        username: yup.string()
                             .required('You must have username'),
                     })
                 }
@@ -111,6 +115,12 @@ const MyDetails = () => {
                     validateForm,
                 }) => (
                     <Grid item xs={12}>
+                        <Grid item xs={12} sx={{ marginBottom: '15px' }}>
+                            <ReadOnlyLabel
+                                text="Email"
+                            />
+                            <ReadOnlyText text={context.userInfo?.email} />
+                        </Grid>
                         <Grid item xs={12}>
                             <InputTextField
                                 label="Username"
