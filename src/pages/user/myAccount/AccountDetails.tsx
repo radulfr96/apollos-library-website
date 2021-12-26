@@ -14,6 +14,7 @@ import UserHelper from '../UserHelper';
 import ChangeAccountDetailsInfo from '../../../interfaces/changeAccountDetailsInfo';
 import ReadOnlyText from '../../../components/shared/ReadOnlyText';
 import ReadOnlyLabel from '../../../components/shared/ReadOnlyLabel';
+import userManager from '../../../util/userManager';
 
 interface ChangeAccountDetailsState {
     changeAccountDetailsInfo: ChangeAccountDetailsInfo;
@@ -60,6 +61,9 @@ const MyDetails = () => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update account details successful');
+                                userManager.revokeAccessToken();
+                                userManager.signinSilent();
+                                context.getUserInfo();
                             }
                         })
                         .catch((error) => {
@@ -82,9 +86,9 @@ const MyDetails = () => {
             helper.CheckUsernameIsUnique(username).then((result) => {
                 if (result === null || result === undefined) {
                     renderErrorSnackbar('Unable to check username, please contact admin');
-                } else if (result === true) {
-                    renderWarningSnackbar('Username is taken please choose another');
                 } else if (result === false) {
+                    renderWarningSnackbar('Username is taken please choose another');
+                } else if (result === true) {
                     renderSuccessSnackbar('Username is availiable');
                 }
             });

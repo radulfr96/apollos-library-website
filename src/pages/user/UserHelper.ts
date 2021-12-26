@@ -18,7 +18,7 @@ export default class UserHelper {
                 },
             })
                 .then((response) => {
-                    resolve(response.data.result);
+                    resolve(response.data.isUnique);
                 });
         });
     }
