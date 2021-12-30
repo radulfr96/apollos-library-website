@@ -5,7 +5,6 @@ import {
 } from '@mui/material';
 import { push } from 'connected-react-router';
 import { ChevronRight, Delete } from '@mui/icons-material';
-import { RouteComponentProps, withRouter } from 'react-router';
 import { PublisherTableItem } from '../interfaces/publisherTableItem';
 import TableHelper, { Order } from '../util/TableFunctions';
 
@@ -80,7 +79,7 @@ interface RowProps {
     deletePublisher: (publisherId: number) => void;
 }
 
-const NavCell = (props: RowProps & RouteComponentProps) => {
+const NavCell = (props: RowProps) => {
     const { deletePublisher, publisher } = props;
 
     return (
@@ -104,8 +103,6 @@ const NavCell = (props: RowProps & RouteComponentProps) => {
     );
 };
 
-export const NavigationCell = withRouter(NavCell);
-
 export const Row = (props: RowProps) => {
     const { publisher, deletePublisher } = props;
     return (
@@ -119,7 +116,7 @@ export const Row = (props: RowProps) => {
             <TableCell>{publisher.publisherId}</TableCell>
             <TableCell>{publisher.name}</TableCell>
             <TableCell>{publisher.country}</TableCell>
-            <NavigationCell publisher={publisher} deletePublisher={deletePublisher} />
+            <NavCell publisher={publisher} deletePublisher={deletePublisher} />
         </TableRow>
     );
 };

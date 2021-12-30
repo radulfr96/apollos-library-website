@@ -5,7 +5,6 @@ import {
 } from '@mui/material';
 import { push } from 'connected-react-router';
 import { ChevronRight, Delete } from '@mui/icons-material';
-import { RouteComponentProps, withRouter } from 'react-router';
 import { Genre } from '../interfaces/genre';
 import TableHelper, { Order } from '../util/TableFunctions';
 
@@ -77,7 +76,7 @@ interface RowProps {
     deleteGenre: (genreId: number) => void;
 }
 
-const NavCell = (props: RowProps & RouteComponentProps) => {
+const NavCell = (props: RowProps) => {
     const { deleteGenre, genre } = props;
 
     return (
@@ -98,8 +97,6 @@ const NavCell = (props: RowProps & RouteComponentProps) => {
     );
 };
 
-export const NavigationCell = withRouter(NavCell);
-
 export const Row = (props: RowProps) => {
     const { genre, deleteGenre } = props;
 
@@ -113,7 +110,7 @@ export const Row = (props: RowProps) => {
         >
             <TableCell>{genre.genreId}</TableCell>
             <TableCell>{genre.name}</TableCell>
-            <NavigationCell genre={genre} deleteGenre={deleteGenre} />
+            <NavCell genre={genre} deleteGenre={deleteGenre} />
         </TableRow>
     );
 };

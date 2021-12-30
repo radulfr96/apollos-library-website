@@ -5,8 +5,8 @@ import {
     Grid, Button, CircularProgress,
 } from '@mui/material';
 import Axios from 'axios';
+import { push } from 'connected-react-router';
 import { useParams } from 'react-router';
-import { useNavigate } from 'react-router-dom';
 import { WithSnackbarProps } from 'notistack';
 import { User } from '../../interfaces/user';
 import { UpdateUserInfo } from '../../interfaces/updateUserInfo';
@@ -43,7 +43,6 @@ const UserPage = (props: WithSnackbarProps) => {
 
     const { enqueueSnackbar } = props;
 
-    const navigate = useNavigate();
     const params = useParams<UserParams>();
     const context = useContext(AppContext);
     const configHelper = new ConfigHelper();
@@ -99,7 +98,7 @@ const UserPage = (props: WithSnackbarProps) => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');
-                                navigate(-1);
+                                push('/user');
                             }
                         })
                         .catch((error) => {
@@ -255,7 +254,7 @@ const UserPage = (props: WithSnackbarProps) => {
                                     variant="contained"
                                     color="secondary"
                                     onClick={() => {
-                                        navigate('/user');
+                                        push('/user');
                                     }}
                                 >
                                     Cancel
