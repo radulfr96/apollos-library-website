@@ -67,7 +67,7 @@ const AppContextProvider = (props: AppContextProviderProps) => {
                         roles: user.profile.role,
                         userId: user.profile.sid,
                         token: user.access_token,
-                        email: user.profile.email,
+                        email: user.profile.emailaddress,
                     },
                 });
             }
