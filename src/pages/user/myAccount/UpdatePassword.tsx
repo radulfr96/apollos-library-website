@@ -16,21 +16,6 @@ interface ChangePasswordState {
     changePasswordInfo: ChangePasswordInfo;
 }
 
-// const useStyles = makeStyles({
-//     paper: {
-//         paddingTop: '20px',
-//         paddingLeft: '40px',
-//         paddingRight: '20px',
-//     },
-//     navPaper: {
-//         paddingTop: '20px',
-//         paddingLeft: '40px',
-//         paddingRight: '20px',
-//         marginRight: '20px',
-//         width: '150px',
-//     },
-// });
-
 const UpdatePassword = () => {
     const [updatePasswordState] = useState<ChangePasswordState>({
         changePasswordInfo: {
@@ -101,13 +86,13 @@ const UpdatePassword = () => {
                     validationSchema={
                         yup.object().shape({
                             password: yup.string()
-                                .required('You must enter a password confirmation'),
+                                .required('You must enter your current password'),
                             newPassword: yup.string()
                                 .required('You must enter a new password')
                                 .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Password must be at least 6 characters long and contain one number and uppercase character.'),
                             newPasswordConfirmation: yup.string()
-                                .oneOf([yup.ref('password')], 'Confirm password must matched password')
-                                .required('You must enter your password confirmation to register'),
+                                .oneOf([yup.ref('newPassword')], 'Confirm password must matched new password')
+                                .required('You must enter your new password again'),
                         })
                     }
                 >
@@ -120,7 +105,7 @@ const UpdatePassword = () => {
                         <Grid container item xs={12}>
                             <Grid item xs={12}>
                                 <InputTextField
-                                    label="Password"
+                                    label="Current Password"
                                     required
                                     type="password"
                                     keyName="password"

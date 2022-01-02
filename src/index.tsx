@@ -36,12 +36,12 @@ const store = configureStore({}, history);
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            <OidcProvider store={store} userManager={userManager}>
-                <AppContextProvider>
-                    <ThemeProvider theme={theme}>
-                        <SnackbarProvider maxSnack={10}>
-                            <Layout>
-                                <ConnectedRouter history={history}>
+            <ConnectedRouter history={history}>
+                <OidcProvider store={store} userManager={userManager}>
+                    <AppContextProvider>
+                        <ThemeProvider theme={theme}>
+                            <SnackbarProvider maxSnack={10}>
+                                <Layout>
                                     <Switch>
                                         <Route exact path="/" component={Home} />
                                         <Route path="/callback" component={CallbackPage} />
@@ -60,12 +60,12 @@ ReactDOM.render(
                                         <Route path="/author/:id" component={AuthorPage} />
                                         <Route path="/addauthor" component={AuthorPage} />
                                     </Switch>
-                                </ConnectedRouter>
-                            </Layout>
-                        </SnackbarProvider>
-                    </ThemeProvider>
-                </AppContextProvider>
-            </OidcProvider>
+                                </Layout>
+                            </SnackbarProvider>
+                        </ThemeProvider>
+                    </AppContextProvider>
+                </OidcProvider>
+            </ConnectedRouter>
         </Provider>
     </React.StrictMode>,
     document.getElementById('root'),
