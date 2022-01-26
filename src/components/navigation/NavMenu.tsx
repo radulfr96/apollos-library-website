@@ -15,7 +15,7 @@ const NavMenu = () => {
             <Toolbar>
                 <Typography variant="h6" sx={{ flexGrow: 1 }}>
                     <Link href="/" sx={{ textDecoration: 'none', color: '#FFFFFFFF' }}>
-                        My Library
+                        Apollo&apos;s Library
                     </Link>
                 </Typography>
                 <Box style={{ display: context.isPaidUser() ? 'block' : 'none' }}>
