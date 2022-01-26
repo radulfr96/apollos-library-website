@@ -19,7 +19,7 @@ interface ChangePasswordState {
 const UpdatePassword = () => {
     const [updatePasswordState] = useState<ChangePasswordState>({
         changePasswordInfo: {
-            password: '',
+            currentPassword: '',
             newPassword: '',
             newPasswordConfirmation: '',
         },
@@ -50,8 +50,13 @@ const UpdatePassword = () => {
     const updatePassword = (passwordInfo: ChangePasswordInfo, validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
+                const command = {
+                    currentPassword: passwordInfo.currentPassword,
+                    newPassword: passwordInfo.newPassword,
+                };
+
                 if ((Object.keys(formKeys).length) === 0) {
-                    Axios.patch(`${configHelper.apiUrl}/api/user/password`, passwordInfo, {
+                    Axios.patch(`${configHelper.apiUrl}/api/user/password`, command, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },
@@ -85,7 +90,7 @@ const UpdatePassword = () => {
                     onSubmit={() => { }}
                     validationSchema={
                         yup.object().shape({
-                            password: yup.string()
+                            currentPassword: yup.string()
                                 .required('You must enter your current password'),
                             newPassword: yup.string()
                                 .required('You must enter a new password')
@@ -108,11 +113,11 @@ const UpdatePassword = () => {
                                     label="Current Password"
                                     required
                                     type="password"
-                                    keyName="password"
-                                    value={values.password}
+                                    keyName="currentPassword"
+                                    value={values.currentPassword}
                                     onChange={handleChange}
-                                    error={!!(errors.password)}
-                                    errorMessage={errors.password}
+                                    error={!!(errors.currentPassword)}
+                                    errorMessage={errors.currentPassword}
                                 />
                             </Grid>
                             <Grid item xs={12}>

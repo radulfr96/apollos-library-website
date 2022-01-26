@@ -1,6 +1,7 @@
-export default interface ChangePasswordInfo {
-    password: string;
+interface ChangePasswordInfo {
+    currentPassword: string;
     newPassword: string;
     newPasswordConfirmation: string;
-// eslint-disable-next-line semi
 }
+
+export default ChangePasswordInfo;

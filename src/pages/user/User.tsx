@@ -8,7 +8,6 @@ import Axios from 'axios';
 import { push } from 'connected-react-router';
 import { useParams } from 'react-router';
 import { WithSnackbarProps } from 'notistack';
-import { User } from '../../interfaces/user';
 import { UpdateUserInfo } from '../../interfaces/updateUserInfo';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
@@ -19,7 +18,6 @@ import { AppContext } from '../../Context';
 import ConfigHelper from '../../config/configHelper';
 
 interface UserState {
-    user: User | undefined;
     updateInfo: UpdateUserInfo;
     roles: Array<Role>;
 }
@@ -30,12 +28,9 @@ interface UserParams {
 
 const UserPage = (props: WithSnackbarProps) => {
     const [userState, setUserState] = useState<UserState>({
-        user: undefined,
         updateInfo: {
             userID: 0,
             username: '',
-            password: '',
-            confirmationPassword: '',
             roles: [],
         },
         roles: [],
@@ -48,20 +43,19 @@ const UserPage = (props: WithSnackbarProps) => {
     const configHelper = new ConfigHelper();
 
     useEffect(() => {
-        Axios.get(`${configHelper.apiUrl}/api/user/${params.id}`, {
+        Axios.post(`${configHelper.apiUrl}/api/user/`, {
+            UserID: params.id,
+        }, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },
         })
             .then((response) => {
                 setUserState({
-                    user: response.data.user,
                     updateInfo: {
-                        username: response.data.user.username,
-                        password: '',
-                        confirmationPassword: '',
-                        userID: response.data.user.userID,
-                        roles: response.data.user.roles,
+                        username: response.data.username,
+                        userID: response.data.userID,
+                        roles: response.data.roles,
                     },
                     roles: response.data.roles,
                 });
@@ -125,7 +119,7 @@ const UserPage = (props: WithSnackbarProps) => {
         });
     };
 
-    if (userState.user === undefined) {
+    if (userState.updateInfo.username === undefined) {
         return (<CircularProgress />);
     }
 
@@ -177,28 +171,6 @@ const UserPage = (props: WithSnackbarProps) => {
                                     }}
                                     error={!!(errors.username)}
                                     errorMessage={errors.username}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <InputTextField
-                                    label="Password"
-                                    type="password"
-                                    keyName="password"
-                                    value={values.password}
-                                    onChange={handleChange}
-                                    error={!!(errors.password)}
-                                    errorMessage={errors.password}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <InputTextField
-                                    label="Confirmation Password"
-                                    type="password"
-                                    keyName="confirmationPassword"
-                                    value={values.confirmationPassword}
-                                    onChange={handleChange}
-                                    error={!!(errors.confirmationPassword)}
-                                    errorMessage={errors.confirmationPassword}
                                 />
                             </Grid>
                             <Grid item xs={12}>
