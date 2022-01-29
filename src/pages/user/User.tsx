@@ -11,7 +11,6 @@ import { WithSnackbarProps } from 'notistack';
 import { UpdateUserInfo } from '../../interfaces/updateUserInfo';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
-import { Role } from '../../interfaces/role';
 import RoleSelector from '../../components/RoleSelector';
 import UserHelper from './UserHelper';
 import { AppContext } from '../../Context';
@@ -19,7 +18,7 @@ import ConfigHelper from '../../config/configHelper';
 
 interface UserState {
     updateInfo: UpdateUserInfo;
-    roles: Array<Role>;
+    roles: Array<string>;
 }
 
 interface UserParams {
@@ -55,7 +54,7 @@ const UserPage = (props: WithSnackbarProps) => {
                     updateInfo: {
                         username: response.data.username,
                         userID: response.data.userID,
-                        roles: response.data.roles,
+                        roles: response.data.userroles,
                     },
                     roles: response.data.roles,
                 });
@@ -175,24 +174,16 @@ const UserPage = (props: WithSnackbarProps) => {
                             </Grid>
                             <Grid item xs={12}>
                                 <RoleSelector
-                                    roles={userState.roles.map(
-                                        (r) => r.name,
-                                    )}
-                                    selectedRoles={values.roles.map(
-                                        (r: Role) => r.name,
-                                    )}
+                                    roles={userState.roles}
+                                    selectedRoles={userState.updateInfo.roles}
                                     updateUserRoles={(newRoleNames: string[]) => {
-                                        const newRoles = new Array<Role>();
+                                        const newRoles = new Array<string>();
                                         newRoleNames.forEach((n) => {
                                             const role = userState.roles.find(
-                                                (r) => r.name === n,
+                                                (r) => r === n,
                                             );
                                             if (role !== undefined) {
-                                                const newRole: Role = {
-                                                    roleId: role.roleId,
-                                                    name: role.name,
-                                                };
-                                                newRoles.push(newRole);
+                                                newRoles.push(role);
                                             }
                                         });
                                         // eslint-disable-next-line no-param-reassign

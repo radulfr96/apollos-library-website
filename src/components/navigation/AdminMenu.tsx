@@ -26,7 +26,10 @@ const AdminMenu = () => {
                 aria-haspopup="true"
                 onClick={handleMenu}
             >
-                <Settings color="secondary" />
+                <Settings sx={{
+                    color: '#FFFFFF',
+                }}
+                />
             </IconButton>
             <Menu
                 id="menu-appbar"

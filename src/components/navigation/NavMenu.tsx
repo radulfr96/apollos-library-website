@@ -31,7 +31,10 @@ const NavMenu = () => {
                             }}
                             href="/authors"
                         >
-                            <Person color="secondary" />
+                            <Person sx={{
+                                color: '#FFFFFF',
+                            }}
+                            />
                         </Link>
                     </IconButton>
                     <IconButton
@@ -46,7 +49,10 @@ const NavMenu = () => {
                             }}
                             href="/publishers"
                         >
-                            <Business color="secondary" />
+                            <Business sx={{
+                                color: '#FFFFFF',
+                            }}
+                            />
                         </Link>
                     </IconButton>
                 </Box>

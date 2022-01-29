@@ -37,7 +37,10 @@ const AccountMenu = () => {
                 aria-haspopup="true"
                 onClick={handleMenu}
             >
-                <Person color="secondary" />
+                <Person sx={{
+                    color: '#FFFFFF',
+                }}
+                />
             </IconButton>
             <Menu
                 id="menu-appbar"
