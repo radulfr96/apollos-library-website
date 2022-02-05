@@ -5,7 +5,7 @@ import {
 import { Add } from '@mui/icons-material';
 import Axios from 'axios';
 import { push } from 'connected-react-router';
-import { WithSnackbarProps } from 'notistack';
+import { useSnackbar } from 'notistack';
 import { PublisherListItem } from '../../interfaces/publisherListItem';
 import PageHeading from '../../components/shared/PageHeading';
 import PublishersTable from '../../components/PublishersTable';
@@ -16,14 +16,14 @@ interface PublishersState {
     publishers: Array<PublisherListItem>;
 }
 
-const Publishers = (props: WithSnackbarProps) => {
+const Publishers = () => {
     const [publisherState, setPublisherState] = useState<PublishersState>({
         publishers: [],
     });
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
 
-    const { enqueueSnackbar } = props;
+    const { enqueueSnackbar } = useSnackbar();
 
     const renderErrorSnackbar = (message: string): void => {
         enqueueSnackbar(message, {

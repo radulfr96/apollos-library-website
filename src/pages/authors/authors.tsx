@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import Axios from 'axios';
-import { WithSnackbarProps } from 'notistack';
+import { useSnackbar } from 'notistack';
 import { push } from 'connected-react-router';
 import { AuthorListItem } from '../../interfaces/authorListItem';
 import PageHeading from '../../components/shared/PageHeading';
@@ -16,14 +16,14 @@ interface AuthorsState {
     authors: Array<AuthorListItem>;
 }
 
-const AuthorsPage = (props: WithSnackbarProps) => {
+const AuthorsPage = () => {
     const [authorsState, setAuthorsState] = useState<AuthorsState>({
         authors: [],
     });
 
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
-    const { enqueueSnackbar } = props;
+    const { enqueueSnackbar } = useSnackbar();
 
     const renderErrorSnackbar = (message: string): void => {
         enqueueSnackbar(message, {

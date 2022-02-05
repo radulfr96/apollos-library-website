@@ -7,7 +7,7 @@ import {
 import { push } from 'connected-react-router';
 import Axios from 'axios';
 import { useParams } from 'react-router';
-import { WithSnackbarProps } from 'notistack';
+import { useSnackbar } from 'notistack';
 import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
@@ -19,11 +19,7 @@ interface GenreState {
     newGenre: boolean;
 }
 
-interface GenreParams {
-    id: string | undefined;
-}
-
-const GenrePage = (props: WithSnackbarProps) => {
+const GenrePage = () => {
     const [genreState, setGenreState] = useState<GenreState>({
         genre: {
             name: '',
@@ -31,15 +27,14 @@ const GenrePage = (props: WithSnackbarProps) => {
         },
         newGenre: false,
     });
-
-    const params = useParams<GenreParams>();
+    const { enqueueSnackbar } = useSnackbar();
+    const { id } = useParams();
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
-    const { enqueueSnackbar } = props;
 
     useEffect(() => {
-        if (params.id !== undefined && params.id !== null) {
-            Axios.get(`${configHelper.apiUrl}/api/genre/${params.id}`, {
+        if (id !== undefined && id !== null) {
+            Axios.get(`${configHelper.apiUrl}/api/genre/${id}`, {
                 headers: {
                     Authorization: `Bearer ${context.getToken()}`,
                 },

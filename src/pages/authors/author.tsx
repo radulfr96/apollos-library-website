@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import Axios from 'axios';
 import { push } from 'connected-react-router';
-import { WithSnackbarProps } from 'notistack';
+import { useSnackbar } from 'notistack';
 import { Author } from '../../interfaces/author';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
@@ -21,7 +21,7 @@ interface AuthorState {
     newAuthor: boolean
 }
 
-const AuthorsPage = (props: WithSnackbarProps) => {
+const AuthorsPage = () => {
     const [authorState] = useState<AuthorState>({
         countries: [],
         author: {
@@ -34,7 +34,7 @@ const AuthorsPage = (props: WithSnackbarProps) => {
         },
         newAuthor: false,
     });
-    const { enqueueSnackbar } = props;
+    const { enqueueSnackbar } = useSnackbar();
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
 

@@ -5,7 +5,7 @@ import {
 import { Add } from '@mui/icons-material';
 import Axios from 'axios';
 import { push } from 'connected-react-router';
-import { WithSnackbarProps } from 'notistack';
+import { useSnackbar } from 'notistack';
 import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/PageHeading';
 import GenresTable from '../../components/GenresTable';
@@ -16,11 +16,11 @@ interface GenresState {
     genres: Array<Genre>;
 }
 
-const Genres = (props: WithSnackbarProps) => {
+const Genres = () => {
     const [genreState, setGenreState] = useState<GenresState>({
         genres: [],
     });
-    const { enqueueSnackbar } = props;
+    const { enqueueSnackbar } = useSnackbar();
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
 

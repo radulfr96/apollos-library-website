@@ -6,7 +6,7 @@ import {
     Paper, Grid, Button,
 } from '@mui/material';
 import Axios from 'axios';
-import { WithSnackbarProps } from 'notistack';
+import { useSnackbar } from 'notistack';
 import InputTextField from '../../components/shared/InputTextField';
 import { RegisterInfo } from '../../interfaces/registerInfo';
 import PageHeading from '../../components/shared/PageHeading';
@@ -17,7 +17,7 @@ interface RegisterState {
     registrationInfo: RegisterInfo;
 }
 
-const Register = (props: WithSnackbarProps) => {
+const Register = () => {
     const [registerState] = useState<RegisterState>({
         registrationInfo: {
             username: '',
@@ -26,7 +26,7 @@ const Register = (props: WithSnackbarProps) => {
         },
     });
 
-    const { enqueueSnackbar } = props;
+    const { enqueueSnackbar } = useSnackbar();
     const context = useContext(AppContext);
 
     const renderErrorSnackbar = (message: string): void => {

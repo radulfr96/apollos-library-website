@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+    useContext, useEffect, useState,
+} from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
@@ -7,7 +9,7 @@ import {
 import Axios from 'axios';
 import { push } from 'connected-react-router';
 import { useParams } from 'react-router';
-import { WithSnackbarProps } from 'notistack';
+import { useSnackbar } from 'notistack';
 import { UpdateUserInfo } from '../../interfaces/updateUserInfo';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
@@ -25,7 +27,7 @@ interface UserParams {
     id: string | undefined;
 }
 
-const UserPage = (props: WithSnackbarProps) => {
+const UserPage = () => {
     const [userState, setUserState] = useState<UserState>({
         updateInfo: {
             userID: 0,
@@ -34,14 +36,18 @@ const UserPage = (props: WithSnackbarProps) => {
         },
         roles: [],
     });
-
-    const { enqueueSnackbar } = props;
+    const [isLoading, setIsLoading] = useState<Boolean>(true);
+    const { enqueueSnackbar } = useSnackbar();
 
     const params = useParams<UserParams>();
     const context = useContext(AppContext);
     const configHelper = new ConfigHelper();
 
     useEffect(() => {
+        if (context.getToken() === undefined) {
+            return;
+        }
+
         Axios.post(`${configHelper.apiUrl}/api/user/`, {
             UserID: params.id,
         }, {
@@ -54,12 +60,13 @@ const UserPage = (props: WithSnackbarProps) => {
                     updateInfo: {
                         username: response.data.username,
                         userID: response.data.userID,
-                        roles: response.data.userroles,
+                        roles: response.data.userRoles,
                     },
                     roles: response.data.roles,
                 });
+                setIsLoading(false);
             });
-    });
+    }, [context]);
 
     const renderErrorSnackbar = (message: string): void => {
         enqueueSnackbar(message, {
@@ -118,10 +125,9 @@ const UserPage = (props: WithSnackbarProps) => {
         });
     };
 
-    if (userState.updateInfo.username === undefined) {
+    if (isLoading) {
         return (<CircularProgress />);
     }
-
     return (
         <Grid item xs={9} container justifyContent="center">
             <Grid item xs={12}>
@@ -130,6 +136,7 @@ const UserPage = (props: WithSnackbarProps) => {
             <Grid item xs={12}>
                 <Formik
                     initialValues={userState.updateInfo}
+                    enableReinitialize
                     onSubmit={() => { }}
                     validationSchema={
                         yup.object().shape({

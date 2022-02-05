@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Grid } from '@mui/material';
 import Axios from 'axios';
-import { WithSnackbarProps } from 'notistack';
+import { useSnackbar } from 'notistack';
 import { User } from '../../interfaces/user';
 import UsersTable from '../../components/UsersTable';
 import PageHeading from '../../components/shared/PageHeading';
@@ -12,15 +12,14 @@ interface UsersState {
     users: Array<User>;
 }
 
-const Users = (props: WithSnackbarProps) => {
+const Users = () => {
     const [usersState, setUsersState] = useState<UsersState>({
         users: [],
     });
+    const { enqueueSnackbar } = useSnackbar();
     const context = useContext(AppContext);
 
     const configHelper = new ConfigHelper();
-
-    const { enqueueSnackbar } = props;
 
     const getUsers = () => {
         Axios.post(`${configHelper.apiUrl}/api/user/users`, {}, {

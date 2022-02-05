@@ -7,7 +7,7 @@ import {
 import { useParams } from 'react-router-dom';
 import { push } from 'connected-react-router';
 import Axios from 'axios';
-import { WithSnackbarProps } from 'notistack';
+import { useSnackbar } from 'notistack';
 import { Publisher } from '../../interfaces/publisher';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
@@ -22,7 +22,7 @@ interface PublisherState {
     newPublisher: boolean;
 }
 
-const PublisherPage = (props: WithSnackbarProps) => {
+const PublisherPage = () => {
     const [publisherState, setPublisherState] = useState<PublisherState>({
         publisher: {
             publisherId: 0,
@@ -38,8 +38,7 @@ const PublisherPage = (props: WithSnackbarProps) => {
         newPublisher: false,
     });
     const params = useParams();
-
-    const { enqueueSnackbar } = props;
+    const { enqueueSnackbar } = useSnackbar();
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
 

@@ -3,7 +3,7 @@ import { createBrowserHistory } from 'history';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Route, Switch } from 'react-router';
+import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
 import { OidcProvider } from 'redux-oidc';
@@ -20,11 +20,11 @@ import Register from './pages/user/Register';
 import UserPage from './pages/user/User';
 import Users from './pages/user/Users';
 import configureStore from './store';
-import Authors from './pages/authors/authors';
 import AuthorPage from './pages/authors/author';
 import theme from './config/theme';
 import userManager from './util/userManager';
 import AppContextProvider from './Context';
+import AuthorsPage from './pages/authors/authors';
 // Create browser history to use in the Redux store
 
 // Get the application-wide store instance, prepopulating
@@ -42,24 +42,54 @@ ReactDOM.render(
                         <ThemeProvider theme={theme}>
                             <SnackbarProvider maxSnack={10}>
                                 <Layout>
-                                    <Switch>
-                                        <Route exact path="/" component={Home} />
-                                        <Route path="/callback" component={CallbackPage} />
-                                        <Route path="/user" component={Users} />
-                                        <Route path="/login" component={Login} />
-                                        <Route path="/register" component={Register} />
-                                        <Route path="/account" component={MyAccount} />
-                                        <Route path="/userdetails/:id" component={UserPage} />
-                                        <Route path="/genres" component={Genres} />
-                                        <Route path="/genre/:id" component={GenrePage} />
-                                        <Route path="/addgenre" component={GenrePage} />
-                                        <Route path="/publishers" component={Publishers} />
-                                        <Route path="/publisher/:id" component={PublisherPage} />
-                                        <Route path="/addpublisher" component={PublisherPage} />
-                                        <Route path="/authors" component={Authors} />
-                                        <Route path="/author/:id" component={AuthorPage} />
-                                        <Route path="/addauthor" component={AuthorPage} />
-                                    </Switch>
+                                    <Routes>
+                                        <Route index path="/">
+                                            <Home />
+                                        </Route>
+                                        <Route path="/callback">
+                                            <CallbackPage />
+                                        </Route>
+                                        <Route path="/user">
+                                            <Users />
+                                        </Route>
+                                        <Route path="/login">
+                                            <Login />
+                                        </Route>
+                                        <Route path="/register">
+                                            <Register />
+                                        </Route>
+                                        <Route path="/account">
+                                            <MyAccount />
+                                        </Route>
+                                        <Route path="/userdetails/:id">
+                                            <UserPage />
+                                        </Route>
+                                        <Route path="/genres">
+                                            <Genres />
+                                        </Route>
+                                        <Route path="/genre/:id">
+                                            <GenrePage />
+                                        </Route>
+                                        <Route path="/addgenre">
+                                            <GenrePage />
+                                        </Route>
+                                        <Route path="/publishers">
+                                            <Publishers />
+                                        </Route>
+                                        <Route path="/publisher/:id">
+                                            <PublisherPage />
+                                        </Route>
+                                        <Route path="/addpublisher" element={<PublisherPage />} />
+                                        <Route path="/authors">
+                                            <AuthorsPage />
+                                        </Route>
+                                        <Route path="/author/:id">
+                                            <AuthorPage />
+                                        </Route>
+                                        <Route path="/addauthor">
+                                            <AuthorPage />
+                                        </Route>
+                                    </Routes>
                                 </Layout>
                             </SnackbarProvider>
                         </ThemeProvider>

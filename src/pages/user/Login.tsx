@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import Axios from 'axios';
 import { push } from 'connected-react-router';
-import { WithSnackbarProps } from 'notistack';
+import { useSnackbar } from 'notistack';
 import InputTextField from '../../components/shared/InputTextField';
 import { LoginInfo } from '../../interfaces/loginInfo';
 import PageHeading from '../../components/shared/PageHeading';
@@ -16,16 +16,15 @@ interface LoginState {
     loginInfo: LoginInfo;
 }
 
-const Login = (props: WithSnackbarProps) => {
+const Login = () => {
     const context = useContext(AppContext);
+    const { enqueueSnackbar } = useSnackbar();
     const [loginState] = useState<LoginState>({
         loginInfo: {
             username: '',
             password: '',
         },
     });
-
-    const { enqueueSnackbar } = props;
 
     const renderErrorSnackbar = (message: string): void => {
         enqueueSnackbar(message, {
