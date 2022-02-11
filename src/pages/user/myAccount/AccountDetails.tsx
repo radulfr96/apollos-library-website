@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
-    Grid, Button,
+    Grid, Button, CircularProgress,
 } from '@mui/material';
 import Axios from 'axios';
 import { Formik } from 'formik';
@@ -24,12 +24,27 @@ const MyDetails = () => {
     const context = useContext(AppContext);
     const configHelper = new ConfigHelper();
     const snackbar = useSnackbar();
+    const [isLoading, setIsLoading] = useState<Boolean>(true);
 
-    const [detailsState] = useState<ChangeAccountDetailsState>({
+    const [detailsState, setDetailsState] = useState<ChangeAccountDetailsState>({
         changeAccountDetailsInfo: {
-            username: context.userInfo?.username,
+            username: '',
         },
     });
+
+    useEffect(() => {
+        if (context.getToken() === undefined) {
+            return;
+        }
+
+        setDetailsState({
+            changeAccountDetailsInfo: {
+                username: context.userInfo?.username,
+            },
+        });
+
+        setIsLoading(false);
+    }, [context]);
 
     const renderErrorSnackbar = (message: string): void => {
         snackbar.enqueueSnackbar(message, {
@@ -97,6 +112,9 @@ const MyDetails = () => {
         }
     };
 
+    if (isLoading) {
+        return (<CircularProgress />);
+    }
     return (
         <Grid container item xs={12}>
             <Grid item xs={12}>

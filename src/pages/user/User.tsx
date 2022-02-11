@@ -23,10 +23,6 @@ interface UserState {
     roles: Array<string>;
 }
 
-interface UserParams {
-    id: string | undefined;
-}
-
 const UserPage = () => {
     const [userState, setUserState] = useState<UserState>({
         updateInfo: {
@@ -39,7 +35,7 @@ const UserPage = () => {
     const [isLoading, setIsLoading] = useState<Boolean>(true);
     const { enqueueSnackbar } = useSnackbar();
 
-    const params = useParams<UserParams>();
+    const id = useParams();
     const context = useContext(AppContext);
     const configHelper = new ConfigHelper();
 
@@ -49,7 +45,7 @@ const UserPage = () => {
         }
 
         Axios.post(`${configHelper.apiUrl}/api/user/`, {
-            UserID: params.id,
+            UserID: id,
         }, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,

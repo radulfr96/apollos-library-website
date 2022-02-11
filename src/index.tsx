@@ -3,7 +3,7 @@ import { createBrowserHistory } from 'history';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Routes, Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
 import { OidcProvider } from 'redux-oidc';
@@ -42,8 +42,8 @@ ReactDOM.render(
                         <ThemeProvider theme={theme}>
                             <SnackbarProvider maxSnack={10}>
                                 <Layout>
-                                    <Routes>
-                                        <Route index path="/">
+                                    <Switch>
+                                        <Route exact path="/">
                                             <Home />
                                         </Route>
                                         <Route path="/callback">
@@ -79,7 +79,9 @@ ReactDOM.render(
                                         <Route path="/publisher/:id">
                                             <PublisherPage />
                                         </Route>
-                                        <Route path="/addpublisher" element={<PublisherPage />} />
+                                        <Route path="/addpublisher">
+                                            <PublisherPage />
+                                        </Route>
                                         <Route path="/authors">
                                             <AuthorsPage />
                                         </Route>
@@ -89,7 +91,7 @@ ReactDOM.render(
                                         <Route path="/addauthor">
                                             <AuthorPage />
                                         </Route>
-                                    </Routes>
+                                    </Switch>
                                 </Layout>
                             </SnackbarProvider>
                         </ThemeProvider>

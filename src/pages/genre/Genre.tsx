@@ -14,6 +14,10 @@ import InputTextField from '../../components/shared/InputTextField';
 import ConfigHelper from '../../config/configHelper';
 import { AppContext } from '../../Context';
 
+interface GenreParams {
+    id?: string;
+}
+
 interface GenreState {
     genre: Genre;
     newGenre: boolean;
@@ -28,13 +32,13 @@ const GenrePage = () => {
         newGenre: false,
     });
     const { enqueueSnackbar } = useSnackbar();
-    const { id } = useParams();
+    const params = useParams<GenreParams>();
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
 
     useEffect(() => {
-        if (id !== undefined && id !== null) {
-            Axios.get(`${configHelper.apiUrl}/api/genre/${id}`, {
+        if (params.id !== undefined && params.id !== null) {
+            Axios.get(`${configHelper.apiUrl}/api/genre/${params.id}`, {
                 headers: {
                     Authorization: `Bearer ${context.getToken()}`,
                 },

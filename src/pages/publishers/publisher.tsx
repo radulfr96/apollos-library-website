@@ -16,6 +16,10 @@ import Country from '../../interfaces/country';
 import { AppContext } from '../../Context';
 import ConfigHelper from '../../config/configHelper';
 
+interface PublisherParams {
+    id?: string;
+}
+
 interface PublisherState {
     publisher: Publisher;
     countries: Array<Country>;
@@ -37,7 +41,7 @@ const PublisherPage = () => {
         countries: [],
         newPublisher: false,
     });
-    const params = useParams();
+    const params = useParams<PublisherParams>();
     const { enqueueSnackbar } = useSnackbar();
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
