@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import {
-    AppBar, Toolbar, Typography, IconButton, Box, Link,
+    AppBar, Toolbar, Typography, IconButton, Box,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { Business, Person } from '@mui/icons-material';
 import AccountMenu from './AccountMenu';
 import AdminMenu from './AdminMenu';
@@ -14,7 +15,7 @@ const NavMenu = () => {
         <AppBar position="static">
             <Toolbar>
                 <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                    <Link href="/" sx={{ textDecoration: 'none', color: '#FFFFFFFF' }}>
+                    <Link to="/" style={{ textDecoration: 'none', color: '#FFFFFFFF' }}>
                         Apollo&apos;s Library
                     </Link>
                 </Typography>
@@ -25,11 +26,11 @@ const NavMenu = () => {
                         aria-haspopup="true"
                     >
                         <Link
-                            sx={{
+                            style={{
                                 color: '#000000',
                                 textDecoration: 'none',
                             }}
-                            href="/authors"
+                            to="/authors"
                         >
                             <Person sx={{
                                 color: '#FFFFFF',
@@ -43,11 +44,11 @@ const NavMenu = () => {
                         aria-haspopup="true"
                     >
                         <Link
-                            sx={{
+                            style={{
                                 color: '#000000',
                                 textDecoration: 'none',
                             }}
-                            href="/publishers"
+                            to="/publishers"
                         >
                             <Business sx={{
                                 color: '#FFFFFF',

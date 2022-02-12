@@ -1,7 +1,8 @@
 /* eslint-disable linebreak-style */
 import {
-    IconButton, Menu, MenuItem, Box, Typography, Link,
+    IconButton, Menu, MenuItem, Box, Typography,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { Person } from '@mui/icons-material';
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../../Context';
@@ -54,11 +55,11 @@ const AccountMenu = () => {
                 onClose={handleClose}
             >
                 <Link
-                    sx={{
+                    style={{
                         color: '#000000',
                         textDecoration: 'none',
                     }}
-                    href="/account"
+                    to="/account"
                 >
                     <MenuItem style={{ display: context.userInfo?.email !== undefined ? 'block' : 'none' }} onClick={handleClose}>
                         My Account
@@ -73,11 +74,11 @@ const AccountMenu = () => {
                     }}
                 >
                     <Link
-                        sx={{
+                        style={{
                             color: '#000000',
                             textDecoration: 'none',
                         }}
-                        href="/"
+                        to="/"
                     >
                         Log out
                     </Link>
@@ -87,11 +88,11 @@ const AccountMenu = () => {
                 </MenuItem>
                 <MenuItem style={{ display: context.userInfo?.email === undefined ? 'block' : 'none' }} onClick={handleClose}>
                     <Link
-                        sx={{
+                        style={{
                             color: '#000000',
                             textDecoration: 'none',
                         }}
-                        href="/register"
+                        to="/register"
                     >
                         Sign Up
                     </Link>

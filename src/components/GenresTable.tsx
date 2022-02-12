@@ -3,6 +3,7 @@ import {
     TableHead, TableRow, TableCell, TableSortLabel, TableContainer,
     Paper, Table, TableBody, IconButton, Typography,
 } from '@mui/material';
+import { useStore } from 'react-redux';
 import { push } from 'connected-react-router';
 import { ChevronRight, Delete } from '@mui/icons-material';
 import { Genre } from '../interfaces/genre';
@@ -77,6 +78,7 @@ interface RowProps {
 }
 
 const NavCell = (props: RowProps) => {
+    const store = useStore();
     const { deleteGenre, genre } = props;
 
     return (
@@ -88,7 +90,7 @@ const NavCell = (props: RowProps) => {
                 <Delete sx={{ color: 'red' }} />
             </IconButton>
             <IconButton onClick={() => {
-                push(`genre/${genre.genreId}`);
+                store.dispatch(push(`genre/${genre.genreId}`));
             }}
             >
                 <ChevronRight />

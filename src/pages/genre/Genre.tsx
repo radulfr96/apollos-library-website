@@ -7,6 +7,7 @@ import {
 import { push } from 'connected-react-router';
 import Axios from 'axios';
 import { useParams } from 'react-router';
+import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/PageHeading';
@@ -33,10 +34,16 @@ const GenrePage = () => {
     });
     const { enqueueSnackbar } = useSnackbar();
     const params = useParams<GenreParams>();
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
+    const store = useStore();
 
     useEffect(() => {
+        if (context.getToken() === undefined) {
+            return;
+        }
+
         if (params.id !== undefined && params.id !== null) {
             Axios.get(`${configHelper.apiUrl}/api/genre/${params.id}`, {
                 headers: {
@@ -48,14 +55,16 @@ const GenrePage = () => {
                         genre: response.data.genre,
                         newGenre: false,
                     });
+                    setIsLoading(false);
                 });
         } else {
             setGenreState({
                 ...genreState,
                 newGenre: true,
             });
+            setIsLoading(false);
         }
-    });
+    }, [context]);
 
     const renderErrorSnackbar = (message: string): void => {
         enqueueSnackbar(message, {
@@ -87,7 +96,7 @@ const GenrePage = () => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');
-                                push('/genres');
+                                store.dispatch(push('/genres'));
                             }
                         })
                         .catch((error) => {
@@ -113,7 +122,7 @@ const GenrePage = () => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Add successful');
-                                push('/genres');
+                                store.dispatch(push('/genres'));
                             }
                         })
                         .catch((error) => {
@@ -127,7 +136,7 @@ const GenrePage = () => {
             });
     };
 
-    if (!genreState.newGenre && genreState.genre.genreId < 1) {
+    if ((!genreState.newGenre && genreState.genre.genreId < 1) || isLoading) {
         return (<CircularProgress />);
     }
 
@@ -229,7 +238,7 @@ const GenrePage = () => {
                                     variant="contained"
                                     color="secondary"
                                     onClick={() => {
-                                        push('/genres');
+                                        store.dispatch(push('/genres'));
                                     }}
                                 >
                                     Cancel

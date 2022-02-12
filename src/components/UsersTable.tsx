@@ -3,6 +3,7 @@ import {
     TableHead, TableRow, TableCell, TableSortLabel, TableContainer,
     Paper, Table, TableBody, IconButton, Typography,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { ChevronRight, Delete } from '@mui/icons-material';
 import { User } from '../interfaces/user';
 import TableHelper, { Order } from '../util/TableFunctions';
@@ -102,11 +103,11 @@ const Row = (props: RowProps) => {
                     }}
                     />
                 </IconButton>
-                <IconButton>
-                    <a href={`/userdetails/${user.userID}`}>
+                <Link to={`/userdetails/${user.userID}`}>
+                    <IconButton>
                         <ChevronRight />
-                    </a>
-                </IconButton>
+                    </IconButton>
+                </Link>
             </TableCell>
         </TableRow>
     );

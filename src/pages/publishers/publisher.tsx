@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import { push } from 'connected-react-router';
 import Axios from 'axios';
 import { useSnackbar } from 'notistack';
+import { useStore } from 'react-redux';
 import { Publisher } from '../../interfaces/publisher';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
@@ -45,6 +46,7 @@ const PublisherPage = () => {
     const { enqueueSnackbar } = useSnackbar();
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
+    const store = useStore();
 
     const renderErrorSnackbar = (message: string): void => {
         enqueueSnackbar(message, {
@@ -110,7 +112,7 @@ const PublisherPage = () => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');
-                                push('/publishers');
+                                store.dispatch(push('/publishers'));
                             }
                         })
                         .catch((error) => {
@@ -136,7 +138,7 @@ const PublisherPage = () => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Add successful');
-                                push('/publishers');
+                                store.dispatch(push('/publishers'));
                             }
                         })
                         .catch((error) => {
@@ -323,7 +325,7 @@ const PublisherPage = () => {
                                     variant="contained"
                                     color="secondary"
                                     onClick={() => {
-                                        push('/publishers');
+                                        store.dispatch(push('/publishers'));
                                     }}
                                 >
                                     Cancel

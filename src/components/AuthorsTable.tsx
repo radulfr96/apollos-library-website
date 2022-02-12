@@ -3,6 +3,7 @@ import {
     TableHead, TableRow, TableCell, TableSortLabel, TableContainer,
     Paper, Table, TableBody, IconButton, Typography,
 } from '@mui/material';
+import { useStore } from 'react-redux';
 import { push } from 'connected-react-router';
 import { ChevronRight, Delete } from '@mui/icons-material';
 import { AuthorListItem } from '../interfaces/authorListItem';
@@ -81,6 +82,8 @@ interface NavCellProps {
 
 const NavigationCell = (props: NavCellProps): JSX.Element => {
     const { deleteAuthor, author } = props;
+    const store = useStore();
+
     return (
         <TableCell>
             <IconButton onClick={() => {
@@ -90,7 +93,7 @@ const NavigationCell = (props: NavCellProps): JSX.Element => {
                 <Delete sx={{ color: 'red' }} />
             </IconButton>
             <IconButton onClick={() => {
-                push(`author/${author.authorId}`);
+                store.dispatch(push(`author/${author.authorId}`));
             }}
             >
                 <ChevronRight />

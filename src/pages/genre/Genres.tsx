@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-    Grid, Fab,
+    Grid, Fab, CircularProgress,
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import Axios from 'axios';
-import { push } from 'connected-react-router';
 import { useSnackbar } from 'notistack';
+import { Link } from 'react-router-dom';
 import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/PageHeading';
 import GenresTable from '../../components/GenresTable';
@@ -20,6 +20,7 @@ const Genres = () => {
     const [genreState, setGenreState] = useState<GenresState>({
         genres: [],
     });
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const { enqueueSnackbar } = useSnackbar();
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
@@ -36,8 +37,8 @@ const Genres = () => {
         });
     };
 
-    const getGenres = () => {
-        Axios.post(`${configHelper.apiUrl}/api/genre`, {}, {
+    const getGenres = () => new Promise<void>((resolve) => {
+        Axios.get(`${configHelper.apiUrl}/api/genre`, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },
@@ -45,7 +46,8 @@ const Genres = () => {
             .then((response) => {
                 setGenreState({ ...genreState, genres: response.data.genres });
             });
-    };
+        resolve();
+    });
 
     const deleteGenre = (id: number): void => {
         Axios.delete(`${configHelper.apiUrl}/api/genre/${id}`, {
@@ -65,9 +67,18 @@ const Genres = () => {
     };
 
     useEffect(() => {
-        getGenres();
-    });
+        if (context.getToken() === undefined) {
+            return;
+        }
+        getGenres()
+            .then(() => {
+                setIsLoading(false);
+            });
+    }, [context]);
 
+    if (isLoading) {
+        return (<CircularProgress />);
+    }
     return (
         <Grid item xs={5} container justifyContent="center">
             <Grid item xs={12}>
@@ -77,19 +88,18 @@ const Genres = () => {
                 <GenresTable genres={genreState.genres} deleteGenre={deleteGenre} />
             </Grid>
             <Grid item xs={12}>
-                <Fab
-                    color="primary"
-                    aria-label="add"
-                    sx={{
-                        marginTop: '10px',
-                        float: 'right',
-                    }}
-                    onClick={() => {
-                        push('/addgenre');
-                    }}
-                >
-                    <Add />
-                </Fab>
+                <Link to="/addgenre">
+                    <Fab
+                        color="primary"
+                        aria-label="add"
+                        sx={{
+                            marginTop: '10px',
+                            float: 'right',
+                        }}
+                    >
+                        <Add />
+                    </Fab>
+                </Link>
             </Grid>
         </Grid>
     );

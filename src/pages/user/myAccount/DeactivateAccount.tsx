@@ -4,6 +4,7 @@ import {
 } from '@mui/material';
 import { push } from 'connected-react-router';
 import Axios from 'axios';
+import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import PageHeading from '../../../components/shared/PageHeading';
 import ConfigHelper from '../../../config/configHelper';
@@ -12,7 +13,7 @@ import { AppContext } from '../../../Context';
 const DeactivateAccount = () => {
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
-
+    const store = useStore();
     const snackbar = useSnackbar();
 
     const renderErrorSnackbar = (message: string): void => {
@@ -43,7 +44,7 @@ const DeactivateAccount = () => {
                 if (response.status === 200) {
                     renderSuccessSnackbar('Deactivation successful');
                     context.clearUserInfo();
-                    push('/');
+                    store.dispatch(push('/'));
                 }
             })
             .catch((error) => {
@@ -67,7 +68,7 @@ const DeactivateAccount = () => {
                 if (response.status === 200) {
                     renderSuccessSnackbar('Deletion successful');
                     context.clearUserInfo();
-                    push('/');
+                    store.dispatch(push('/'));
                 }
             })
             .catch((error) => {

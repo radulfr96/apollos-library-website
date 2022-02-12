@@ -5,6 +5,7 @@ import {
 import { Add } from '@mui/icons-material';
 import Axios from 'axios';
 import { push } from 'connected-react-router';
+import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { PublisherListItem } from '../../interfaces/publisherListItem';
 import PageHeading from '../../components/shared/PageHeading';
@@ -22,6 +23,7 @@ const Publishers = () => {
     });
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
+    const store = useStore();
 
     const { enqueueSnackbar } = useSnackbar();
 
@@ -97,7 +99,7 @@ const Publishers = () => {
                         float: 'right',
                     }}
                     onClick={() => {
-                        push('/addpublisher');
+                        store.dispatch(push('/addpublisher'));
                     }}
                 >
                     <Add />

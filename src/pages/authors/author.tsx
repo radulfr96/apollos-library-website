@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 import Axios from 'axios';
 import { push } from 'connected-react-router';
+import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { Author } from '../../interfaces/author';
 import PageHeading from '../../components/shared/PageHeading';
@@ -37,6 +38,7 @@ const AuthorsPage = () => {
     const { enqueueSnackbar } = useSnackbar();
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
+    const store = useStore();
 
     const renderErrorSnackbar = (message: string): void => {
         enqueueSnackbar(message, {
@@ -68,7 +70,7 @@ const AuthorsPage = () => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');
-                                push('/authors');
+                                store.dispatch(push('/authors'));
                             }
                         })
                         .catch((error) => {
@@ -94,7 +96,7 @@ const AuthorsPage = () => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Add successful');
-                                push('/authors');
+                                store.dispatch(push('/authors'));
                             }
                         })
                         .catch((error) => {
@@ -259,7 +261,7 @@ const AuthorsPage = () => {
                                     variant="contained"
                                     color="secondary"
                                     onClick={() => {
-                                        push('/authors');
+                                        store.dispatch(push('/authors'));
                                     }}
                                 >
                                     Cancel

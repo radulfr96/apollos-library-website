@@ -4,6 +4,7 @@ import {
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import Axios from 'axios';
+import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { push } from 'connected-react-router';
 import { AuthorListItem } from '../../interfaces/authorListItem';
@@ -24,6 +25,7 @@ const AuthorsPage = () => {
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
     const { enqueueSnackbar } = useSnackbar();
+    const store = useStore();
 
     const renderErrorSnackbar = (message: string): void => {
         enqueueSnackbar(message, {
@@ -94,7 +96,7 @@ const AuthorsPage = () => {
                         float: 'right',
                     }}
                     onClick={() => {
-                        push('/addauthor');
+                        store.dispatch(push('/addauthor'));
                     }}
                 >
                     <Add />

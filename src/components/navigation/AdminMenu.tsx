@@ -1,8 +1,9 @@
 /* eslint-disable linebreak-style */
 import {
     Box,
-    IconButton, Link, Menu, MenuItem,
+    IconButton, Menu, MenuItem,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { Settings } from '@mui/icons-material';
 import React from 'react';
 
@@ -43,22 +44,22 @@ const AdminMenu = () => {
                 onClose={handleClose}
             >
                 <Link
-                    sx={{
+                    style={{
                         color: '#000000',
                         textDecoration: 'none',
                     }}
-                    href="/user"
+                    to="/user"
                 >
                     <MenuItem onClick={handleClose}>
                         Users
                     </MenuItem>
                 </Link>
                 <Link
-                    sx={{
+                    style={{
                         color: '#000000',
                         textDecoration: 'none',
                     }}
-                    href="/genres"
+                    to="/genres"
                 >
                     <MenuItem onClick={handleClose}>
                         Genres

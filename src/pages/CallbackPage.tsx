@@ -1,22 +1,27 @@
 import React from 'react';
 import { CallbackComponent } from 'redux-oidc';
-import { connect } from 'react-redux';
+import { connect, useStore } from 'react-redux';
 import { Box } from '@mui/material';
+import { push } from 'connected-react-router';
 import userManager from '../util/userManager';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const CallbackPage = () => (
-    <CallbackComponent
-        userManager={userManager}
-        successCallback={() => {
+const CallbackPage = () => {
+    const store = useStore();
 
-        }}
-        errorCallback={() => {
+    const goToHome = () => {
+        store.dispatch(push('/'));
+    };
 
-        }}
-    >
-        <Box>Redirecting...</Box>
-    </CallbackComponent>
-);
+    return (
+        <CallbackComponent
+            userManager={userManager}
+            successCallback={goToHome}
+            errorCallback={goToHome}
+        >
+            <Box>Redirecting...</Box>
+        </CallbackComponent>
+    );
+};
 
 export default connect()(CallbackPage);

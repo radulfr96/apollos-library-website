@@ -9,6 +9,7 @@ import {
 import Axios from 'axios';
 import { push } from 'connected-react-router';
 import { useParams } from 'react-router';
+import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { UpdateUserInfo } from '../../interfaces/updateUserInfo';
 import PageHeading from '../../components/shared/PageHeading';
@@ -34,7 +35,7 @@ const UserPage = () => {
     });
     const [isLoading, setIsLoading] = useState<Boolean>(true);
     const { enqueueSnackbar } = useSnackbar();
-
+    const store = useStore();
     const id = useParams();
     const context = useContext(AppContext);
     const configHelper = new ConfigHelper();
@@ -220,7 +221,7 @@ const UserPage = () => {
                                     variant="contained"
                                     color="secondary"
                                     onClick={() => {
-                                        push('/user');
+                                        store.dispatch(push('/user'));
                                     }}
                                 >
                                     Cancel

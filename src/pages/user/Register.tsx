@@ -6,6 +6,7 @@ import {
     Paper, Grid, Button,
 } from '@mui/material';
 import Axios from 'axios';
+import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import InputTextField from '../../components/shared/InputTextField';
 import { RegisterInfo } from '../../interfaces/registerInfo';
@@ -28,6 +29,7 @@ const Register = () => {
 
     const { enqueueSnackbar } = useSnackbar();
     const context = useContext(AppContext);
+    const store = useStore();
 
     const renderErrorSnackbar = (message: string): void => {
         enqueueSnackbar(message, {
@@ -171,7 +173,7 @@ const Register = () => {
                                 variant="contained"
                                 color="secondary"
                                 onClick={() => {
-                                    push('/');
+                                    store.dispatch(push('/'));
                                 }}
                             >
                                 Cancel

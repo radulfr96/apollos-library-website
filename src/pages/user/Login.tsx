@@ -7,6 +7,7 @@ import {
 import Axios from 'axios';
 import { push } from 'connected-react-router';
 import { useSnackbar } from 'notistack';
+import { useStore } from 'react-redux';
 import InputTextField from '../../components/shared/InputTextField';
 import { LoginInfo } from '../../interfaces/loginInfo';
 import PageHeading from '../../components/shared/PageHeading';
@@ -18,6 +19,7 @@ interface LoginState {
 
 const Login = () => {
     const context = useContext(AppContext);
+    const store = useStore();
     const { enqueueSnackbar } = useSnackbar();
     const [loginState] = useState<LoginState>({
         loginInfo: {
@@ -53,7 +55,7 @@ const Login = () => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Login successful');
                                 context.getUserInfo();
-                                push('/');
+                                store.dispatch(push('/'));
                             }
                         })
                         .catch((error) => {
@@ -146,7 +148,7 @@ const Login = () => {
                                 variant="contained"
                                 color="secondary"
                                 onClick={() => {
-                                    push('/');
+                                    store.dispatch(push('/'));
                                 }}
                             >
                                 Cancel

@@ -4,6 +4,7 @@ import {
     Paper, Table, TableBody, IconButton, Typography,
 } from '@mui/material';
 import { push } from 'connected-react-router';
+import { useStore } from 'react-redux';
 import { ChevronRight, Delete } from '@mui/icons-material';
 import { PublisherTableItem } from '../interfaces/publisherTableItem';
 import TableHelper, { Order } from '../util/TableFunctions';
@@ -80,6 +81,7 @@ interface RowProps {
 }
 
 const NavCell = (props: RowProps) => {
+    const store = useStore();
     const { deletePublisher, publisher } = props;
 
     return (
@@ -94,7 +96,7 @@ const NavCell = (props: RowProps) => {
                 />
             </IconButton>
             <IconButton onClick={() => {
-                push(`publisher/${publisher.publisherId}`);
+                store.dispatch(push(`publisher/${publisher.publisherId}`));
             }}
             >
                 <ChevronRight />
