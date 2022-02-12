@@ -46,6 +46,7 @@ const PublisherPage = () => {
     const { enqueueSnackbar } = useSnackbar();
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const store = useStore();
 
     const renderErrorSnackbar = (message: string): void => {
@@ -67,36 +68,39 @@ const PublisherPage = () => {
     };
 
     useEffect(() => {
-        if (params.id !== undefined && params.id !== null) {
-            Axios.post(`${configHelper.apiUrl}/api/publisher/${params.id}`, {}, {
-                headers: {
-                    Authorization: `Bearer ${context.getToken()}`,
-                },
-            })
-                .then((response) => {
-                    setPublisherState({
-                        ...publisherState,
-                        publisher: response.data.publisher,
-                        newPublisher: false,
-                    });
-                });
-        } else {
-            setPublisherState({
-                ...publisherState,
-                newPublisher: true,
-            });
+        if (context.getToken() === undefined) {
+            return;
         }
 
-        Axios.post(`${configHelper.apiUrl}/api/reference/countries`, {}, {
+        Axios.get(`${configHelper.apiUrl}/api/reference/countries`, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },
         })
             .then((response) => {
-                setPublisherState({
-                    ...publisherState,
-                    countries: response.data.countries,
-                });
+                if (params.id !== undefined && params.id !== null) {
+                    Axios.get(`${configHelper.apiUrl}/api/publisher/${params.id}`, {
+                        headers: {
+                            Authorization: `Bearer ${context.getToken()}`,
+                        },
+                    })
+                        .then((pubResponse) => {
+                            setPublisherState({
+                                ...publisherState,
+                                publisher: pubResponse.data.publisher,
+                                countries: pubResponse.data.countries,
+                                newPublisher: false,
+                            });
+                            setIsLoading(false);
+                        });
+                } else {
+                    setPublisherState({
+                        ...publisherState,
+                        countries: response.data.countries,
+                        newPublisher: true,
+                    });
+                    setIsLoading(false);
+                }
             });
     });
 
@@ -156,6 +160,9 @@ const PublisherPage = () => {
         return (<CircularProgress />);
     }
 
+    if (isLoading) {
+        return (<CircularProgress />);
+    }
     return (
         <Grid item xs={6} container justifyContent="center">
             <Grid item xs={12}>

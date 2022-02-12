@@ -19,6 +19,10 @@ import UserHelper from './UserHelper';
 import { AppContext } from '../../Context';
 import ConfigHelper from '../../config/configHelper';
 
+interface UserParams {
+    id: string;
+}
+
 interface UserState {
     updateInfo: UpdateUserInfo;
     roles: Array<string>;
@@ -36,7 +40,7 @@ const UserPage = () => {
     const [isLoading, setIsLoading] = useState<Boolean>(true);
     const { enqueueSnackbar } = useSnackbar();
     const store = useStore();
-    const id = useParams();
+    const { id } = useParams<UserParams>();
     const context = useContext(AppContext);
     const configHelper = new ConfigHelper();
 
@@ -45,9 +49,7 @@ const UserPage = () => {
             return;
         }
 
-        Axios.post(`${configHelper.apiUrl}/api/user/`, {
-            UserID: id,
-        }, {
+        Axios.get(`${configHelper.apiUrl}/api/user/${id}`, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-    Grid, Fab,
+    Grid, Fab, CircularProgress,
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import Axios from 'axios';
@@ -24,6 +24,7 @@ const Publishers = () => {
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
     const store = useStore();
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const { enqueueSnackbar } = useSnackbar();
 
@@ -39,8 +40,8 @@ const Publishers = () => {
         });
     };
 
-    const getPubishers = () => {
-        Axios.post(`${configHelper.apiUrl}/api/publisher`, {}, {
+    const getPubishers = () => new Promise<void>((resovle) => {
+        Axios.get(`${configHelper.apiUrl}/api/publisher`, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },
@@ -50,8 +51,9 @@ const Publishers = () => {
                     ...publisherState,
                     publishers: response.data.publishers,
                 });
+                resovle();
             });
-    };
+    });
 
     const deletePublisher = (id: number): void => {
         Axios.delete(`${configHelper.apiUrl}/api/publisher/${id}`, {
@@ -71,9 +73,18 @@ const Publishers = () => {
     };
 
     useEffect(() => {
-        getPubishers();
+        if (context.getToken() === undefined) {
+            return;
+        }
+        getPubishers()
+            .then(() => {
+                setIsLoading(false);
+            });
     });
 
+    if (isLoading) {
+        return (<CircularProgress />);
+    }
     return (
         <Grid item xs={5} container justifyContent="center">
             <Grid item xs={12}>
