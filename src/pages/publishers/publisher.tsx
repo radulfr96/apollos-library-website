@@ -87,8 +87,8 @@ const PublisherPage = () => {
                         .then((pubResponse) => {
                             setPublisherState({
                                 ...publisherState,
-                                publisher: pubResponse.data.publisher,
-                                countries: pubResponse.data.countries,
+                                publisher: pubResponse.data,
+                                countries: response.data,
                                 newPublisher: false,
                             });
                             setIsLoading(false);
@@ -96,19 +96,19 @@ const PublisherPage = () => {
                 } else {
                     setPublisherState({
                         ...publisherState,
-                        countries: response.data.countries,
+                        countries: response.data,
                         newPublisher: true,
                     });
                     setIsLoading(false);
                 }
             });
-    });
+    }, [context]);
 
     const updatePublisher = (publisher: Publisher, validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.patch('api/publisher/', publisher, {
+                    Axios.patch(`${configHelper.apiUrl}/api/publisher/`, publisher, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },
@@ -287,7 +287,7 @@ const PublisherPage = () => {
                                     required
                                     countries={publisherState.countries}
                                     value={values.countryID}
-                                    onBlur=""
+                                    onBlur={() => { }}
                                     onChange={(e: any) => {
                                         setFieldValue('countryID', publisherState.countries.find((c) => c.name
                                             === e.target.innerText)?.countryID);

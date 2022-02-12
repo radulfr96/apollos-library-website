@@ -16,27 +16,33 @@ interface CountryTypedownProps {
 
 const CountryTypedown = (props: CountryTypedownProps) => {
     const {
-        countries, onBlur, required, value, onChange, errorMessage, error,
+        countries, value, onChange, errorMessage, error,
     } = props;
 
     return (
         <>
             <Autocomplete
+                id="country-autocomplete"
                 sx={{ width: '100%' }}
-                options={
-                    countries
-                }
+                options={countries}
+                autoHighlight
                 getOptionLabel={(country: Country) => country.name}
-                renderInput={() => (
+                renderOption={(countryProps, option) => (
+                    // eslint-disable-next-line react/jsx-props-no-spreading
+                    <Box component="li" key={option.countryID} {...countryProps}>
+                        {option.name}
+                    </Box>
+                )}
+                defaultValue={countries.find((c) => c.countryID === value)}
+                renderInput={(params) => (
                     <TextField
-                        onBlur={onBlur}
-                        required={required}
-                        value={value}
-                        variant="outlined"
-                        defaultValue={countries.find(
-                            (c) => c.countryID === value,
-                        )?.name}
+                        // eslint-disable-next-line react/jsx-props-no-spreading
+                        {...params}
                         label="Country"
+                        inputProps={{
+                            ...params.inputProps,
+                            autoComplete: 'new-password', // disable autocomplete and autofill
+                        }}
                     />
                 )}
                 onChange={onChange}

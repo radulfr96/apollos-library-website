@@ -52,7 +52,7 @@ const GenrePage = () => {
             })
                 .then((response) => {
                     setGenreState({
-                        genre: response.data.genre,
+                        genre: response.data,
                         newGenre: false,
                     });
                     setIsLoading(false);

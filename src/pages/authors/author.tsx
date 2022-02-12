@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
@@ -7,6 +7,7 @@ import {
 import Axios from 'axios';
 import { push } from 'connected-react-router';
 import { useStore } from 'react-redux';
+import { useParams } from 'react-router';
 import { useSnackbar } from 'notistack';
 import { Author } from '../../interfaces/author';
 import PageHeading from '../../components/shared/PageHeading';
@@ -16,6 +17,10 @@ import Country from '../../interfaces/country';
 import ConfigHelper from '../../config/configHelper';
 import { AppContext } from '../../Context';
 
+interface AuthorParams {
+    id: string;
+}
+
 interface AuthorState {
     countries: Country[],
     author: Author,
@@ -23,7 +28,7 @@ interface AuthorState {
 }
 
 const AuthorsPage = () => {
-    const [authorState] = useState<AuthorState>({
+    const [authorState, setAuthorsState] = useState<AuthorState>({
         countries: [],
         author: {
             authorID: 0,
@@ -38,7 +43,46 @@ const AuthorsPage = () => {
     const { enqueueSnackbar } = useSnackbar();
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const store = useStore();
+    const { id } = useParams<AuthorParams>();
+
+    useEffect(() => {
+        if (context.getToken() === undefined) {
+            return;
+        }
+
+        Axios.get(`${configHelper.apiUrl}/api/reference/countries`, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        })
+            .then((response) => {
+                if (id !== undefined && id !== null) {
+                    Axios.get(`${configHelper.apiUrl}/api/publisher/${id}`, {
+                        headers: {
+                            Authorization: `Bearer ${context.getToken()}`,
+                        },
+                    })
+                        .then((authorsResponse) => {
+                            setAuthorsState({
+                                ...authorState,
+                                author: authorsResponse.data,
+                                countries: response.data,
+                                newAuthor: false,
+                            });
+                            setIsLoading(false);
+                        });
+                } else {
+                    setAuthorsState({
+                        ...authorState,
+                        countries: response.data,
+                        newAuthor: true,
+                    });
+                    setIsLoading(false);
+                }
+            });
+    }, [context]);
 
     const renderErrorSnackbar = (message: string): void => {
         enqueueSnackbar(message, {
@@ -88,7 +132,7 @@ const AuthorsPage = () => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.post(`${configHelper.apiUrl}/api/author/`, author, {
+                    Axios.post(`${configHelper.apiUrl}/api/author`, author, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },
@@ -110,7 +154,7 @@ const AuthorsPage = () => {
             });
     };
 
-    if (!authorState.newAuthor && authorState.author.authorID < 1) {
+    if ((!authorState.newAuthor && authorState.author.authorID < 1) || isLoading) {
         return (<CircularProgress />);
     }
 
