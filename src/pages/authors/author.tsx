@@ -59,7 +59,7 @@ const AuthorsPage = () => {
         })
             .then((response) => {
                 if (id !== undefined && id !== null) {
-                    Axios.get(`${configHelper.apiUrl}/api/publisher/${id}`, {
+                    Axios.get(`${configHelper.apiUrl}/api/author/${id}`, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },
