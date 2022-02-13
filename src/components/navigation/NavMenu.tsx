@@ -3,7 +3,7 @@ import {
     AppBar, Toolbar, Typography, IconButton, Box,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { Business, Person } from '@mui/icons-material';
+import { Book, Business, Person } from '@mui/icons-material';
 import AccountMenu from './AccountMenu';
 import AdminMenu from './AdminMenu';
 import { AppContext } from '../../Context';
@@ -21,7 +21,25 @@ const NavMenu = () => {
                 </Typography>
                 <Box style={{ display: context.isPaidUser() ? 'block' : 'none' }}>
                     <IconButton
-                        aria-label="account of current user"
+                        aria-label="Books"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                    >
+                        <Link
+                            style={{
+                                color: '#000000',
+                                textDecoration: 'none',
+                            }}
+                            to="/books"
+                        >
+                            <Book sx={{
+                                color: '#FFFFFF',
+                            }}
+                            />
+                        </Link>
+                    </IconButton>
+                    <IconButton
+                        aria-label="Authors"
                         aria-controls="menu-appbar"
                         aria-haspopup="true"
                     >
@@ -39,7 +57,7 @@ const NavMenu = () => {
                         </Link>
                     </IconButton>
                     <IconButton
-                        aria-label="account of current user"
+                        aria-label="Publishers"
                         aria-controls="menu-appbar"
                         aria-haspopup="true"
                     >
