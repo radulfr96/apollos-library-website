@@ -27,6 +27,12 @@
         ],
         "react/require-default-props": [
             0
+        ],
+        "max-len": [
+            "error",
+            {
+                "code": 1000
+            }
         ]
     }
 }
