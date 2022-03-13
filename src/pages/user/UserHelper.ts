@@ -12,7 +12,7 @@ export default class UserHelper {
         const configHelper = new ConfigHelper();
 
         return new Promise<boolean | null>((resolve) => {
-            Axios.get(`${configHelper.apiUrl}/api/user/checkselfusername/${username}`, {
+            Axios.get(`${configHelper.idpUrl}/api/user/checkselfusername/${username}`, {
                 headers: {
                     Authorization: `Bearer ${this.token}`,
                 },

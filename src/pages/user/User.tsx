@@ -49,7 +49,7 @@ const UserPage = () => {
             return;
         }
 
-        Axios.get(`${configHelper.apiUrl}/api/user/${id}`, {
+        Axios.get(`${configHelper.idpUrl}/api/user/${id}`, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },
@@ -89,7 +89,7 @@ const UserPage = () => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.patch(`${configHelper.apiUrl}/api/user/`, user, {
+                    Axios.patch(`${configHelper.idpUrl}/api/user/`, user, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },

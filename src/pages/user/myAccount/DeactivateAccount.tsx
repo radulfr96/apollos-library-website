@@ -35,7 +35,7 @@ const DeactivateAccount = () => {
     };
 
     const deactivateUser = () => {
-        Axios.patch(`${configHelper.apiUrl}/api/user/deactivate`, {}, {
+        Axios.patch(`${configHelper.idpUrl}/api/user/deactivate`, {}, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },

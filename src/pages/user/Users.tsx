@@ -22,7 +22,7 @@ const Users = () => {
     const configHelper = new ConfigHelper();
 
     const getUsers = () => {
-        Axios.post(`${configHelper.apiUrl}/api/user/users`, {}, {
+        Axios.post(`${configHelper.idpUrl}/api/user/users`, {}, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },
@@ -54,7 +54,7 @@ const Users = () => {
     };
 
     const deleteUser = (id: string): void => {
-        Axios.delete(`${process.env.MY_LIBRARY_API}/api/user/${id}`)
+        Axios.delete(`${process.env.idpUrl}/api/user/${id}`)
             .then((response) => {
                 if (response.status === 200) {
                     renderSuccessSnackbar('Delete successful');
