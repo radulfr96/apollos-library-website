@@ -25,7 +25,7 @@ import theme from './config/theme';
 import userManager from './util/userManager';
 import AppContextProvider from './Context';
 import AuthorsPage from './pages/authors/authors';
-import BooksPage from './pages/books/Books';
+import BooksPage from './pages/books/books';
 // Create browser history to use in the Redux store
 
 // Get the application-wide store instance, prepopulating

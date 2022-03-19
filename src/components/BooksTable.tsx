@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-    TableHead, TableRow, TableCell, TableSortLabel, TableContainer,
-    Paper, Table, TableBody, IconButton, Typography,
+    Table, TableRow, TableCell, TableContainer,
+    Paper, IconButton, TableHead, Typography, TableSortLabel, TableBody,
 } from '@mui/material';
 import { useStore } from 'react-redux';
 import { push } from 'connected-react-router';
@@ -19,8 +19,8 @@ const headCells: HeadCell[] = [
     { id: 'ISBN', label: 'ISBN' },
     { id: 'eISBN', label: 'eISBN' },
     { id: 'title', label: 'Title' },
-    { id: 'fictionType', label: 'Fiction Type' },
     { id: 'formatType', label: 'Format Type' },
+    { id: 'fictionType', label: 'Fiction Type' },
 ];
 
 interface EnhancedTableProps {
@@ -28,53 +28,6 @@ interface EnhancedTableProps {
     order: Order;
     orderBy: string;
 }
-
-const EnhancedTableHead = (props: EnhancedTableProps) => {
-    const {
-        onRequestSort, order, orderBy,
-    } = props;
-    const createSortHandler = (property: keyof BookListItem) => (event: React.MouseEvent<unknown>) => {
-        onRequestSort(event, property);
-    };
-
-    return (
-        <TableHead>
-            <TableRow>
-                {headCells.map((headCell) => (
-                    <TableCell
-                        key={headCell.id}
-                        sortDirection={orderBy === headCell.id ? order : false}
-                    >
-                        <TableSortLabel
-                            active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : 'asc'}
-                            onClick={createSortHandler(headCell.id)}
-                        >
-                            {headCell.label}
-                            {orderBy === headCell.id ? (
-                                <Typography sx={{
-                                    border: 0,
-                                    clip: 'rect(0 0 0 0)',
-                                    height: 1,
-                                    margin: -1,
-                                    overflow: 'hidden',
-                                    padding: 0,
-                                    position: 'absolute',
-                                    top: 20,
-                                    width: 1,
-                                }}
-                                >
-                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                </Typography>
-                            ) : null}
-                        </TableSortLabel>
-                    </TableCell>
-                ))}
-                <TableCell />
-            </TableRow>
-        </TableHead>
-    );
-};
 
 interface RowProps {
     book: BookListItem;
@@ -125,24 +78,76 @@ export const Row = (props: RowProps) => {
     );
 };
 
-interface TableBookProps {
+const EnhancedTableHead = (props: EnhancedTableProps) => {
+    const { onRequestSort, orderBy, order } = props;
+
+    const createSortHandler = (
+        property: keyof BookListItem,
+    ) => (event: React.MouseEvent<unknown>) => {
+        onRequestSort(event, property);
+    };
+
+    return (
+        <TableHead>
+            <TableRow>
+                {headCells.map((headCell) => (
+                    <TableCell
+                        key={headCell.id}
+                        sortDirection={orderBy === headCell.id ? order : false}
+                    >
+                        <TableSortLabel
+                            active={orderBy === headCell.id}
+                            direction={orderBy === headCell.id ? order : 'asc'}
+                            onClick={createSortHandler(headCell.id)}
+                        >
+                            {headCell.label}
+                            {orderBy === headCell.id ? (
+                                <Typography
+                                    sx={{
+                                        border: 0,
+                                        clip: 'rect(0 0 0 0)',
+                                        height: 1,
+                                        margin: -1,
+                                        overflow: 'hidden',
+                                        padding: 0,
+                                        position: 'absolute',
+                                        top: 20,
+                                        width: 1,
+                                    }}
+                                >
+                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                </Typography>
+                            ) : null}
+                        </TableSortLabel>
+                    </TableCell>
+                ))}
+                <TableCell />
+            </TableRow>
+        </TableHead>
+    );
+};
+
+interface BooksTableProps {
     books: Array<BookListItem>;
-    deleteBook: (bookId: number) => void;
+    deleteBook: (authorId: number) => void;
 }
 
-const BooksTable = (props: TableBookProps) => {
+const BooksTable = (props: BooksTableProps) => {
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof BookListItem>('bookId');
     const { books, deleteBook } = props;
 
-    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof BookListItem) => {
+    const handleRequestSort = (
+        event: React.MouseEvent<unknown>,
+        property: keyof BookListItem,
+    ) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
     };
 
-    let tableContent = null;
-    tableContent = TableHelper.stableSort(books, TableHelper.getSorting(order, orderBy))
+    const tableContent = TableHelper
+        .stableSort(books, TableHelper.getSorting(order, orderBy))
         .map((row: BookListItem) => (
             <Row book={row} deleteBook={deleteBook} />
         ));

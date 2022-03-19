@@ -1,16 +1,16 @@
-import { Add } from '@mui/icons-material';
 import {
-    CircularProgress, Fab, Grid,
+    CircularProgress, Grid, Fab,
 } from '@mui/material';
-import Axios from 'axios';
-import { useSnackbar } from 'notistack';
-import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import BooksTable from '../../components/BooksTable';
+import Axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
+import { Add } from '@mui/icons-material';
+import { useSnackbar } from 'notistack';
 import PageHeading from '../../components/shared/PageHeading';
 import ConfigHelper from '../../config/configHelper';
 import { AppContext } from '../../Context';
 import BookListItem from '../../interfaces/bookListItem';
+import BooksTable from '../../components/BooksTable';
 
 interface BooksState {
     books: Array<BookListItem>;
@@ -20,11 +20,10 @@ const Books = () => {
     const [booksState, setBooksState] = useState<BooksState>({
         books: [],
     });
-
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
     const { enqueueSnackbar } = useSnackbar();
-    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const renderErrorSnackbar = (message: string): void => {
         enqueueSnackbar(message, {
@@ -63,7 +62,7 @@ const Books = () => {
                 }
             })
             .catch(() => {
-                renderErrorSnackbar('Unable to delete genre please contact admin');
+                renderErrorSnackbar('Unable to delete book please contact admin');
             });
     };
 
@@ -71,7 +70,6 @@ const Books = () => {
         if (context.getToken() === undefined) {
             return;
         }
-
         getBooks()
             .then(() => {
                 setIsLoading(false);
@@ -87,7 +85,7 @@ const Books = () => {
                 <PageHeading headingText="Books" />
             </Grid>
             <Grid item xs={12}>
-                <BooksTable books={booksState.books} deleteBook={deleteBook} />
+                <BooksTable deleteBook={deleteBook} books={booksState.books} />
             </Grid>
             <Grid item xs={12}>
                 <Link to="/addbook">
