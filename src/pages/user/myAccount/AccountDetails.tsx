@@ -68,7 +68,7 @@ const MyDetails = () => {
         validateForm()
             .then((formKeys: any) => {
                 if ((Object.keys(formKeys).length) === 0) {
-                    Axios.patch(`${configHelper.apiUrl}/api/user/selfupdate`, details, {
+                    Axios.patch(`${configHelper.idpUrl}/api/user/selfupdate`, details, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },

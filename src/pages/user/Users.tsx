@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, CircularProgress } from '@mui/material';
 import Axios from 'axios';
 import { useSnackbar } from 'notistack';
 import { User } from '../../interfaces/user';
@@ -18,11 +18,12 @@ const Users = () => {
     });
     const { enqueueSnackbar } = useSnackbar();
     const context = useContext(AppContext);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const configHelper = new ConfigHelper();
 
-    const getUsers = () => {
-        Axios.post(`${configHelper.apiUrl}/api/user/users`, {}, {
+    const getUsers = () => new Promise<void>((resolve) => {
+        Axios.post(`${configHelper.idpUrl}/api/user/users`, {}, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },
@@ -33,7 +34,8 @@ const Users = () => {
                     users: response.data.users,
                 });
             });
-    };
+        resolve();
+    });
 
     const renderErrorSnackbar = (message: string): void => {
         enqueueSnackbar(message, {
@@ -54,7 +56,7 @@ const Users = () => {
     };
 
     const deleteUser = (id: string): void => {
-        Axios.delete(`${process.env.MY_LIBRARY_API}/api/user/${id}`)
+        Axios.delete(`${process.env.idpUrl}/api/user/${id}`)
             .then((response) => {
                 if (response.status === 200) {
                     renderSuccessSnackbar('Delete successful');
@@ -71,9 +73,18 @@ const Users = () => {
     };
 
     useEffect(() => {
-        getUsers();
-    });
+        if (context.getToken() === undefined) {
+            return;
+        }
+        getUsers()
+            .then(() => {
+                setIsLoading(false);
+            });
+    }, [context]);
 
+    if (isLoading) {
+        return (<CircularProgress />);
+    }
     return (
         <Grid item xs={9} container justifyContent="center">
             <Grid item xs={12}>
