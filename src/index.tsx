@@ -96,7 +96,7 @@ ReactDOM.render(
                                         <Route path="/books">
                                             <BooksPage />
                                         </Route>
-                                        <Route path="/book">
+                                        <Route path="/addbook">
                                             <BookPage />
                                         </Route>
                                         <Route path="/book/:id">
