@@ -65,40 +65,67 @@ const BookPage = () => {
             return;
         }
 
-        Axios.get(`${configHelper.apiUrl}/api/reference/bookReferenceData`, {
+        const requests = [];
+
+        requests.push(Axios.get(`${configHelper.apiUrl}/api/reference/bookReferenceData`, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },
-        })
-            .then((response) => {
-                if (id !== undefined && id !== null) {
-                    Axios.get(`${configHelper.apiUrl}/api/book/${id}`, {
-                        headers: {
-                            Authorization: `Bearer ${context.getToken()}`,
-                        },
-                    })
-                        .then((booksResponse) => {
-                            setBookState({
-                                ...bookState,
-                                publicationFormats: response.data.publicationFormats,
-                                formTypes: response.data.formTypes,
-                                fictionTypes: response.data.fictionTypes,
-                                newBook: false,
-                                book: booksResponse.data,
-                            });
-                            setIsLoading(false);
+        }));
+
+        requests.push(Axios.get(`${configHelper.apiUrl}/api/author`, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        }));
+
+        requests.push(Axios.get(`${configHelper.apiUrl}/api/publisher`, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        }));
+
+        requests.push(Axios.get(`${configHelper.apiUrl}/api/genre`, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        }));
+
+        Promise.allSettled(requests).then((responses: Array<any>) => {
+            if (id !== undefined && id !== null) {
+                Axios.get(`${configHelper.apiUrl}/api/book/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${context.getToken()}`,
+                    },
+                })
+                    .then((booksResponse) => {
+                        setBookState({
+                            ...bookState,
+                            publicationFormats: responses[0].value.data.publicationFormats,
+                            formTypes: responses[0].value.data.formTypes,
+                            fictionTypes: responses[0].value.data.fictionTypes,
+                            authors: responses[1].value.data.authors,
+                            publishers: responses[2].value.data.publishers,
+                            genres: responses[3].value.data.genres,
+                            newBook: false,
+                            book: booksResponse.data,
                         });
-                } else {
-                    setBookState({
-                        ...bookState,
-                        publicationFormats: response.data.publicationFormats,
-                        formTypes: response.data.formTypes,
-                        fictionTypes: response.data.fictionTypes,
-                        newBook: true,
+                        setIsLoading(false);
                     });
-                    setIsLoading(false);
-                }
-            });
+            } else {
+                setBookState({
+                    ...bookState,
+                    publicationFormats: responses[0].value.data.publicationFormats,
+                    formTypes: responses[0].value.data.formTypes,
+                    fictionTypes: responses[0].value.data.fictionTypes,
+                    authors: responses[1].value.data.authors,
+                    publishers: responses[2].value.data.publishers,
+                    genres: responses[3].value.data.genres,
+                    newBook: true,
+                });
+                setIsLoading(false);
+            }
+        });
     }, [context]);
 
     if ((!bookState.newBook && bookState.book.bookID !== undefined) || isLoading) {
