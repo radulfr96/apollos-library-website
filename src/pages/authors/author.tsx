@@ -12,7 +12,7 @@ import { useSnackbar } from 'notistack';
 import { Author } from '../../interfaces/author';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
-import CountryTypedown from '../../components/shared/countryTypedown';
+import CountryTypedown from '../../components/shared/CountryTypedown';
 import Country from '../../interfaces/country';
 import ConfigHelper from '../../config/configHelper';
 import { AppContext } from '../../Context';

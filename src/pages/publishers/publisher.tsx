@@ -12,7 +12,7 @@ import { useStore } from 'react-redux';
 import { Publisher } from '../../interfaces/publisher';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
-import CountryTypedown from '../../components/shared/countryTypedown';
+import CountryTypedown from '../../components/shared/CountryTypedown';
 import Country from '../../interfaces/country';
 import { AppContext } from '../../Context';
 import ConfigHelper from '../../config/configHelper';
