@@ -279,15 +279,21 @@ const BookPage = () => {
                             <Grid item xs={12}>
                                 <ChipSelector
                                     options={
-                                        bookState.authors.map<ChipOption>((a) => ({
+                                        bookState.authors.map<ChipOption>((a: AuthorListItem) => ({
                                             value: a.authorId,
                                             name: `${a.name} (${a.country})`,
                                         } as ChipOption))
                                     }
-                                    selectedOptions={bookState.book.authors}
-                                    updateSelection={(newAuthorIds: ChipOption[]) => {
+                                    selectedOptions={bookState.book.authors.map((authorId) => {
+                                        const author = bookState.authors.find((a) => a.authorId === authorId);
+                                        return {
+                                            value: author?.authorId,
+                                            name: author?.name,
+                                        } as ChipOption;
+                                    })}
+                                    updateSelection={(authorsSelected: ChipOption[]) => {
                                         const newAuthors = new Array<number>();
-                                        newAuthorIds.forEach((n) => {
+                                        authorsSelected.forEach((n: ChipOption) => {
                                             const author = bookState.authors.find(
                                                 (r) => r.authorId === n.value,
                                             );

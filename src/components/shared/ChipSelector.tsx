@@ -6,7 +6,7 @@ import ChipOption from '../../interfaces/chipOption';
 
 interface ChipSelectorProps {
     options: Array<ChipOption>;
-    selectedOptions: Array<string> | Array<number>;
+    selectedOptions: Array<ChipOption>;
     updateSelection: (optionsSelected: ChipOption[]) => void;
     error?: boolean;
     errorMessage?: string;
@@ -24,7 +24,14 @@ const ChipSelector = (props: ChipSelectorProps) => {
     } = props;
 
     const handleChange = (event: any) => {
-        updateSelection(event.target.value as ChipOption[]);
+        const optionsToUpdate = new Array<ChipOption>();
+        event.target.value.forEach((selected: number | string) => {
+            const option = options.find((o: ChipOption) => o.value === selected);
+            if (option !== undefined) {
+                optionsToUpdate.push(option as ChipOption);
+            }
+        });
+        updateSelection(optionsToUpdate);
     };
 
     return (
@@ -54,8 +61,8 @@ const ChipSelector = (props: ChipSelectorProps) => {
                                 width: '100%',
                             }}
                             >
-                                {(selected as string[]).map((value) => (
-                                    <Chip color="primary" key={value} label={value} sx={{ marginRight: '5px' }} />
+                                {(selected).map((chip: ChipOption) => (
+                                    <Chip color="primary" key={chip.value} label={chip.name} sx={{ marginRight: '5px' }} />
                                 ))}
                             </Box>
                         )}

@@ -191,7 +191,6 @@ const AuthorsPage = () => {
                         validateForm,
                     }) => (
                         <Grid container item xs={12}>
-
                             {
                                 !authorState.newAuthor && (
                                     <Grid item xs={12}>
