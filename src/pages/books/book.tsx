@@ -20,6 +20,8 @@ import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
 import ChipSelector from '../../components/shared/ChipSelector';
 import ChipOption from '../../interfaces/chipOption';
+import Typedown from '../../components/shared/Typedown';
+import TypedownOption from '../../interfaces/typedownOption';
 
 interface BookParams {
     id: string;
@@ -214,7 +216,7 @@ const BookPage = () => {
     }
 
     return (
-        <Grid item xs={6} container justifyContent="center">
+        <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12}>
                 {
                     !bookState.newBook && (
@@ -244,81 +246,164 @@ const BookPage = () => {
                         handleChange,
                         validateForm,
                     }) => (
-                        <Grid container item xs={12}>
-
-                            {
-                                !bookState.newBook && (
-                                    <Grid item xs={12}>
-                                        <InputTextField
-                                            label="Book ID"
-                                            required
-                                            type="text"
-                                            keyName="bookID"
-                                            value={values.bookID}
-                                            onChange={handleChange}
-                                            error={!!(errors.bookID)}
-                                            errorMessage={errors.bookID}
-                                            readonly
-                                        />
-                                    </Grid>
-                                )
-                            }
-
+                        <Grid item xs={12}>
                             <Grid item xs={12}>
-                                <InputTextField
-                                    label="Title"
-                                    required
-                                    type="text"
-                                    keyName="title"
-                                    value={values.title}
-                                    onChange={handleChange}
-                                    error={!!(errors.title)}
-                                    errorMessage={errors.title}
-                                />
+                                {
+                                    !bookState.newBook && (
+                                        <Grid item xs={12}>
+                                            <InputTextField
+                                                label="Book ID"
+                                                required
+                                                type="text"
+                                                keyName="bookID"
+                                                value={values.bookID}
+                                                onChange={handleChange}
+                                                error={!!(errors.bookID)}
+                                                errorMessage={errors.bookID}
+                                                readonly
+                                            />
+                                        </Grid>
+                                    )
+                                }
                             </Grid>
                             <Grid item xs={12}>
-                                <ChipSelector
-                                    options={
-                                        bookState.authors.map<ChipOption>((a: AuthorListItem) => ({
-                                            value: a.authorId,
-                                            name: `${a.name} (${a.country})`,
-                                        } as ChipOption))
-                                    }
-                                    selectedOptions={bookState.book.authors.map((authorId) => {
-                                        const author = bookState.authors.find((a) => a.authorId === authorId);
-                                        return {
-                                            value: author?.authorId,
-                                            name: author?.name,
-                                        } as ChipOption;
-                                    })}
-                                    updateSelection={(authorsSelected: ChipOption[]) => {
-                                        const newAuthors = new Array<number>();
-                                        authorsSelected.forEach((n: ChipOption) => {
-                                            const author = bookState.authors.find(
-                                                (r) => r.authorId === n.value,
-                                            );
-                                            if (author !== undefined) {
-                                                newAuthors.push(author.authorId);
+                                <Grid item xs={6}>
+                                    <Grid item xs={12}>
+                                        <InputTextField
+                                            label="ISBN"
+                                            required
+                                            type="text"
+                                            keyName="isbn"
+                                            value={values.isbn}
+                                            onChange={handleChange}
+                                            error={!!(errors.isbn)}
+                                            errorMessage={errors.isbn}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <InputTextField
+                                            label="Title"
+                                            required
+                                            type="text"
+                                            keyName="title"
+                                            value={values.title}
+                                            onChange={handleChange}
+                                            error={!!(errors.title)}
+                                            errorMessage={errors.title}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <ChipSelector
+                                            options={
+                                                bookState.authors.map<ChipOption>((a: AuthorListItem) => ({
+                                                    value: a.authorId,
+                                                    name: `${a.name} (${a.country})`,
+                                                } as ChipOption))
                                             }
-                                        });
-                                        // eslint-disable-next-line no-param-reassign
-                                        values.authors = newAuthors;
-                                        setBookState({
-                                            ...bookState,
-                                            book: {
-                                                ...bookState.book,
-                                                authors: newAuthors,
-                                            },
-                                        });
-                                    }}
-                                    error={!!(errors.authors)}
-                                    errorMessage="A book must have an author."
-                                    id="authorSelector"
-                                    label="Authors"
-                                    labelId="authorSelectLabel"
-                                    textInputId="selectMultipleAuthors"
-                                    name="authors"
-                                />
+                                            selectedOptions={bookState.book.authors.map((authorId) => {
+                                                const author = bookState.authors.find((a) => a.authorId === authorId);
+                                                return {
+                                                    value: author?.authorId,
+                                                    name: author?.name,
+                                                } as ChipOption;
+                                            })}
+                                            // updateSelection={(authorSelected: ChipOption) => {
+                                            //     // eslint-disable-next-line no-param-reassign
+                                            //     values.authors.push(authorSelected.value as number);
+                                            //     setBookState({
+                                            //         ...bookState,
+                                            //         book: {
+                                            //             ...bookState.book,
+                                            //             authors: [...bookState.book.authors, authorSelected.value as number],
+                                            //         },
+                                            //     });
+                                            // }}
+                                            error={!!(errors.authors)}
+                                            errorMessage="A book must have an author."
+                                            id="authorSelector"
+                                            label="Authors"
+                                            labelId="authorSelectLabel"
+                                            textInputId="selectMultipleAuthors"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Typedown
+                                            required={false}
+                                            label="Publisher"
+                                            options={
+                                                bookState.publishers.map<TypedownOption>((publisher) => ({
+                                                    value: publisher.publisherId,
+                                                    name: `${publisher.name} (${publisher.country})`,
+                                                } as TypedownOption))
+                                            }
+                                            value={bookState.book.publisherID}
+                                            errorMessage={undefined}
+                                            onChange={undefined}
+                                            onBlur={undefined}
+                                            error={undefined}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <Grid item xs={12}>
+                                        <InputTextField
+                                            label="eISBN"
+                                            required
+                                            type="text"
+                                            keyName="eisbn"
+                                            value={values.eisbn}
+                                            onChange={handleChange}
+                                            error={!!(errors.eisbn)}
+                                            errorMessage={errors.eisbn}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <InputTextField
+                                            label="Subtitle"
+                                            required
+                                            type="text"
+                                            keyName="Subtitle"
+                                            value={values.subtitle}
+                                            onChange={handleChange}
+                                            error={!!(errors.subtitle)}
+                                            errorMessage={errors.subtitle}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <ChipSelector
+                                            options={
+                                                bookState.genres.map<ChipOption>((g: Genre) => ({
+                                                    value: g.genreId,
+                                                    name: g.name,
+                                                } as ChipOption))
+                                            }
+                                            selectedOptions={bookState.book.genres.map((genreId) => {
+                                                const genre = bookState.genres.find((a) => a.genreId === genreId);
+                                                return {
+                                                    value: genre?.genreId,
+                                                    name: genre?.name,
+                                                } as ChipOption;
+                                            })}
+                                            // updateSelection={(authorSelected: ChipOption) => {
+                                            //     // eslint-disable-next-line no-param-reassign
+                                            //     values.authors.push(authorSelected.value as number);
+                                            //     setBookState({
+                                            //         ...bookState,
+                                            //         book: {
+                                            //             ...bookState.book,
+                                            //             authors: [...bookState.book.authors, authorSelected.value as number],
+                                            //         },
+                                            //     });
+                                            // }}
+                                            error={!!(errors.genres)}
+                                            errorMessage="A book must have a genre."
+                                            id="genreSelector"
+                                            label="Genres"
+                                            labelId="genreSelectLabel"
+                                            textInputId="selectMultipleGenres"
+                                        />
+                                    </Grid>
+                                </Grid>
                             </Grid>
                             <Grid item xs={12} style={{ paddingTop: '10px' }}>
                                 {!bookState.newBook && (
