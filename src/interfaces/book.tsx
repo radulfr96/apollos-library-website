@@ -1,17 +1,17 @@
 interface Book {
-    bookID: number | undefined;
+    bookID?: number;
     isbn: string;
     eisbn: string;
     title: string;
     subtitle: string;
-    seriesID: number | undefined;
-    numberInSeries: number | undefined;
-    edition: number;
+    seriesID?: number;
+    numberInSeries?: number;
+    edition?: number;
     publicationFormatID: number;
     fictionTypeID: number;
     formTypeID: number;
-    publisherID: number | undefined;
-    coverImage: unknown | undefined;
+    publisherID?: number;
+    coverImage?: File;
     genres: number[];
     authors: number[];
 }

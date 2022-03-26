@@ -48,7 +48,6 @@ const CountryTypedown = (props: CountryTypedownProps) => {
                 onChange={onChange}
             />
             <Box sx={{
-                paddingBottom: '20px',
                 color: 'red',
             }}
             >

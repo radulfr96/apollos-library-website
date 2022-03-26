@@ -1,27 +1,27 @@
 import React from 'react';
 import {
-    TextField, Autocomplete, Box,
+    TextField, Autocomplete, Box, FormControl,
 } from '@mui/material';
 import TypedownOption from '../../interfaces/typedownOption';
 
 interface TypedownProps {
-    errorMessage: string | undefined;
+    errorMessage?: string;
     options: Array<TypedownOption>;
-    value: string | number | undefined;
-    required: boolean | undefined;
-    onChange: any | undefined;
-    onBlur: any | undefined;
-    error: boolean | undefined;
+    value?: string;
+    required?: boolean;
+    onChange?: any;
+    onBlur?: any;
+    error?: boolean;
     label: string;
 }
 
 const Typedown = (props: TypedownProps) => {
     const {
-        options, value, onChange, errorMessage, error, label,
+        options, value, onChange, errorMessage, error, label, required,
     } = props;
 
     return (
-        <>
+        <FormControl fullWidth error={error}>
             <Autocomplete
                 id="country-autocomplete"
                 sx={{ width: '100%' }}
@@ -41,6 +41,7 @@ const Typedown = (props: TypedownProps) => {
                         // eslint-disable-next-line react/jsx-props-no-spreading
                         {...params}
                         label={label}
+                        required={required}
                         inputProps={{
                             ...params.inputProps,
                             autoComplete: 'new-password', // disable autocomplete and autofill
@@ -50,13 +51,12 @@ const Typedown = (props: TypedownProps) => {
                 onChange={onChange}
             />
             <Box sx={{
-                paddingBottom: '20px',
                 color: 'red',
             }}
             >
                 {error ? errorMessage : ''}
             </Box>
-        </>
+        </FormControl>
     );
 };
 
