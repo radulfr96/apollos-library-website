@@ -59,14 +59,9 @@ const BookPage = () => {
             eisbn: '',
             title: '',
             subtitle: '',
-            seriesID: undefined,
-            numberInSeries: undefined,
-            edition: undefined,
-            coverImage: undefined,
-            publicationFormatID: 0,
-            fictionTypeID: 0,
-            formTypeID: 0,
-            publisherID: 0,
+            publicationFormatID: 1,
+            fictionTypeID: 1,
+            formTypeID: 1,
             genres: [],
             authors: [],
         },
@@ -249,8 +244,8 @@ const BookPage = () => {
                         eisbn: yup.string()
                             .min(10, 'eISBN must be at least 10 digits long')
                             .max(13, 'eISBN cannot be more than 13 digits long'),
-                        // genres: yup.array()
-                        //     .min(1, 'A book must have a genre'),
+                        genres: yup.array()
+                            .min(1, 'A book must have a genre'),
                     })
                 }
             >
@@ -357,17 +352,17 @@ const BookPage = () => {
                                             name: author?.name,
                                         } as ChipOption;
                                     })}
-                                    // updateSelection={(authorSelected: ChipOption) => {
-                                    //     // eslint-disable-next-line no-param-reassign
-                                    //     values.authors.push(authorSelected.value as number);
-                                    //     setBookState({
-                                    //         ...bookState,
-                                    //         book: {
-                                    //             ...bookState.book,
-                                    //             authors: [...bookState.book.authors, authorSelected.value as number],
-                                    //         },
-                                    //     });
-                                    // }}
+                                    updateSelection={(authorSelected: ChipOption) => {
+                                        // eslint-disable-next-line no-param-reassign
+                                        values.authors.push(authorSelected.value as number);
+                                        setBookState({
+                                            ...bookState,
+                                            book: {
+                                                ...bookState.book,
+                                                authors: [...bookState.book.authors, authorSelected.value as number],
+                                            },
+                                        });
+                                    }}
                                     error={!!(errors.authors)}
                                     errorMessage="A book must have an author."
                                     id="authorSelector"
@@ -404,20 +399,20 @@ const BookPage = () => {
                                             name: genre?.name,
                                         } as ChipOption;
                                     })}
-                                    // updateSelection={(authorSelected: ChipOption) => {
-                                    //     // eslint-disable-next-line no-param-reassign
-                                    //     values.authors.push(authorSelected.value as number);
-                                    //     setBookState({
-                                    //         ...bookState,
-                                    //         book: {
-                                    //             ...bookState.book,
-                                    //             authors: [...bookState.book.authors, authorSelected.value as number],
-                                    //         },
-                                    //     });
-                                    // }}
+                                    updateSelection={(genreSelected: ChipOption) => {
+                                        // eslint-disable-next-line no-param-reassign
+                                        values.genres.push(genreSelected.value as number);
+                                        setBookState({
+                                            ...bookState,
+                                            book: {
+                                                ...bookState.book,
+                                                genres: [...bookState.book.genres, genreSelected.value as number],
+                                            },
+                                        });
+                                    }}
                                     error={!!(errors.genres)}
                                     errorMessage="A book must have a genre."
-                                    id="genreSelector"
+                                    id="genres"
                                     label="Genres"
                                     labelId="genreSelectLabel"
                                     textInputId="selectMultipleGenres"
@@ -429,13 +424,9 @@ const BookPage = () => {
                                     label="Publication Format"
                                     labelId="publicationFormatLabelId"
                                     id="publicationFormatID"
-                                    onChange={(e: Event) => {
-                                        const field = e.target as HTMLInputElement;
-                                        bookState.book = {
-                                            ...bookState.book,
-                                            publicationFormatID: parseInt(field.value, 10),
-                                        };
-                                    }}
+                                    keyName="publicationFormatID"
+                                    value={values.publicationFormatID}
+                                    onChange={handleChange}
                                     options={
                                         bookState.publicationFormats.map<DropdownOption>((format: PublicationFormat) => ({
                                             value: format.typeId,
@@ -451,14 +442,10 @@ const BookPage = () => {
                                     required
                                     label="Fiction Type"
                                     labelId="fictionTypeLabelId"
-                                    id="fictionType"
-                                    onChange={(e: Event) => {
-                                        const field = e.target as HTMLInputElement;
-                                        bookState.book = {
-                                            ...bookState.book,
-                                            fictionTypeID: parseInt(field.value, 10),
-                                        };
-                                    }}
+                                    id="fictionTypeID"
+                                    value={values.fictionTypeID}
+                                    keyName="fictionTypeID"
+                                    onChange={handleChange}
                                     options={
                                         bookState.fictionTypes.map<DropdownOption>((fictionType: FictionType) => ({
                                             value: fictionType.typeId,
@@ -474,14 +461,9 @@ const BookPage = () => {
                                     required
                                     label="Form Type"
                                     labelId="formTypeLabelId"
-                                    id="formType"
-                                    onChange={(e: Event) => {
-                                        const field = e.target as HTMLInputElement;
-                                        bookState.book = {
-                                            ...bookState.book,
-                                            formTypeID: parseInt(field.value, 10),
-                                        };
-                                    }}
+                                    id="formTypeID"
+                                    keyName="formTypeID"
+                                    value={values.formTypeID}
                                     options={
                                         bookState.formTypes.map<DropdownOption>((form: FormType) => ({
                                             value: form.typeId,

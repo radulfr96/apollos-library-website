@@ -1,7 +1,7 @@
+import React from 'react';
 import {
     FormControl, InputLabel, MenuItem, Select, FormHelperText,
 } from '@mui/material';
-import React from 'react';
 import DropdownOption from '../../interfaces/dropdownOption';
 
 interface DropdownProps {
@@ -12,14 +12,14 @@ interface DropdownProps {
     value?: string | number | null | undefined;
     required?: boolean;
     onChange?: any;
-    onBlur?: any;
     error?: boolean;
     options: DropdownOption[];
+    keyName?: string;
 }
 
 const Dropdown = (props: DropdownProps) => {
     const {
-        required, label, value, onChange, onBlur, error, labelId, errorMessage, id, options,
+        required, label, value, onChange, error, labelId, errorMessage, id, options, keyName,
     } = props;
 
     return (
@@ -28,17 +28,16 @@ const Dropdown = (props: DropdownProps) => {
                 {`${label} ${required ? '*' : ''}`}
             </InputLabel>
             <Select
-                labelId={labelId}
+                id={id}
                 label={label}
                 sx={{
                     width: '100%',
                     color: error ? '#d32f2f' : '',
                 }}
-                id={id}
-                value={value}
+                defaultValue={value}
                 onChange={onChange}
                 required={required}
-                onBlur={onBlur}
+                name={keyName}
             >
                 <MenuItem value={undefined} />
                 {
