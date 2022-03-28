@@ -71,8 +71,8 @@ export const Row = (props: RowProps) => {
             <TableCell>{book.ISBN}</TableCell>
             <TableCell>{book.eISBN}</TableCell>
             <TableCell>{book.title}</TableCell>
-            <TableCell>{book.fictionType}</TableCell>
             <TableCell>{book.formatType}</TableCell>
+            <TableCell>{book.fictionType}</TableCell>
             <NavCell book={book} deleteBook={deleteBook} />
         </TableRow>
     );

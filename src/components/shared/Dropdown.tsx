@@ -34,12 +34,12 @@ const Dropdown = (props: DropdownProps) => {
                     width: '100%',
                     color: error ? '#d32f2f' : '',
                 }}
+                value={value}
                 defaultValue={value}
                 onChange={onChange}
                 required={required}
                 name={keyName}
             >
-                <MenuItem value={undefined} />
                 {
                     options.map((option: DropdownOption) => (
                         <MenuItem key={option.value} value={option.value}>{option.text}</MenuItem>

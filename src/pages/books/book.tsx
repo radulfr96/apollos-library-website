@@ -213,7 +213,7 @@ const BookPage = () => {
             });
     };
 
-    if ((!bookState.newBook && bookState.book.bookID !== undefined) || isLoading) {
+    if ((bookState.book.bookID === 0) || isLoading) {
         return (<CircularProgress />);
     }
 
@@ -257,15 +257,15 @@ const BookPage = () => {
                 }) => (
                     <>
                         <Grid container spacing={2} item xs={6}>
-                            <Grid item xs={12}>
+                            <Grid item xs={6}>
                                 {
                                     !bookState.newBook && (
-                                        <Grid item xs={12}>
+                                        <Grid>
                                             <InputTextField
-                                                label="Book ID"
+                                                label="Book Id"
                                                 required
                                                 type="text"
-                                                keyName="bookID"
+                                                keyName="bookId"
                                                 value={values.bookID}
                                                 onChange={handleChange}
                                                 error={!!(errors.bookID)}
@@ -276,6 +276,7 @@ const BookPage = () => {
                                     )
                                 }
                             </Grid>
+                            <Grid item xs={6} />
                             <Grid item xs={6}>
                                 <InputTextField
                                     label="ISBN"
