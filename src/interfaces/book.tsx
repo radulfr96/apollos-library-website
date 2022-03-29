@@ -1,16 +1,16 @@
 interface Book {
-    bookID?: number;
+    bookId?: number;
     isbn: string;
     eisbn: string;
     title: string;
     subtitle: string;
-    seriesID?: number;
+    seriesId?: number;
     numberInSeries?: number;
     edition?: number;
-    publicationFormatID: number;
-    fictionTypeID: number;
-    formTypeID: number;
-    publisherID?: number;
+    publicationFormatId: number;
+    fictionTypeId: number;
+    formTypeId: number;
+    publisherId?: number;
     coverImage?: File;
     genres: number[];
     authors: number[];

@@ -54,14 +54,14 @@ const BookPage = () => {
         fictionTypes: [],
         genres: [],
         book: {
-            bookID: 0,
+            bookId: 0,
             isbn: '',
             eisbn: '',
             title: '',
             subtitle: '',
-            publicationFormatID: 1,
-            fictionTypeID: 1,
-            formTypeID: 1,
+            publicationFormatId: 1,
+            fictionTypeId: 1,
+            formTypeId: 1,
             genres: [],
             authors: [],
         },
@@ -213,7 +213,7 @@ const BookPage = () => {
             });
     };
 
-    if ((bookState.book.bookID === 0) || isLoading) {
+    if ((bookState.book.bookId === 0) || isLoading) {
         return (<CircularProgress />);
     }
 
@@ -266,10 +266,10 @@ const BookPage = () => {
                                                 required
                                                 type="text"
                                                 keyName="bookId"
-                                                value={values.bookID}
+                                                value={values.bookId}
                                                 onChange={handleChange}
-                                                error={!!(errors.bookID)}
-                                                errorMessage={errors.bookID}
+                                                error={!!(errors.bookId)}
+                                                errorMessage={errors.bookId}
                                                 readonly
                                             />
                                         </Grid>
@@ -381,7 +381,7 @@ const BookPage = () => {
                                             name: `${publisher.name} (${publisher.country})`,
                                         } as TypedownOption))
                                     }
-                                    value={bookState.book.publisherID?.toString()}
+                                    value={bookState.book.publisherId?.toString()}
                                 />
                             </Grid>
                             <Grid item xs={6}>
@@ -424,9 +424,9 @@ const BookPage = () => {
                                     required
                                     label="Publication Format"
                                     labelId="publicationFormatLabelId"
-                                    id="publicationFormatID"
-                                    keyName="publicationFormatID"
-                                    value={values.publicationFormatID}
+                                    id="publicationFormatId"
+                                    keyName="publicationFormatId"
+                                    value={values.publicationFormatId}
                                     onChange={handleChange}
                                     options={
                                         bookState.publicationFormats.map<DropdownOption>((format: PublicationFormat) => ({
@@ -443,9 +443,9 @@ const BookPage = () => {
                                     required
                                     label="Fiction Type"
                                     labelId="fictionTypeLabelId"
-                                    id="fictionTypeID"
-                                    value={values.fictionTypeID}
-                                    keyName="fictionTypeID"
+                                    id="fictionTypeId"
+                                    value={values.fictionTypeId}
+                                    keyName="fictionTypeId"
                                     onChange={handleChange}
                                     options={
                                         bookState.fictionTypes.map<DropdownOption>((fictionType: FictionType) => ({
@@ -462,9 +462,9 @@ const BookPage = () => {
                                     required
                                     label="Form Type"
                                     labelId="formTypeLabelId"
-                                    id="formTypeID"
-                                    keyName="formTypeID"
-                                    value={values.formTypeID}
+                                    id="formTypeId"
+                                    keyName="formTypeId"
+                                    value={values.formTypeId}
                                     options={
                                         bookState.formTypes.map<DropdownOption>((form: FormType) => ({
                                             value: form.typeId,
