@@ -6,7 +6,7 @@ import Axios from 'axios';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
-    CircularProgress, Grid, Button,
+    CircularProgress, Grid, Button, Card, CardHeader, CardContent,
 } from '@mui/material';
 import { DropzoneAreaBase, FileObject } from 'material-ui-dropzone';
 import { push } from 'connected-react-router';
@@ -255,293 +255,329 @@ const BookPage = () => {
                     handleChange,
                     validateForm,
                 }) => (
-                    <>
-                        <Grid container spacing={2} item xs={6}>
+                    <Grid item xs={12}>
+                        <Grid container spacing={2}>
                             <Grid item xs={6}>
-                                {
-                                    !bookState.newBook && (
-                                        <Grid>
-                                            <InputTextField
-                                                label="Book Id"
-                                                required
-                                                type="text"
-                                                keyName="bookId"
-                                                value={values.bookId}
-                                                onChange={handleChange}
-                                                error={!!(errors.bookId)}
-                                                errorMessage={errors.bookId}
-                                                readonly
-                                            />
-                                        </Grid>
-                                    )
-                                }
-                            </Grid>
-                            <Grid item xs={6} />
-                            <Grid item xs={6}>
-                                <InputTextField
-                                    label="ISBN"
-                                    type="text"
-                                    keyName="isbn"
-                                    value={values.isbn}
-                                    onChange={handleChange}
-                                    error={!!(errors.isbn)}
-                                    errorMessage={errors.isbn}
-                                    inputMode="numeric"
-                                    pattern="[0-9]*"
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <InputTextField
-                                    label="eISBN"
-                                    type="text"
-                                    keyName="eisbn"
-                                    value={values.eisbn}
-                                    onChange={handleChange}
-                                    error={!!(errors.eisbn)}
-                                    errorMessage={errors.eisbn}
-                                    inputMode="numeric"
-                                    pattern="[0-9]*"
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <InputTextField
-                                    label="Title"
-                                    required
-                                    type="text"
-                                    keyName="title"
-                                    value={values.title}
-                                    onChange={handleChange}
-                                    error={!!(errors.title)}
-                                    errorMessage={errors.title}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <InputTextField
-                                    label="Subtitle"
-                                    required
-                                    type="text"
-                                    keyName="Subtitle"
-                                    value={values.subtitle}
-                                    onChange={handleChange}
-                                    error={!!(errors.subtitle)}
-                                    errorMessage={errors.subtitle}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <InputTextField
-                                    label="Edition"
-                                    type="number"
-                                    keyName="Edition"
-                                    value={values.edition}
-                                    onChange={handleChange}
-                                    error={!!(errors.edition)}
-                                    errorMessage={errors.edition}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <ChipSelector
-                                    options={
-                                        bookState.authors.map<ChipOption>((a: AuthorListItem) => ({
-                                            value: a.authorId,
-                                            name: `${a.name} (${a.country})`,
-                                        } as ChipOption))
-                                    }
-                                    selectedOptions={bookState.book.authors.map((authorId) => {
-                                        const author = bookState.authors.find((a) => a.authorId === authorId);
-                                        return {
-                                            value: author?.authorId,
-                                            name: author?.name,
-                                        } as ChipOption;
-                                    })}
-                                    updateSelection={(authorSelected: ChipOption) => {
-                                        // eslint-disable-next-line no-param-reassign
-                                        values.authors.push(authorSelected.value as number);
-                                        setBookState({
-                                            ...bookState,
-                                            book: {
-                                                ...bookState.book,
-                                                authors: [...bookState.book.authors, authorSelected.value as number],
-                                            },
-                                        });
-                                    }}
-                                    error={!!(errors.authors)}
-                                    errorMessage="A book must have an author."
-                                    id="authorSelector"
-                                    label="Authors"
-                                    labelId="authorSelectLabel"
-                                    textInputId="selectMultipleAuthors"
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typedown
-                                    label="Publisher"
-                                    options={
-                                        bookState.publishers.map<TypedownOption>((publisher) => ({
-                                            value: publisher.publisherId,
-                                            name: `${publisher.name} (${publisher.country})`,
-                                        } as TypedownOption))
-                                    }
-                                    value={bookState.book.publisherId?.toString()}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <ChipSelector
-                                    required
-                                    options={
-                                        bookState.genres.map<ChipOption>((g: Genre) => ({
-                                            value: g.genreId,
-                                            name: g.name,
-                                        } as ChipOption))
-                                    }
-                                    selectedOptions={bookState.book.genres.map((genreId) => {
-                                        const genre = bookState.genres.find((a) => a.genreId === genreId);
-                                        return {
-                                            value: genre?.genreId,
-                                            name: genre?.name,
-                                        } as ChipOption;
-                                    })}
-                                    updateSelection={(genreSelected: ChipOption) => {
-                                        // eslint-disable-next-line no-param-reassign
-                                        values.genres.push(genreSelected.value as number);
-                                        setBookState({
-                                            ...bookState,
-                                            book: {
-                                                ...bookState.book,
-                                                genres: [...bookState.book.genres, genreSelected.value as number],
-                                            },
-                                        });
-                                    }}
-                                    error={!!(errors.genres)}
-                                    errorMessage="A book must have a genre."
-                                    id="genres"
-                                    label="Genres"
-                                    labelId="genreSelectLabel"
-                                    textInputId="selectMultipleGenres"
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Dropdown
-                                    required
-                                    label="Publication Format"
-                                    labelId="publicationFormatLabelId"
-                                    id="publicationFormatId"
-                                    keyName="publicationFormatId"
-                                    value={values.publicationFormatId}
-                                    onChange={handleChange}
-                                    options={
-                                        bookState.publicationFormats.map<DropdownOption>((format: PublicationFormat) => ({
-                                            value: format.typeId,
-                                            text: format.name,
-                                        } as DropdownOption))
-                                    }
-                                    // error={bookState.book.publicationFormatID === 0}
-                                    errorMessage="A book must have a publication format."
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Dropdown
-                                    required
-                                    label="Fiction Type"
-                                    labelId="fictionTypeLabelId"
-                                    id="fictionTypeId"
-                                    value={values.fictionTypeId}
-                                    keyName="fictionTypeId"
-                                    onChange={handleChange}
-                                    options={
-                                        bookState.fictionTypes.map<DropdownOption>((fictionType: FictionType) => ({
-                                            value: fictionType.typeId,
-                                            text: fictionType.name,
-                                        } as DropdownOption))
-                                    }
-                                    // error={bookState.book.fictionTypeID === 0}
-                                    errorMessage="A book must have a fiction type."
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Dropdown
-                                    required
-                                    label="Form Type"
-                                    labelId="formTypeLabelId"
-                                    id="formTypeId"
-                                    keyName="formTypeId"
-                                    value={values.formTypeId}
-                                    options={
-                                        bookState.formTypes.map<DropdownOption>((form: FormType) => ({
-                                            value: form.typeId,
-                                            text: form.name,
-                                        } as DropdownOption))
-                                    }
-                                    // error={bookState.book.formTypeID === 0}
-                                    errorMessage="A book must have a form type."
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                {!bookState.newBook && (
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (errors !== null) {
-                                                updateBook(values, validateForm);
+                                <Grid container spacing={2}>
+                                    <Grid item xs={6}>
+                                        {
+                                            !bookState.newBook && (
+                                                <Grid>
+                                                    <InputTextField
+                                                        label="Book Id"
+                                                        required
+                                                        type="text"
+                                                        keyName="bookId"
+                                                        value={values.bookId}
+                                                        onChange={handleChange}
+                                                        error={!!(errors.bookId)}
+                                                        errorMessage={errors.bookId}
+                                                        readonly
+                                                    />
+                                                </Grid>
+                                            )
+                                        }
+                                    </Grid>
+                                    <Grid item xs={6} />
+                                    <Grid item xs={6}>
+                                        <InputTextField
+                                            label="ISBN"
+                                            type="text"
+                                            keyName="isbn"
+                                            value={values.isbn}
+                                            onChange={handleChange}
+                                            error={!!(errors.isbn)}
+                                            errorMessage={errors.isbn}
+                                            inputMode="numeric"
+                                            pattern="[0-9]*"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <InputTextField
+                                            label="eISBN"
+                                            type="text"
+                                            keyName="eisbn"
+                                            value={values.eisbn}
+                                            onChange={handleChange}
+                                            error={!!(errors.eisbn)}
+                                            errorMessage={errors.eisbn}
+                                            inputMode="numeric"
+                                            pattern="[0-9]*"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <InputTextField
+                                            label="Title"
+                                            required
+                                            type="text"
+                                            keyName="title"
+                                            value={values.title}
+                                            onChange={handleChange}
+                                            error={!!(errors.title)}
+                                            errorMessage={errors.title}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <InputTextField
+                                            label="Subtitle"
+                                            type="text"
+                                            keyName="Subtitle"
+                                            value={values.subtitle}
+                                            onChange={handleChange}
+                                            error={!!(errors.subtitle)}
+                                            errorMessage={errors.subtitle}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <InputTextField
+                                            label="Edition"
+                                            type="number"
+                                            keyName="Edition"
+                                            value={values.edition}
+                                            onChange={handleChange}
+                                            error={!!(errors.edition)}
+                                            errorMessage={errors.edition}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <ChipSelector
+                                            options={
+                                                bookState.authors.map<ChipOption>((a: AuthorListItem) => ({
+                                                    value: a.authorId,
+                                                    name: `${a.name} (${a.country})`,
+                                                } as ChipOption))
                                             }
+                                            selectedOptions={bookState.book.authors.map((authorId) => {
+                                                const author = bookState.authors.find((a) => a.authorId === authorId);
+                                                return {
+                                                    value: author?.authorId,
+                                                    name: author?.name,
+                                                } as ChipOption;
+                                            })}
+                                            updateSelection={(authorSelected: ChipOption) => {
+                                                // eslint-disable-next-line no-param-reassign
+                                                values.authors.push(authorSelected.value as number);
+                                                setBookState({
+                                                    ...bookState,
+                                                    book: {
+                                                        ...bookState.book,
+                                                        authors: [...bookState.book.authors, authorSelected.value as number],
+                                                    },
+                                                });
+                                            }}
+                                            error={!!(errors.authors)}
+                                            errorMessage="A book must have an author."
+                                            id="authorSelector"
+                                            label="Authors"
+                                            labelId="authorSelectLabel"
+                                            textInputId="selectMultipleAuthors"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <Typedown
+                                            label="Publisher"
+                                            id="publisherId"
+                                            options={
+                                                bookState.publishers.map<TypedownOption>((publisher) => ({
+                                                    value: publisher.publisherId,
+                                                    name: `${publisher.name} (${publisher.country})`,
+                                                } as TypedownOption))
+                                            }
+                                            value={bookState.book.publisherId?.toString()}
+                                            updateSelection={(selected?: number | string) => {
+                                                if (selected !== undefined) {
+                                                    setBookState({
+                                                        ...bookState,
+                                                        book: {
+                                                            ...bookState.book,
+                                                            publisherId: selected as number,
+                                                        },
+                                                    });
+                                                }
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <ChipSelector
+                                            required
+                                            options={
+                                                bookState.genres.map<ChipOption>((g: Genre) => ({
+                                                    value: g.genreId,
+                                                    name: g.name,
+                                                } as ChipOption))
+                                            }
+                                            selectedOptions={bookState.book.genres.map((genreId) => {
+                                                const genre = bookState.genres.find((a) => a.genreId === genreId);
+                                                return {
+                                                    value: genre?.genreId,
+                                                    name: genre?.name,
+                                                } as ChipOption;
+                                            })}
+                                            updateSelection={(genreSelected: ChipOption) => {
+                                                // eslint-disable-next-line no-param-reassign
+                                                values.genres.push(genreSelected.value as number);
+                                                setBookState({
+                                                    ...bookState,
+                                                    book: {
+                                                        ...bookState.book,
+                                                        genres: [...bookState.book.genres, genreSelected.value as number],
+                                                    },
+                                                });
+                                            }}
+                                            error={!!(errors.genres)}
+                                            errorMessage="A book must have a genre."
+                                            id="genres"
+                                            label="Genres"
+                                            labelId="genreSelectLabel"
+                                            textInputId="selectMultipleGenres"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <Dropdown
+                                            required
+                                            label="Publication Format"
+                                            labelId="publicationFormatLabelId"
+                                            id="publicationFormatId"
+                                            keyName="publicationFormatId"
+                                            value={values.publicationFormatId}
+                                            onChange={handleChange}
+                                            options={
+                                                bookState.publicationFormats.map<DropdownOption>((format: PublicationFormat) => ({
+                                                    value: format.typeId,
+                                                    text: format.name,
+                                                } as DropdownOption))
+                                            }
+                                            // error={bookState.book.publicationFormatID === 0}
+                                            errorMessage="A book must have a publication format."
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <Dropdown
+                                            required
+                                            label="Fiction Type"
+                                            labelId="fictionTypeLabelId"
+                                            id="fictionTypeId"
+                                            value={values.fictionTypeId}
+                                            keyName="fictionTypeId"
+                                            onChange={handleChange}
+                                            options={
+                                                bookState.fictionTypes.map<DropdownOption>((fictionType: FictionType) => ({
+                                                    value: fictionType.typeId,
+                                                    text: fictionType.name,
+                                                } as DropdownOption))
+                                            }
+                                            // error={bookState.book.fictionTypeID === 0}
+                                            errorMessage="A book must have a fiction type."
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <Dropdown
+                                            required
+                                            label="Form Type"
+                                            labelId="formTypeLabelId"
+                                            id="formTypeId"
+                                            keyName="formTypeId"
+                                            value={values.formTypeId}
+                                            options={
+                                                bookState.formTypes.map<DropdownOption>((form: FormType) => ({
+                                                    value: form.typeId,
+                                                    text: form.name,
+                                                } as DropdownOption))
+                                            }
+                                            // error={bookState.book.formTypeID === 0}
+                                            errorMessage="A book must have a form type."
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        {!bookState.newBook && (
+                                            <Button
+                                                sx={{ marginRight: '10px' }}
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    if (errors !== null) {
+                                                        updateBook(values, validateForm);
+                                                    }
+                                                }}
+                                            >
+                                                Update
+                                            </Button>
+                                        )}
+                                        {bookState.newBook && (
+                                            <Button
+                                                sx={{ marginRight: '10px' }}
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    addBook(values, validateForm);
+                                                }}
+                                            >
+                                                Add
+                                            </Button>
+                                        )}
+                                        <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            onClick={() => {
+                                                store.dispatch(push('/books'));
+                                            }}
+                                        >
+                                            Cancel
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12}>
+                                        <Card sx={{
+                                            height: '560px',
+                                            width: '500px',
                                         }}
-                                    >
-                                        Update
-                                    </Button>
-                                )}
-                                {bookState.newBook && (
-                                    <Button
-                                        sx={{ marginRight: '10px' }}
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            addBook(values, validateForm);
-                                        }}
-                                    >
-                                        Add
-                                    </Button>
-                                )}
+                                        >
+                                            <CardHeader
+                                                title="Book Cover Image"
+                                            />
+                                            <CardContent sx={{
+                                                height: '100%',
+                                            }}
+                                            >
+                                                {
+                                                    // bookState.book.coverImage !== undefined && (<img alt="Book Cover" src={URL.createObjectURL(new Blob(bookState.book.coverImage))} />)
+                                                }
 
-                                <Button
-                                    sx={{ marginRight: '10px' }}
-                                    variant="contained"
-                                    color="secondary"
-                                    onClick={() => {
-                                        store.dispatch(push('/books'));
-                                    }}
-                                >
-                                    Cancel
-                                </Button>
+                                                {
+                                                    ((!bookState.book.coverImage) || bookState.book.coverImage === '') && (
+                                                        <DropzoneAreaBase
+                                                            onAdd={(fileObjs: FileObject[]) => {
+                                                                setBookState({
+                                                                    ...bookState,
+                                                                    book: {
+                                                                        ...bookState.book,
+                                                                        coverImage: fileObjs[0].data as string,
+                                                                    },
+                                                                });
+                                                            }}
+                                                            onDelete={() => {
+                                                                bookState.book = {
+                                                                    ...bookState.book,
+                                                                    coverImage: undefined,
+                                                                };
+                                                            }}
+                                                            fileObjects={[]}
+                                                            acceptedFiles={['image/*']}
+                                                        />
+                                                    )
+                                                }
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </Grid>
-                        <Grid item xs={6}>
-                            {/* <Grid item xs={12}>
-                                {
-                                    bookState.book.coverImage !== undefined && (<img alt="Book Cover" src={URL.createObjectURL(new Blob(bookState.book.coverImage))} />)
-                                }
-                            </Grid> */}
-                            <Grid item xs={12}>
-                                <DropzoneAreaBase
-                                    onAdd={(fileObjs: FileObject[]) => {
-                                        bookState.book = {
-                                            ...bookState.book,
-                                            coverImage: fileObjs[0].file,
-                                        };
-                                    }}
-                                    onDelete={() => {
-                                        bookState.book = {
-                                            ...bookState.book,
-                                            coverImage: undefined,
-                                        };
-                                    }}
-                                    fileObjects={[]}
-                                    acceptedFiles={['image/*']}
-                                />
-                            </Grid>
-                        </Grid>
-                    </>
+                    </Grid>
                 )}
             </Formik>
         </>

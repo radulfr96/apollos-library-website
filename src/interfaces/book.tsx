@@ -11,7 +11,7 @@ interface Book {
     fictionTypeId: number;
     formTypeId: number;
     publisherId?: number;
-    coverImage?: File;
+    coverImage?: string;
     genres: number[];
     authors: number[];
 }

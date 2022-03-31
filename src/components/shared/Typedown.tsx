@@ -9,7 +9,8 @@ interface TypedownProps {
     options: Array<TypedownOption>;
     value?: string;
     required?: boolean;
-    onChange?: any;
+    id: string;
+    updateSelection: (id: number | string | undefined) => void;
     onBlur?: any;
     error?: boolean;
     label: string;
@@ -17,20 +18,24 @@ interface TypedownProps {
 
 const Typedown = (props: TypedownProps) => {
     const {
-        options, value, onChange, errorMessage, error, label, required,
+        options, value, updateSelection, errorMessage, error, label, required, id,
     } = props;
+
+    const handleChange = (event: any) => {
+        updateSelection(event.target.value);
+    };
 
     return (
         <FormControl fullWidth error={error}>
             <Autocomplete
-                id="country-autocomplete"
+                id={id}
                 sx={{ width: '100%' }}
                 options={options}
                 autoHighlight
                 getOptionLabel={(option: TypedownOption) => option.name}
                 renderOption={(optionsProps, option) => (
                     // eslint-disable-next-line react/jsx-props-no-spreading
-                    <Box component="li" key={option.name} {...optionsProps}>
+                    <Box component="li" key={option.name} value={option.value} {...optionsProps}>
                         {option.name}
                     </Box>
                 )}
@@ -48,7 +53,7 @@ const Typedown = (props: TypedownProps) => {
                         }}
                     />
                 )}
-                onChange={onChange}
+                onChange={handleChange}
             />
             <Box sx={{
                 color: 'red',
