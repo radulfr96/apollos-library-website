@@ -6,12 +6,13 @@ import Axios from 'axios';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
-    CircularProgress, Grid, Button, Card, CardHeader, CardContent,
+    CircularProgress, Grid, Button, Card, CardHeader, CardContent, CardActions,
 } from '@mui/material';
 import { DropzoneAreaBase, FileObject } from 'material-ui-dropzone';
 import { push } from 'connected-react-router';
 import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
+import { makeStyles } from '@material-ui/core/styles';
 import { PublisherListItem } from '../../interfaces/publisherListItem';
 import { AuthorListItem } from '../../interfaces/authorListItem';
 import { Genre } from '../../interfaces/genre';
@@ -43,6 +44,7 @@ interface BookState {
     genres: Genre[];
     book: Book;
     newBook: boolean;
+    changingImage: boolean;
 }
 
 const BookPage = () => {
@@ -66,6 +68,14 @@ const BookPage = () => {
             authors: [],
         },
         newBook: false,
+        changingImage: false,
+    });
+
+    const useStyles = makeStyles({
+        myDropZone: {
+            maxWidth: '300px',
+            maxHeight: '460px',
+        },
     });
 
     const configHelper = new ConfigHelper();
@@ -253,6 +263,7 @@ const BookPage = () => {
                     values,
                     errors,
                     handleChange,
+                    setFieldValue,
                     validateForm,
                 }) => (
                     <Grid item xs={12}>
@@ -383,9 +394,10 @@ const BookPage = () => {
                                                     name: `${publisher.name} (${publisher.country})`,
                                                 } as TypedownOption))
                                             }
-                                            value={bookState.book.publisherId?.toString()}
+                                            value={values.publisherId?.toString()}
                                             updateSelection={(selected?: number | string) => {
                                                 if (selected !== undefined) {
+                                                    setFieldValue('publisherId', selected);
                                                     setBookState({
                                                         ...bookState,
                                                         book: {
@@ -532,31 +544,26 @@ const BookPage = () => {
                             <Grid item xs={3}>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
-                                        <Card sx={{
-                                            height: '560px',
-                                            width: '500px',
-                                        }}
-                                        >
+                                        <Card sx={{ width: '325px' }}>
                                             <CardHeader
                                                 title="Book Cover Image"
                                             />
-                                            <CardContent sx={{
-                                                height: '100%',
-                                            }}
-                                            >
+                                            <CardContent>
                                                 {
-                                                    // bookState.book.coverImage !== undefined && (<img alt="Book Cover" src={URL.createObjectURL(new Blob(bookState.book.coverImage))} />)
+                                                    (bookState.book.coverImage && bookState.book.coverImage !== '' && !bookState.changingImage) && (<img style={{ maxWidth: '300px', maxHeight: '460px' }} alt="Book Cover" src={bookState.book.coverImage} />)
                                                 }
 
                                                 {
-                                                    ((!bookState.book.coverImage) || bookState.book.coverImage === '') && (
+                                                    ((!bookState.book.coverImage) || bookState.book.coverImage === '' || bookState.changingImage) && (
                                                         <DropzoneAreaBase
                                                             onAdd={(fileObjs: FileObject[]) => {
+                                                                const imageData = fileObjs[0].data as string;
+                                                                setFieldValue('coverImage', imageData);
                                                                 setBookState({
                                                                     ...bookState,
                                                                     book: {
                                                                         ...bookState.book,
-                                                                        coverImage: fileObjs[0].data as string,
+                                                                        coverImage: imageData,
                                                                     },
                                                                 });
                                                             }}
@@ -568,10 +575,44 @@ const BookPage = () => {
                                                             }}
                                                             fileObjects={[]}
                                                             acceptedFiles={['image/*']}
+                                                            dropzoneClass={useStyles().myDropZone}
                                                         />
                                                     )
                                                 }
                                             </CardContent>
+                                            <CardActions>
+                                                {(bookState.book.coverImage && bookState.book.coverImage !== '' && !bookState.changingImage)
+                                                    && (
+                                                        <Button
+                                                            variant="contained"
+                                                            color="primary"
+                                                            onClick={() => {
+                                                                setBookState({
+                                                                    ...bookState,
+                                                                    changingImage: true,
+                                                                });
+                                                            }}
+                                                        >
+                                                            Change
+                                                        </Button>
+                                                    )}
+                                                {(bookState.changingImage && bookState.book.coverImage && bookState.book.coverImage !== '' && bookState.changingImage)
+                                                    && (
+                                                        <Button
+                                                            variant="contained"
+                                                            color="secondary"
+                                                            onClick={() => {
+                                                                setBookState({
+                                                                    ...bookState,
+                                                                    changingImage: false,
+                                                                });
+                                                            }}
+                                                        >
+                                                            Cancel
+                                                        </Button>
+                                                    )}
+
+                                            </CardActions>
                                         </Card>
                                     </Grid>
                                 </Grid>
