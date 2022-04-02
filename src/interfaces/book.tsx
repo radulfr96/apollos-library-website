@@ -1,7 +1,7 @@
 interface Book {
     bookId?: number;
     isbn: string;
-    eisbn: string;
+    eISBN: string;
     title: string;
     subtitle: string;
     seriesId?: number;

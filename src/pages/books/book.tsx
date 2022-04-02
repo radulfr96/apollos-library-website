@@ -8,11 +8,11 @@ import * as yup from 'yup';
 import {
     CircularProgress, Grid, Button, Card, CardHeader, CardContent, CardActions,
 } from '@mui/material';
-import { DropzoneAreaBase, FileObject } from 'material-ui-dropzone';
+import { makeStyles } from '@material-ui/styles';
+import { DropzoneAreaBase, FileObject } from 'mui-file-dropzone';
 import { push } from 'connected-react-router';
 import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { makeStyles } from '@material-ui/core/styles';
 import { PublisherListItem } from '../../interfaces/publisherListItem';
 import { AuthorListItem } from '../../interfaces/authorListItem';
 import { Genre } from '../../interfaces/genre';
@@ -58,10 +58,11 @@ const BookPage = () => {
         book: {
             bookId: 0,
             isbn: '',
-            eisbn: '',
+            eISBN: '',
             title: '',
             subtitle: '',
             publicationFormatId: 1,
+            publisherId: undefined,
             fictionTypeId: 1,
             formTypeId: 1,
             genres: [],
@@ -71,19 +72,19 @@ const BookPage = () => {
         changingImage: false,
     });
 
-    const useStyles = makeStyles({
-        myDropZone: {
-            maxWidth: '300px',
-            maxHeight: '460px',
-        },
-    });
-
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
     const { id } = useParams<BookParams>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const store = useStore();
     const { enqueueSnackbar } = useSnackbar();
+    const useStyles = makeStyles(() => ({
+        dropZone: {
+            height: '440px',
+        },
+    }));
+
+    const classes = useStyles();
 
     useEffect(() => {
         if (context.getToken() === undefined) {
@@ -133,7 +134,7 @@ const BookPage = () => {
                             publishers: responses[2].value.data.publishers,
                             genres: responses[3].value.data.genres,
                             newBook: false,
-                            book: booksResponse.data,
+                            book: booksResponse.data as Book,
                         });
                         setIsLoading(false);
                     });
@@ -188,9 +189,9 @@ const BookPage = () => {
                         })
                         .catch((error) => {
                             if (error.response.status === 400) {
-                                renderWarningSnackbar('Unable to update author invalid input');
+                                renderWarningSnackbar('Unable to update book invalid input');
                             } else {
-                                renderErrorSnackbar('Unable to update author please contact admin');
+                                renderErrorSnackbar('Unable to update book please contact admin');
                             }
                         });
                 }
@@ -214,16 +215,16 @@ const BookPage = () => {
                         })
                         .catch((error) => {
                             if (error.response.status === 400) {
-                                renderWarningSnackbar('Unable to add author, invalid input');
+                                renderWarningSnackbar('Unable to add book invalid input');
                             } else {
-                                renderErrorSnackbar('Unable to add author please contact admin');
+                                renderErrorSnackbar('Unable to add book please contact admin');
                             }
                         });
                 }
             });
     };
 
-    if ((bookState.book.bookId === 0) || isLoading) {
+    if (isLoading) {
         return (<CircularProgress />);
     }
 
@@ -307,11 +308,11 @@ const BookPage = () => {
                                         <InputTextField
                                             label="eISBN"
                                             type="text"
-                                            keyName="eisbn"
-                                            value={values.eisbn}
+                                            keyName="eISBN"
+                                            value={values.eISBN}
                                             onChange={handleChange}
-                                            error={!!(errors.eisbn)}
-                                            errorMessage={errors.eisbn}
+                                            error={!!(errors.eISBN)}
+                                            errorMessage={errors.eISBN}
                                             inputMode="numeric"
                                             pattern="[0-9]*"
                                         />
@@ -565,6 +566,7 @@ const BookPage = () => {
                                                                         ...bookState.book,
                                                                         coverImage: imageData,
                                                                     },
+                                                                    changingImage: false,
                                                                 });
                                                             }}
                                                             onDelete={() => {
@@ -575,7 +577,7 @@ const BookPage = () => {
                                                             }}
                                                             fileObjects={[]}
                                                             acceptedFiles={['image/*']}
-                                                            dropzoneClass={useStyles().myDropZone}
+                                                            dropzoneClass={classes.dropZone}
                                                         />
                                                     )
                                                 }
