@@ -128,41 +128,41 @@ const UserPage = () => {
         return (<CircularProgress />);
     }
     return (
-        <Grid item xs={9} container justifyContent="center">
+        <>
             <Grid item xs={12}>
                 <PageHeading headingText="User Details" />
             </Grid>
-            <Grid item xs={12}>
-                <Formik
-                    initialValues={userState.updateInfo}
-                    enableReinitialize
-                    onSubmit={() => { }}
-                    validationSchema={
-                        yup.object().shape({
-                            username: yup.string()
-                                .required('A user must have a username'),
-                            roles: yup.array()
-                                .required('A user must have a role'),
-                            password: yup.string()
-                                .notRequired()
-                                .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Password must be at least 6 characters long and contain one number and uppercase character.'),
-                            confirmationPassword: yup.string()
-                                .oneOf([yup.ref('password')], 'Confirmation password must matched password')
-                                .when('password', {
-                                    // eslint-disable-next-line no-restricted-globals
-                                    is: (password: string) => password?.length > 0,
-                                    then: yup.string().required('Confirmation password is required'),
-                                }),
-                        })
-                    }
-                >
-                    {({
-                        values,
-                        errors,
-                        handleChange,
-                        validateForm,
-                    }) => (
-                        <Grid container item xs={12}>
+            <Formik
+                initialValues={userState.updateInfo}
+                enableReinitialize
+                onSubmit={() => { }}
+                validationSchema={
+                    yup.object().shape({
+                        username: yup.string()
+                            .required('A user must have a username'),
+                        roles: yup.array()
+                            .required('A user must have a role'),
+                        password: yup.string()
+                            .notRequired()
+                            .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Password must be at least 6 characters long and contain one number and uppercase character.'),
+                        confirmationPassword: yup.string()
+                            .oneOf([yup.ref('password')], 'Confirmation password must matched password')
+                            .when('password', {
+                                // eslint-disable-next-line no-restricted-globals
+                                is: (password: string) => password?.length > 0,
+                                then: yup.string().required('Confirmation password is required'),
+                            }),
+                    })
+                }
+            >
+                {({
+                    values,
+                    errors,
+                    handleChange,
+                    validateForm,
+                }) => (
+                    <Grid item xs={12}>
+                        <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <InputTextField
                                     label="Username"
@@ -225,16 +225,18 @@ const UserPage = () => {
                                     onClick={() => {
                                         store.dispatch(push('/user'));
                                     }}
+                                    sx={{
+                                        marginLeft: '10px',
+                                    }}
                                 >
                                     Cancel
                                 </Button>
                             </Grid>
                         </Grid>
-
-                    )}
-                </Formik>
-            </Grid>
-        </Grid>
+                    </Grid>
+                )}
+            </Formik>
+        </>
     );
 };
 

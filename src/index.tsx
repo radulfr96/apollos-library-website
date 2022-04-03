@@ -14,9 +14,7 @@ import Genres from './pages/genre/Genres';
 import Home from './pages/Home';
 import PublisherPage from './pages/publishers/publisher';
 import Publishers from './pages/publishers/publishers';
-import Login from './pages/user/Login';
 import MyAccount from './pages/user/myAccount/MyAccount';
-import Register from './pages/user/Register';
 import UserPage from './pages/user/User';
 import Users from './pages/user/Users';
 import configureStore from './store';
@@ -26,6 +24,7 @@ import userManager from './util/userManager';
 import AppContextProvider from './Context';
 import AuthorsPage from './pages/authors/authors';
 import BooksPage from './pages/books/books';
+import BookPage from './pages/books/book';
 // Create browser history to use in the Redux store
 
 // Get the application-wide store instance, prepopulating
@@ -52,12 +51,6 @@ ReactDOM.render(
                                         </Route>
                                         <Route path="/user">
                                             <Users />
-                                        </Route>
-                                        <Route path="/login">
-                                            <Login />
-                                        </Route>
-                                        <Route path="/register">
-                                            <Register />
                                         </Route>
                                         <Route path="/account">
                                             <MyAccount />
@@ -94,6 +87,12 @@ ReactDOM.render(
                                         </Route>
                                         <Route path="/books">
                                             <BooksPage />
+                                        </Route>
+                                        <Route path="/addbook">
+                                            <BookPage />
+                                        </Route>
+                                        <Route path="/book/:id">
+                                            <BookPage />
                                         </Route>
                                     </Switch>
                                 </Layout>

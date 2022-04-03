@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    TextField, Box,
+    TextField,
 } from '@mui/material';
 
 interface InputTextFieldProps {
@@ -14,38 +14,34 @@ interface InputTextFieldProps {
     onBlur?: any;
     error?: boolean;
     readonly?: boolean;
+    inputMode?: 'search' | 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | undefined;
+    pattern?: string;
 }
 
 const InputTextField = (props: InputTextFieldProps) => {
     const {
-        keyName, required, label, value, type, onChange, onBlur, error, readonly, errorMessage,
+        keyName, required, label, value, type, onChange, onBlur, error, readonly, errorMessage, inputMode, pattern,
     } = props;
 
     return (
-        <>
-            <TextField
-                name={keyName}
-                required={required}
-                label={label}
-                defaultValue={value}
-                variant="outlined"
-                type={type}
-                onChange={onChange}
-                onBlur={onBlur}
-                error={error}
-                inputProps={{
-                    readOnly: readonly,
-                }}
-                fullWidth
-            />
-            <Box sx={{
-                paddingBottom: '20px',
-                color: 'red',
+        <TextField
+            name={keyName}
+            required={required}
+            label={label}
+            defaultValue={value}
+            variant="outlined"
+            type={type}
+            onChange={onChange}
+            onBlur={onBlur}
+            error={error}
+            inputMode={inputMode}
+            inputProps={{
+                readOnly: readonly,
+                pattern,
             }}
-            >
-                {error ? errorMessage : ''}
-            </Box>
-        </>
+            fullWidth
+            helperText={errorMessage}
+        />
     );
 };
 

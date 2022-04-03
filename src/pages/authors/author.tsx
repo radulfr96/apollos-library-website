@@ -12,7 +12,7 @@ import { useSnackbar } from 'notistack';
 import { Author } from '../../interfaces/author';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
-import CountryTypedown from '../../components/shared/countryTypedown';
+import CountryTypedown from '../../components/shared/CountryTypedown';
 import Country from '../../interfaces/country';
 import ConfigHelper from '../../config/configHelper';
 import { AppContext } from '../../Context';
@@ -172,26 +172,25 @@ const AuthorsPage = () => {
                     )
                 }
             </Grid>
-            <Grid item xs={12}>
-                <Formik
-                    initialValues={authorState.author}
-                    onSubmit={() => { }}
-                    validationSchema={
-                        yup.object().shape({
-                            firstname: yup.string()
-                                .required('An author must have a firstname or alias'),
-                        })
-                    }
-                >
-                    {({
-                        values,
-                        errors,
-                        handleChange,
-                        setFieldValue,
-                        validateForm,
-                    }) => (
-                        <Grid container item xs={12}>
-
+            <Formik
+                initialValues={authorState.author}
+                onSubmit={() => { }}
+                validationSchema={
+                    yup.object().shape({
+                        firstname: yup.string()
+                            .required('An author must have a firstname or alias'),
+                    })
+                }
+            >
+                {({
+                    values,
+                    errors,
+                    handleChange,
+                    setFieldValue,
+                    validateForm,
+                }) => (
+                    <Grid item xs={12}>
+                        <Grid container spacing={2}>
                             {
                                 !authorState.newAuthor && (
                                     <Grid item xs={12}>
@@ -312,9 +311,9 @@ const AuthorsPage = () => {
                                 </Button>
                             </Grid>
                         </Grid>
-                    )}
-                </Formik>
-            </Grid>
+                    </Grid>
+                )}
+            </Formik>
         </Grid>
     );
 };

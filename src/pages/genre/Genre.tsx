@@ -141,7 +141,7 @@ const GenrePage = () => {
     }
 
     return (
-        <Grid item xs={6} container justifyContent="center">
+        <>
             <Grid item xs={12}>
                 {
                     !genreState.newGenre && (
@@ -154,25 +154,24 @@ const GenrePage = () => {
                     )
                 }
             </Grid>
-            <Grid item xs={12}>
-                <Formik
-                    initialValues={genreState.genre}
-                    onSubmit={() => { }}
-                    validationSchema={
-                        yup.object().shape({
-                            name: yup.string()
-                                .required('A genre must have a name'),
-                        })
-                    }
-                >
-                    {({
-                        values,
-                        errors,
-                        handleChange,
-                        validateForm,
-                    }) => (
-                        <Grid container item xs={12}>
-
+            <Formik
+                initialValues={genreState.genre}
+                onSubmit={() => { }}
+                validationSchema={
+                    yup.object().shape({
+                        name: yup.string()
+                            .required('A genre must have a name'),
+                    })
+                }
+            >
+                {({
+                    values,
+                    errors,
+                    handleChange,
+                    validateForm,
+                }) => (
+                    <Grid item xs={3}>
+                        <Grid container spacing={2}>
                             {
                                 !genreState.newGenre && (
                                     <Grid item xs={12}>
@@ -234,7 +233,7 @@ const GenrePage = () => {
                                 )}
 
                                 <Button
-                                    sx={{ marginRight: '10px' }}
+                                    sx={{ marginLeft: '10px' }}
                                     variant="contained"
                                     color="secondary"
                                     onClick={() => {
@@ -245,10 +244,10 @@ const GenrePage = () => {
                                 </Button>
                             </Grid>
                         </Grid>
-                    )}
-                </Formik>
-            </Grid>
-        </Grid>
+                    </Grid>
+                )}
+            </Formik>
+        </>
     );
 };
 

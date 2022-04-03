@@ -80,34 +80,34 @@ const UpdatePassword = () => {
     };
 
     return (
-        <Grid container item xs={12}>
-            <Grid item xs={12}>
+        <>
+            <Grid container item xs={12}>
                 <PageHeading headingText="Update Password" />
             </Grid>
-            <Grid item xs={12}>
-                <Formik
-                    initialValues={updatePasswordState.changePasswordInfo}
-                    onSubmit={() => { }}
-                    validationSchema={
-                        yup.object().shape({
-                            currentPassword: yup.string()
-                                .required('You must enter your current password'),
-                            newPassword: yup.string()
-                                .required('You must enter a new password')
-                                .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Password must be at least 6 characters long and contain one number and uppercase character.'),
-                            newPasswordConfirmation: yup.string()
-                                .oneOf([yup.ref('newPassword')], 'Confirm password must matched new password')
-                                .required('You must enter your new password again'),
-                        })
-                    }
-                >
-                    {({
-                        values,
-                        errors,
-                        handleChange,
-                        validateForm,
-                    }) => (
-                        <Grid container item xs={12}>
+            <Formik
+                initialValues={updatePasswordState.changePasswordInfo}
+                onSubmit={() => { }}
+                validationSchema={
+                    yup.object().shape({
+                        currentPassword: yup.string()
+                            .required('You must enter your current password'),
+                        newPassword: yup.string()
+                            .required('You must enter a new password')
+                            .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Password must be at least 6 characters long and contain one number and uppercase character.'),
+                        newPasswordConfirmation: yup.string()
+                            .oneOf([yup.ref('newPassword')], 'Confirm password must matched new password')
+                            .required('You must enter your new password again'),
+                    })
+                }
+            >
+                {({
+                    values,
+                    errors,
+                    handleChange,
+                    validateForm,
+                }) => (
+                    <Grid item xs={12}>
+                        <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <InputTextField
                                     label="Current Password"
@@ -159,10 +159,10 @@ const UpdatePassword = () => {
                                 </Button>
                             </Grid>
                         </Grid>
-                    )}
-                </Formik>
-            </Grid>
-        </Grid>
+                    </Grid>
+                )}
+            </Formik>
+        </>
     );
 };
 

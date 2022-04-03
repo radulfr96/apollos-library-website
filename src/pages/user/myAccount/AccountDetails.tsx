@@ -116,8 +116,8 @@ const MyDetails = () => {
         return (<CircularProgress />);
     }
     return (
-        <Grid container item xs={12}>
-            <Grid item xs={12}>
+        <>
+            <Grid container item xs={12}>
                 <PageHeading headingText="My Details" />
             </Grid>
             <Formik
@@ -136,11 +136,13 @@ const MyDetails = () => {
                     handleChange,
                     validateForm,
                 }) => (
-                    <Grid item xs={12}>
-                        <Grid item xs={12} sx={{ marginBottom: '15px' }}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
                             <ReadOnlyLabel
                                 text="Email"
                             />
+                        </Grid>
+                        <Grid item xs={12}>
                             <ReadOnlyText text={context.userInfo?.email} />
                         </Grid>
                         <Grid item xs={12}>
@@ -175,7 +177,7 @@ const MyDetails = () => {
                     </Grid>
                 )}
             </Formik>
-        </Grid>
+        </>
     );
 };
 
