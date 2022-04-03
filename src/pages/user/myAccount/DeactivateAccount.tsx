@@ -83,35 +83,39 @@ const DeactivateAccount = () => {
     };
 
     return (
-        <Grid container item xs={12}>
-            <Grid item xs={12}>
-                <PageHeading headingText="Deactivate AccountY" />
-            </Grid>
-            <Grid item xs={12}>
-                <Button
-                    onClick={() => {
-                        deactivateUser();
-                    }}
-                    variant="contained"
-                    color="primary"
-                    sx={{
-                        marginRight: '10px',
-                        float: 'right',
-                    }}
-                >
-                    Deactivate Account
-                </Button>
-                <Button
-                    onClick={() => {
-                        deleteUser();
-                    }}
-                    sx={{
-                        marginRight: '10px',
-                        float: 'right',
-                    }}
-                >
-                    Delete Account
-                </Button>
+        <Grid item xs={12}>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <PageHeading headingText="Deactivate AccountY" />
+                </Grid>
+                <Grid item xs={12}>
+                    <Button
+                        onClick={() => {
+                            deactivateUser();
+                        }}
+                        variant="contained"
+                        color="primary"
+                        sx={{
+                            marginRight: '10px',
+                            float: 'right',
+                        }}
+                    >
+                        Deactivate Account
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            deleteUser();
+                        }}
+                        variant="contained"
+                        color="secondary"
+                        sx={{
+                            marginRight: '10px',
+                            float: 'right',
+                        }}
+                    >
+                        Delete Account
+                    </Button>
+                </Grid>
             </Grid>
         </Grid>
     );

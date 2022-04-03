@@ -177,26 +177,25 @@ const PublisherPage = () => {
                     )
                 }
             </Grid>
-            <Grid item xs={12}>
-                <Formik
-                    initialValues={publisherState.publisher}
-                    onSubmit={() => { }}
-                    validationSchema={
-                        yup.object().shape({
-                            name: yup.string()
-                                .required('A publisher must have a name'),
-                        })
-                    }
-                >
-                    {({
-                        values,
-                        errors,
-                        handleChange,
-                        setFieldValue,
-                        validateForm,
-                    }) => (
-                        <Grid container item xs={12}>
-
+            <Formik
+                initialValues={publisherState.publisher}
+                onSubmit={() => { }}
+                validationSchema={
+                    yup.object().shape({
+                        name: yup.string()
+                            .required('A publisher must have a name'),
+                    })
+                }
+            >
+                {({
+                    values,
+                    errors,
+                    handleChange,
+                    setFieldValue,
+                    validateForm,
+                }) => (
+                    <Grid item xs={12}>
+                        <Grid container spacing={2}>
                             {
                                 !publisherState.newPublisher && (
                                     <Grid item xs={12}>
@@ -328,7 +327,7 @@ const PublisherPage = () => {
                                 )}
 
                                 <Button
-                                    sx={{ marginRight: '10px' }}
+                                    sx={{ marginLeft: '10px' }}
                                     variant="contained"
                                     color="secondary"
                                     onClick={() => {
@@ -339,9 +338,9 @@ const PublisherPage = () => {
                                 </Button>
                             </Grid>
                         </Grid>
-                    )}
-                </Formik>
-            </Grid>
+                    </Grid>
+                )}
+            </Formik>
         </Grid>
     );
 };
