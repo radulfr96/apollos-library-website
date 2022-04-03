@@ -16,7 +16,7 @@ interface HeadCell {
 
 const headCells: HeadCell[] = [
     { id: 'bookId', label: 'Book ID' },
-    { id: 'ISBN', label: 'ISBN' },
+    { id: 'isbn', label: 'ISBN' },
     { id: 'eISBN', label: 'eISBN' },
     { id: 'title', label: 'Title' },
     { id: 'formatType', label: 'Format Type' },
@@ -68,7 +68,7 @@ export const Row = (props: RowProps) => {
             }}
         >
             <TableCell>{book.bookId}</TableCell>
-            <TableCell>{book.ISBN}</TableCell>
+            <TableCell>{book.isbn}</TableCell>
             <TableCell>{book.eISBN}</TableCell>
             <TableCell>{book.title}</TableCell>
             <TableCell>{book.formatType}</TableCell>

@@ -1,6 +1,6 @@
 interface BookListItem {
     bookId: number;
-    ISBN: string;
+    isbn: string;
     eISBN: string;
     title: string;
     formatType: string;
