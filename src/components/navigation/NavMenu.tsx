@@ -3,7 +3,9 @@ import {
     AppBar, Toolbar, Typography, IconButton, Box, MenuItem, Menu,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { Book, Business, Person } from '@mui/icons-material';
+import {
+    Book, Business, Person, CollectionsBookmark,
+} from '@mui/icons-material';
 import AdminMenu from './AdminMenu';
 import { AppContext } from '../../Context';
 import userManager from '../../util/userManager';
@@ -111,6 +113,24 @@ const NavMenu = () => {
                             to="/books"
                         >
                             <Book sx={{
+                                color: '#FFFFFF',
+                            }}
+                            />
+                        </Link>
+                    </IconButton>
+                    <IconButton
+                        aria-label="Series"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                    >
+                        <Link
+                            style={{
+                                color: '#000000',
+                                textDecoration: 'none',
+                            }}
+                            to="/series"
+                        >
+                            <CollectionsBookmark sx={{
                                 color: '#FFFFFF',
                             }}
                             />

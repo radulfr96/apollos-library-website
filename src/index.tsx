@@ -25,6 +25,7 @@ import AppContextProvider from './Context';
 import AuthorsPage from './pages/authors/authors';
 import BooksPage from './pages/books/books';
 import BookPage from './pages/books/book';
+import SeriesPage from './pages/series/series';
 // Create browser history to use in the Redux store
 
 // Get the application-wide store instance, prepopulating
@@ -93,6 +94,9 @@ ReactDOM.render(
                                         </Route>
                                         <Route path="/book/:id">
                                             <BookPage />
+                                        </Route>
+                                        <Route path="/series">
+                                            <SeriesPage />
                                         </Route>
                                     </Switch>
                                 </Layout>
