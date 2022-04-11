@@ -128,7 +128,7 @@ const NavMenu = () => {
                                 color: '#000000',
                                 textDecoration: 'none',
                             }}
-                            to="/series"
+                            to="/serieslist"
                         >
                             <CollectionsBookmark sx={{
                                 color: '#FFFFFF',
