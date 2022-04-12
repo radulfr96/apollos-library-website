@@ -99,7 +99,7 @@ ReactDOM.render(
                                         <Route path="/serieslist">
                                             <SeriesListPage />
                                         </Route>
-                                        <Route path="/series">
+                                        <Route path="/addseries">
                                             <SeriesPage />
                                         </Route>
                                         <Route path="/series/:id">

@@ -1,18 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, CircularProgress } from '@mui/material';
-import { useParams } from 'react-router';
-import { useSnackbar } from 'notistack';
-import * as yup from 'yup';
-import { Grid } from '@material-ui/core';
 import { Formik } from 'formik';
+import * as yup from 'yup';
+import {
+    Button, CircularProgress, Grid,
+} from '@mui/material';
 import { push } from 'connected-react-router';
 import Axios from 'axios';
+import { useParams } from 'react-router';
 import { useStore } from 'react-redux';
+import { useSnackbar } from 'notistack';
 import { Series } from '../../interfaces/series';
-import ConfigHelper from '../../config/configHelper';
-import { AppContext } from '../../Context';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
+import ConfigHelper from '../../config/configHelper';
+import { AppContext } from '../../Context';
 
 interface SeriesParams {
     id?: string;
@@ -201,6 +202,9 @@ const SeriesPage = () => {
                                     error={!!(errors.name)}
                                     errorMessage={errors.name}
                                 />
+                            </Grid>
+                            <Grid item xs={12}>
+
                             </Grid>
                             <Grid item xs={12} style={{ paddingTop: '10px' }}>
                                 {!seriesState.newSeries && (
