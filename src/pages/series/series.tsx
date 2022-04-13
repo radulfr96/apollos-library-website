@@ -14,6 +14,7 @@ import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
 import ConfigHelper from '../../config/configHelper';
 import { AppContext } from '../../Context';
+import OrderableList from './OrderableList';
 
 interface SeriesParams {
     id?: string;
@@ -29,7 +30,7 @@ const SeriesPage = () => {
         series: {
             name: '',
             seriesId: 0,
-            books: new Map<number, number>(),
+            items: [],
         },
         newSeries: false,
     });
@@ -171,81 +172,85 @@ const SeriesPage = () => {
                     handleChange,
                     validateForm,
                 }) => (
-                    <Grid item xs={3}>
+                    <Grid item xs={12}>
                         <Grid container spacing={2}>
-                            {
-                                !seriesState.newSeries && (
+                            <Grid item xs={3}>
+                                <Grid container spacing={2}>
+                                    {
+                                        !seriesState.newSeries && (
+                                            <Grid item xs={12}>
+                                                <InputTextField
+                                                    label="Series Id"
+                                                    required
+                                                    type="text"
+                                                    keyName="seriesId"
+                                                    value={values.seriesId}
+                                                    onChange={handleChange}
+                                                    error={!!(errors.seriesId)}
+                                                    errorMessage={errors.seriesId}
+                                                    readonly
+                                                />
+                                            </Grid>
+                                        )
+                                    }
+
                                     <Grid item xs={12}>
                                         <InputTextField
-                                            label="Series Id"
+                                            label="Name"
                                             required
                                             type="text"
-                                            keyName="seriesId"
-                                            value={values.seriesId}
+                                            keyName="name"
+                                            value={values.name}
                                             onChange={handleChange}
-                                            error={!!(errors.seriesId)}
-                                            errorMessage={errors.seriesId}
-                                            readonly
+                                            error={!!(errors.name)}
+                                            errorMessage={errors.name}
                                         />
                                     </Grid>
-                                )
-                            }
+                                    <Grid item xs={12} style={{ paddingTop: '10px' }}>
+                                        {!seriesState.newSeries && (
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    if (errors !== null) {
+                                                        updateSeries(values, validateForm);
+                                                    }
+                                                }}
+                                            >
+                                                Update
+                                            </Button>
+                                        )}
+                                        {seriesState.newSeries && (
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    if (errors !== null) {
+                                                        addSeries(values, validateForm);
+                                                    }
+                                                }}
+                                            >
+                                                Add
+                                            </Button>
+                                        )}
 
-                            <Grid item xs={12}>
-                                <InputTextField
-                                    label="Name"
-                                    required
-                                    type="text"
-                                    keyName="name"
-                                    value={values.name}
-                                    onChange={handleChange}
-                                    error={!!(errors.name)}
-                                    errorMessage={errors.name}
-                                />
+                                        <Button
+                                            sx={{ marginLeft: '10px' }}
+                                            variant="contained"
+                                            color="secondary"
+                                            onClick={() => {
+                                                store.dispatch(push('/serieslist'));
+                                            }}
+                                        >
+                                            Cancel
+                                        </Button>
+                                    </Grid>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12}>
-
-                            </Grid>
-                            <Grid item xs={12} style={{ paddingTop: '10px' }}>
-                                {!seriesState.newSeries && (
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (errors !== null) {
-                                                updateSeries(values, validateForm);
-                                            }
-                                        }}
-                                    >
-                                        Update
-                                    </Button>
-                                )}
-                                {seriesState.newSeries && (
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (errors !== null) {
-                                                addSeries(values, validateForm);
-                                            }
-                                        }}
-                                    >
-                                        Add
-                                    </Button>
-                                )}
-
-                                <Button
-                                    sx={{ marginLeft: '10px' }}
-                                    variant="contained"
-                                    color="secondary"
-                                    onClick={() => {
-                                        store.dispatch(push('/serieslist'));
-                                    }}
-                                >
-                                    Cancel
-                                </Button>
+                            <Grid item xs={6}>
+                                <OrderableList onDragEnd={() => { }} items={seriesState.series.items} />
                             </Grid>
                         </Grid>
                     </Grid>

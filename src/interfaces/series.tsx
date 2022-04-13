@@ -1,7 +1,9 @@
+import SeriesBookItem from './seriesBookItem';
+
 export interface Series {
     seriesId: number;
     name: string;
-    books: Map<number, number>;
+    items: Array<SeriesBookItem>;
 }
 
 export default Series;
