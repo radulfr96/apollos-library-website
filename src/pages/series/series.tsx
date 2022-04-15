@@ -14,7 +14,6 @@ import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
 import ConfigHelper from '../../config/configHelper';
 import { AppContext } from '../../Context';
-import OrderableList from './OrderableList';
 
 interface SeriesParams {
     id?: string;
@@ -45,7 +44,6 @@ const SeriesPage = () => {
         if (context.getToken() === undefined) {
             return;
         }
-
         if (params.id !== undefined && params.id !== null) {
             Axios.get(`${configHelper.apiUrl}/api/series/${params.id}`, {
                 headers: {
@@ -98,7 +96,7 @@ const SeriesPage = () => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');
-                                store.dispatch(push('/series'));
+                                store.dispatch(push('/serieslist'));
                             }
                         })
                         .catch((error) => {
@@ -248,9 +246,6 @@ const SeriesPage = () => {
                                         </Button>
                                     </Grid>
                                 </Grid>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <OrderableList onDragEnd={() => { }} items={seriesState.series.items} />
                             </Grid>
                         </Grid>
                     </Grid>

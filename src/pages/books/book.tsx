@@ -30,6 +30,7 @@ import Typedown from '../../components/shared/Typedown';
 import TypedownOption from '../../interfaces/typedownOption';
 import Dropdown from '../../components/shared/Dropdown';
 import DropdownOption from '../../interfaces/dropdownOption';
+import { SeriesListItem } from '../../interfaces/seriesListItem';
 
 interface BookParams {
     id: string;
@@ -42,6 +43,7 @@ interface BookState {
     formTypes: FormType[];
     fictionTypes: FictionType[];
     genres: Genre[];
+    series: SeriesListItem[];
     book: Book;
     newBook: boolean;
     changingImage: boolean;
@@ -55,6 +57,7 @@ const BookPage = () => {
         formTypes: [],
         fictionTypes: [],
         genres: [],
+        series: [],
         book: {
             bookId: 0,
             isbn: '',
@@ -67,6 +70,7 @@ const BookPage = () => {
             formTypeId: 1,
             genres: [],
             authors: [],
+            series: [],
         },
         newBook: false,
         changingImage: false,
@@ -117,6 +121,12 @@ const BookPage = () => {
             },
         }));
 
+        requests.push(Axios.get(`${configHelper.apiUrl}/api/series`, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        }));
+
         Promise.allSettled(requests).then((responses: Array<any>) => {
             if (id !== undefined && id !== null) {
                 Axios.get(`${configHelper.apiUrl}/api/book/${id}`, {
@@ -133,6 +143,7 @@ const BookPage = () => {
                             authors: responses[1].value.data.authors,
                             publishers: responses[2].value.data.publishers,
                             genres: responses[3].value.data.genres,
+                            series: responses[4].value.data.series,
                             newBook: false,
                             book: booksResponse.data as Book,
                         });
@@ -499,6 +510,38 @@ const BookPage = () => {
                                             }
                                             // error={bookState.book.formTypeID === 0}
                                             errorMessage="A book must have a form type."
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <ChipSelector
+                                            options={
+                                                bookState.series.map<ChipOption>((s: SeriesListItem) => ({
+                                                    value: s.seriesId,
+                                                    name: s.name,
+                                                } as ChipOption))
+                                            }
+                                            selectedOptions={bookState.book.series.map((seriesId) => {
+                                                const series = bookState.series.find((s) => s.seriesId === seriesId);
+                                                return {
+                                                    value: series?.seriesId,
+                                                    name: series?.name,
+                                                } as ChipOption;
+                                            })}
+                                            updateSelection={(seriesSelected: ChipOption) => {
+                                                // eslint-disable-next-line no-param-reassign
+                                                values.series.push(seriesSelected.value as number);
+                                                setBookState({
+                                                    ...bookState,
+                                                    book: {
+                                                        ...bookState.book,
+                                                        series: [...bookState.book.series, seriesSelected.value as number],
+                                                    },
+                                                });
+                                            }}
+                                            id="series"
+                                            label="Series"
+                                            labelId="seriesSelectLabel"
+                                            textInputId="selectMultipleSeries"
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
