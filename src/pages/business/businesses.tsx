@@ -7,19 +7,19 @@ import Axios from 'axios';
 import { push } from 'connected-react-router';
 import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { PublisherListItem } from '../../interfaces/publisherListItem';
+import { BusinessListItem } from '../../interfaces/businessListItem';
 import PageHeading from '../../components/shared/PageHeading';
-import PublishersTable from '../../components/PublishersTable';
+import BusinesssTable from '../../components/BusinessTable';
 import { AppContext } from '../../Context';
 import ConfigHelper from '../../config/configHelper';
 
-interface PublishersState {
-    publishers: Array<PublisherListItem>;
+interface BusinesssState {
+    businesss: Array<BusinessListItem>;
 }
 
-const Publishers = () => {
-    const [publisherState, setPublisherState] = useState<PublishersState>({
-        publishers: [],
+const Businesss = () => {
+    const [businessState, setBusinessState] = useState<BusinesssState>({
+        businesss: [],
     });
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
@@ -41,22 +41,22 @@ const Publishers = () => {
     };
 
     const getPubishers = () => new Promise<void>((resovle) => {
-        Axios.get(`${configHelper.apiUrl}/api/publisher`, {
+        Axios.get(`${configHelper.apiUrl}/api/business`, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },
         })
             .then((response) => {
-                setPublisherState({
-                    ...publisherState,
-                    publishers: response.data.publishers,
+                setBusinessState({
+                    ...businessState,
+                    businesss: response.data.businesss,
                 });
                 resovle();
             });
     });
 
-    const deletePublisher = (id: number): void => {
-        Axios.delete(`${configHelper.apiUrl}/api/publisher/${id}`, {
+    const deleteBusiness = (id: number): void => {
+        Axios.delete(`${configHelper.apiUrl}/api/business/${id}`, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },
@@ -68,7 +68,7 @@ const Publishers = () => {
                 }
             })
             .catch(() => {
-                renderErrorSnackbar('Unable to delete publisher please contact admin');
+                renderErrorSnackbar('Unable to delete business please contact admin');
             });
     };
 
@@ -88,14 +88,14 @@ const Publishers = () => {
     return (
         <Grid item xs={5} container justifyContent="center">
             <Grid item xs={12}>
-                <PageHeading headingText="Publishers" />
+                <PageHeading headingText="Businesses" />
             </Grid>
             {
                 context.isAdmin() && (
                     <Grid item xs={12}>
-                        <PublishersTable
-                            publishers={publisherState.publishers}
-                            deletePublisher={deletePublisher}
+                        <BusinesssTable
+                            businesss={businessState.businesss}
+                            deleteBusiness={deleteBusiness}
                         />
                     </Grid>
                 )
@@ -110,7 +110,7 @@ const Publishers = () => {
                         float: 'right',
                     }}
                     onClick={() => {
-                        store.dispatch(push('/addpublisher'));
+                        store.dispatch(push('/addbusiness'));
                     }}
                 >
                     <Add />
@@ -120,4 +120,4 @@ const Publishers = () => {
     );
 };
 
-export default Publishers;
+export default Businesss;

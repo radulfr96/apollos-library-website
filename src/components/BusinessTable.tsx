@@ -6,22 +6,22 @@ import {
 import { push } from 'connected-react-router';
 import { useStore } from 'react-redux';
 import { ChevronRight, Delete } from '@mui/icons-material';
-import { PublisherTableItem } from '../interfaces/publisherTableItem';
+import { BusinessTableItem } from '../interfaces/businessTableItem';
 import TableHelper, { Order } from '../util/TableFunctions';
 
 interface HeadCell {
-    id: keyof PublisherTableItem;
+    id: keyof BusinessTableItem;
     label: string;
 }
 
 const headCells: HeadCell[] = [
-    { id: 'publisherId', label: 'Publisher ID' },
+    { id: 'businessId', label: 'Business ID' },
     { id: 'name', label: 'Name' },
     { id: 'country', label: 'Country' },
 ];
 
 interface EnhancedTableProps {
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof PublisherTableItem) => void;
+    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof BusinessTableItem) => void;
     order: Order;
     orderBy: string;
 }
@@ -31,7 +31,7 @@ const EnhancedTableHead = (props: EnhancedTableProps) => {
         onRequestSort, order, orderBy,
     } = props;
     const createSortHandler = (
-        property: keyof PublisherTableItem,
+        property: keyof BusinessTableItem,
     ) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
@@ -76,18 +76,18 @@ const EnhancedTableHead = (props: EnhancedTableProps) => {
 };
 
 interface RowProps {
-    publisher: PublisherTableItem;
-    deletePublisher: (publisherId: number) => void;
+    business: BusinessTableItem;
+    deleteBusiness: (businessId: number) => void;
 }
 
 const NavCell = (props: RowProps) => {
     const store = useStore();
-    const { deletePublisher, publisher } = props;
+    const { deleteBusiness, business } = props;
 
     return (
         <TableCell>
             <IconButton onClick={() => {
-                deletePublisher(publisher.publisherId);
+                deleteBusiness(business.businessId);
             }}
             >
                 <Delete sx={{
@@ -96,7 +96,7 @@ const NavCell = (props: RowProps) => {
                 />
             </IconButton>
             <IconButton onClick={() => {
-                store.dispatch(push(`publisher/${publisher.publisherId}`));
+                store.dispatch(push(`business/${business.businessId}`));
             }}
             >
                 <ChevronRight />
@@ -106,36 +106,36 @@ const NavCell = (props: RowProps) => {
 };
 
 export const Row = (props: RowProps) => {
-    const { publisher, deletePublisher } = props;
+    const { business, deleteBusiness } = props;
     return (
         <TableRow
-            key={publisher.publisherId}
+            key={business.businessId}
             hover
             sx={{
                 transition: 'all 0.4s',
             }}
         >
-            <TableCell>{publisher.publisherId}</TableCell>
-            <TableCell>{publisher.name}</TableCell>
-            <TableCell>{publisher.country}</TableCell>
-            <NavCell publisher={publisher} deletePublisher={deletePublisher} />
+            <TableCell>{business.businessId}</TableCell>
+            <TableCell>{business.name}</TableCell>
+            <TableCell>{business.country}</TableCell>
+            <NavCell business={business} deleteBusiness={deleteBusiness} />
         </TableRow>
     );
 };
 
-interface PublishersTableProps {
-    publishers: Array<PublisherTableItem>;
-    deletePublisher: (publisherId: number) => void;
+interface BusinesssTableProps {
+    businesss: Array<BusinessTableItem>;
+    deleteBusiness: (businessId: number) => void;
 }
 
-const PublishersTable = (props: PublishersTableProps) => {
+const BusinesssTable = (props: BusinesssTableProps) => {
     const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof PublisherTableItem>('publisherId');
-    const { publishers, deletePublisher } = props;
+    const [orderBy, setOrderBy] = React.useState<keyof BusinessTableItem>('businessId');
+    const { businesss, deleteBusiness } = props;
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
-        property: keyof PublisherTableItem,
+        property: keyof BusinessTableItem,
     ) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -143,9 +143,9 @@ const PublishersTable = (props: PublishersTableProps) => {
     };
 
     let tableContent = null;
-    tableContent = TableHelper.stableSort(publishers, TableHelper.getSorting(order, orderBy))
-        .map((row: PublisherTableItem) => (
-            <Row publisher={row} deletePublisher={deletePublisher} />
+    tableContent = TableHelper.stableSort(businesss, TableHelper.getSorting(order, orderBy))
+        .map((row: BusinessTableItem) => (
+            <Row business={row} deleteBusiness={deleteBusiness} />
         ));
 
     return (
@@ -168,4 +168,4 @@ const PublishersTable = (props: PublishersTableProps) => {
     );
 };
 
-export default PublishersTable;
+export default BusinesssTable;

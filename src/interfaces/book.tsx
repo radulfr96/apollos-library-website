@@ -8,7 +8,7 @@ interface Book {
     publicationFormatId: number;
     fictionTypeId: number;
     formTypeId: number;
-    publisherId?: number;
+    businessId?: number;
     coverImage?: string;
     series: number[];
     genres: number[];

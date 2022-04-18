@@ -1,6 +1,6 @@
 /* eslint-disable semi */
-export interface Publisher {
-    publisherId: number;
+export interface Business {
+    businessId: number;
     name: string;
     streetAddress: string;
     city: string;

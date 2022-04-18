@@ -13,7 +13,7 @@ import { DropzoneAreaBase, FileObject } from 'mui-file-dropzone';
 import { push } from 'connected-react-router';
 import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { PublisherListItem } from '../../interfaces/publisherListItem';
+import { BusinessListItem } from '../../interfaces/businessListItem';
 import { AuthorListItem } from '../../interfaces/authorListItem';
 import { Genre } from '../../interfaces/genre';
 import PublicationFormat from '../../interfaces/publicationFormat';
@@ -37,7 +37,7 @@ interface BookParams {
 }
 
 interface BookState {
-    publishers: PublisherListItem[];
+    businesss: BusinessListItem[];
     authors: AuthorListItem[];
     publicationFormats: PublicationFormat[];
     formTypes: FormType[];
@@ -51,7 +51,7 @@ interface BookState {
 
 const BookPage = () => {
     const [bookState, setBookState] = useState<BookState>({
-        publishers: [],
+        businesss: [],
         authors: [],
         publicationFormats: [],
         formTypes: [],
@@ -65,7 +65,7 @@ const BookPage = () => {
             title: '',
             subtitle: '',
             publicationFormatId: 1,
-            publisherId: undefined,
+            businessId: undefined,
             fictionTypeId: 1,
             formTypeId: 1,
             genres: [],
@@ -109,7 +109,7 @@ const BookPage = () => {
             },
         }));
 
-        requests.push(Axios.get(`${configHelper.apiUrl}/api/publisher`, {
+        requests.push(Axios.get(`${configHelper.apiUrl}/api/business`, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },
@@ -141,7 +141,7 @@ const BookPage = () => {
                             formTypes: responses[0].value.data.formTypes,
                             fictionTypes: responses[0].value.data.fictionTypes,
                             authors: responses[1].value.data.authors,
-                            publishers: responses[2].value.data.publishers,
+                            businesss: responses[2].value.data.businesss,
                             genres: responses[3].value.data.genres,
                             series: responses[4].value.data.series,
                             newBook: false,
@@ -156,7 +156,7 @@ const BookPage = () => {
                     formTypes: responses[0].value.data.formTypes,
                     fictionTypes: responses[0].value.data.fictionTypes,
                     authors: responses[1].value.data.authors,
-                    publishers: responses[2].value.data.publishers,
+                    businesss: responses[2].value.data.businesss,
                     genres: responses[3].value.data.genres,
                     newBook: true,
                 });
@@ -398,23 +398,23 @@ const BookPage = () => {
                                     </Grid>
                                     <Grid item xs={6}>
                                         <Typedown
-                                            label="Publisher"
-                                            id="publisherId"
+                                            label="Business"
+                                            id="businessId"
                                             options={
-                                                bookState.publishers.map<TypedownOption>((publisher) => ({
-                                                    value: publisher.publisherId,
-                                                    name: `${publisher.name} (${publisher.country})`,
+                                                bookState.businesss.map<TypedownOption>((business) => ({
+                                                    value: business.businessId,
+                                                    name: `${business.name} (${business.country})`,
                                                 } as TypedownOption))
                                             }
-                                            value={values.publisherId?.toString()}
+                                            value={values.businessId?.toString()}
                                             updateSelection={(selected?: number | string) => {
                                                 if (selected !== undefined) {
-                                                    setFieldValue('publisherId', selected);
+                                                    setFieldValue('businessId', selected);
                                                     setBookState({
                                                         ...bookState,
                                                         book: {
                                                             ...bookState.book,
-                                                            publisherId: selected as number,
+                                                            businessId: selected as number,
                                                         },
                                                     });
                                                 }

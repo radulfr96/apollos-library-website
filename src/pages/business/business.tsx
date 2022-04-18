@@ -9,7 +9,7 @@ import { push } from 'connected-react-router';
 import Axios from 'axios';
 import { useSnackbar } from 'notistack';
 import { useStore } from 'react-redux';
-import { Publisher } from '../../interfaces/publisher';
+import { Business } from '../../interfaces/business';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
 import CountryTypedown from '../../components/shared/CountryTypedown';
@@ -17,20 +17,20 @@ import Country from '../../interfaces/country';
 import { AppContext } from '../../Context';
 import ConfigHelper from '../../config/configHelper';
 
-interface PublisherParams {
+interface BusinessParams {
     id?: string;
 }
 
-interface PublisherState {
-    publisher: Publisher;
+interface BusinessState {
+    business: Business;
     countries: Array<Country>;
-    newPublisher: boolean;
+    newBusiness: boolean;
 }
 
-const PublisherPage = () => {
-    const [publisherState, setPublisherState] = useState<PublisherState>({
-        publisher: {
-            publisherId: 0,
+const BusinessPage = () => {
+    const [businessState, setBusinessState] = useState<BusinessState>({
+        business: {
+            businessId: 0,
             name: '',
             streetAddress: '',
             city: '',
@@ -40,9 +40,9 @@ const PublisherPage = () => {
             website: '',
         },
         countries: [],
-        newPublisher: false,
+        newBusiness: false,
     });
-    const params = useParams<PublisherParams>();
+    const params = useParams<BusinessParams>();
     const { enqueueSnackbar } = useSnackbar();
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
@@ -79,36 +79,36 @@ const PublisherPage = () => {
         })
             .then((response) => {
                 if (params.id !== undefined && params.id !== null) {
-                    Axios.get(`${configHelper.apiUrl}/api/publisher/${params.id}`, {
+                    Axios.get(`${configHelper.apiUrl}/api/business/${params.id}`, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },
                     })
                         .then((pubResponse) => {
-                            setPublisherState({
-                                ...publisherState,
-                                publisher: pubResponse.data,
+                            setBusinessState({
+                                ...businessState,
+                                business: pubResponse.data,
                                 countries: response.data,
-                                newPublisher: false,
+                                newBusiness: false,
                             });
                             setIsLoading(false);
                         });
                 } else {
-                    setPublisherState({
-                        ...publisherState,
+                    setBusinessState({
+                        ...businessState,
                         countries: response.data,
-                        newPublisher: true,
+                        newBusiness: true,
                     });
                     setIsLoading(false);
                 }
             });
     }, [context]);
 
-    const updatePublisher = (publisher: Publisher, validateForm: any) => {
+    const updateBusiness = (business: Business, validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.patch(`${configHelper.apiUrl}/api/publisher/`, publisher, {
+                    Axios.patch(`${configHelper.apiUrl}/api/business/`, business, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },
@@ -116,25 +116,25 @@ const PublisherPage = () => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');
-                                store.dispatch(push('/publishers'));
+                                store.dispatch(push('/businesss'));
                             }
                         })
                         .catch((error) => {
                             if (error.response.status === 400) {
-                                renderWarningSnackbar('Unable to update publisher invalid input');
+                                renderWarningSnackbar('Unable to update business invalid input');
                             } else {
-                                renderErrorSnackbar('Unable to update publisher please contact admin');
+                                renderErrorSnackbar('Unable to update business please contact admin');
                             }
                         });
                 }
             });
     };
 
-    const addPublisher = (publisher: Publisher, validateForm: any) => {
+    const addBusiness = (business: Business, validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.post(`${configHelper.apiUrl}/api/publisher/`, publisher, {
+                    Axios.post(`${configHelper.apiUrl}/api/business/`, business, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },
@@ -142,21 +142,21 @@ const PublisherPage = () => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Add successful');
-                                store.dispatch(push('/publishers'));
+                                store.dispatch(push('/businesss'));
                             }
                         })
                         .catch((error) => {
                             if (error.response.status === 400) {
-                                renderWarningSnackbar('Unable to add publisher, invalid input');
+                                renderWarningSnackbar('Unable to add business, invalid input');
                             } else {
-                                renderErrorSnackbar('Unable to add publisher please contact admin');
+                                renderErrorSnackbar('Unable to add business please contact admin');
                             }
                         });
                 }
             });
     };
 
-    if (!publisherState.newPublisher && publisherState.publisher.publisherId < 1) {
+    if (!businessState.newBusiness && businessState.business.businessId < 1) {
         return (<CircularProgress />);
     }
 
@@ -167,23 +167,23 @@ const PublisherPage = () => {
         <Grid item xs={6} container justifyContent="center">
             <Grid item xs={12}>
                 {
-                    !publisherState.newPublisher && (
-                        <PageHeading headingText="Publisher Details" />
+                    !businessState.newBusiness && (
+                        <PageHeading headingText="Business Details" />
                     )
                 }
                 {
-                    publisherState.newPublisher && (
-                        <PageHeading headingText="New Publisher" />
+                    businessState.newBusiness && (
+                        <PageHeading headingText="New Business" />
                     )
                 }
             </Grid>
             <Formik
-                initialValues={publisherState.publisher}
+                initialValues={businessState.business}
                 onSubmit={() => { }}
                 validationSchema={
                     yup.object().shape({
                         name: yup.string()
-                            .required('A publisher must have a name'),
+                            .required('A business must have a name'),
                     })
                 }
             >
@@ -197,17 +197,17 @@ const PublisherPage = () => {
                     <Grid item xs={12}>
                         <Grid container spacing={2}>
                             {
-                                !publisherState.newPublisher && (
+                                !businessState.newBusiness && (
                                     <Grid item xs={12}>
                                         <InputTextField
-                                            label="Publisher Id"
+                                            label="Business Id"
                                             required
                                             type="text"
-                                            keyName="publisherId"
-                                            value={values.publisherId}
+                                            keyName="businessId"
+                                            value={values.businessId}
                                             onChange={handleChange}
-                                            error={!!(errors.publisherId)}
-                                            errorMessage={errors.publisherId}
+                                            error={!!(errors.businessId)}
+                                            errorMessage={errors.businessId}
                                             readonly
                                         />
                                     </Grid>
@@ -284,11 +284,11 @@ const PublisherPage = () => {
                             <Grid item xs={12}>
                                 <CountryTypedown
                                     required
-                                    countries={publisherState.countries}
+                                    countries={businessState.countries}
                                     value={values.countryID}
                                     onBlur={() => { }}
                                     onChange={(e: any) => {
-                                        setFieldValue('countryID', publisherState.countries.find((c) => c.name
+                                        setFieldValue('countryID', businessState.countries.find((c) => c.name
                                             === e.target.innerText)?.countryID);
                                     }}
                                     error={!!(errors.countryID)}
@@ -296,21 +296,21 @@ const PublisherPage = () => {
                                 />
                             </Grid>
                             <Grid item xs={12} style={{ paddingTop: '10px' }}>
-                                {!publisherState.newPublisher && (
+                                {!businessState.newBusiness && (
                                     <Button
                                         variant="contained"
                                         color="primary"
                                         onClick={(e) => {
                                             e.preventDefault();
                                             if (errors !== null) {
-                                                updatePublisher(values, validateForm);
+                                                updateBusiness(values, validateForm);
                                             }
                                         }}
                                     >
                                         Update
                                     </Button>
                                 )}
-                                {publisherState.newPublisher && (
+                                {businessState.newBusiness && (
                                     <Button
                                         sx={{ marginRight: '10px' }}
                                         variant="contained"
@@ -318,7 +318,7 @@ const PublisherPage = () => {
                                         onClick={(e) => {
                                             e.preventDefault();
                                             if (errors !== null) {
-                                                addPublisher(values, validateForm);
+                                                addBusiness(values, validateForm);
                                             }
                                         }}
                                     >
@@ -331,7 +331,7 @@ const PublisherPage = () => {
                                     variant="contained"
                                     color="secondary"
                                     onClick={() => {
-                                        store.dispatch(push('/publishers'));
+                                        store.dispatch(push('/businesss'));
                                     }}
                                 >
                                     Cancel
@@ -345,4 +345,4 @@ const PublisherPage = () => {
     );
 };
 
-export default PublisherPage;
+export default BusinessPage;

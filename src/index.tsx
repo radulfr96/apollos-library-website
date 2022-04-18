@@ -12,8 +12,8 @@ import CallbackPage from './pages/CallbackPage';
 import GenrePage from './pages/genre/Genre';
 import Genres from './pages/genre/Genres';
 import Home from './pages/Home';
-import PublisherPage from './pages/publishers/publisher';
-import Publishers from './pages/publishers/publishers';
+import BusinessPage from './pages/business/business';
+import BusinessesPage from './pages/business/businesses';
 import MyAccount from './pages/user/myAccount/MyAccount';
 import UserPage from './pages/user/User';
 import Users from './pages/user/Users';
@@ -69,14 +69,14 @@ ReactDOM.render(
                                         <Route path="/addgenre">
                                             <GenrePage />
                                         </Route>
-                                        <Route path="/publishers">
-                                            <Publishers />
+                                        <Route path="/businesses">
+                                            <BusinessesPage />
                                         </Route>
-                                        <Route path="/publisher/:id">
-                                            <PublisherPage />
+                                        <Route path="/business/:id">
+                                            <BusinessPage />
                                         </Route>
-                                        <Route path="/addpublisher">
-                                            <PublisherPage />
+                                        <Route path="/addbusiness">
+                                            <BusinessPage />
                                         </Route>
                                         <Route path="/authors">
                                             <AuthorsPage />
