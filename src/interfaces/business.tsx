@@ -1,5 +1,4 @@
-/* eslint-disable semi */
-export interface Business {
+interface Business {
     businessId: number;
     name: string;
     streetAddress: string;
@@ -8,4 +7,7 @@ export interface Business {
     state: string;
     countryID: string;
     website: string;
+    businessTypeId: number;
 }
+
+export default Business;

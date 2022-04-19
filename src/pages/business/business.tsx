@@ -9,13 +9,16 @@ import { push } from 'connected-react-router';
 import Axios from 'axios';
 import { useSnackbar } from 'notistack';
 import { useStore } from 'react-redux';
-import { Business } from '../../interfaces/business';
+import Business from '../../interfaces/business';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
 import CountryTypedown from '../../components/shared/CountryTypedown';
 import Country from '../../interfaces/country';
 import { AppContext } from '../../Context';
 import ConfigHelper from '../../config/configHelper';
+import BusinessType from '../../interfaces/businessTypes';
+import Dropdown from '../../components/shared/Dropdown';
+import DropdownOption from '../../interfaces/dropdownOption';
 
 interface BusinessParams {
     id?: string;
@@ -24,6 +27,7 @@ interface BusinessParams {
 interface BusinessState {
     business: Business;
     countries: Array<Country>;
+    businessTypes: Array<BusinessType>
     newBusiness: boolean;
 }
 
@@ -38,8 +42,10 @@ const BusinessPage = () => {
             state: '',
             countryID: '',
             website: '',
+            businessTypeId: 1,
         },
         countries: [],
+        businessTypes: [],
         newBusiness: false,
     });
     const params = useParams<BusinessParams>();
@@ -72,36 +78,47 @@ const BusinessPage = () => {
             return;
         }
 
-        Axios.get(`${configHelper.apiUrl}/api/reference/countries`, {
+        const requests = [];
+
+        requests.push(Axios.get(`${configHelper.apiUrl}/api/reference/businesstypes`, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },
-        })
-            .then((response) => {
-                if (params.id !== undefined && params.id !== null) {
-                    Axios.get(`${configHelper.apiUrl}/api/business/${params.id}`, {
-                        headers: {
-                            Authorization: `Bearer ${context.getToken()}`,
-                        },
-                    })
-                        .then((pubResponse) => {
-                            setBusinessState({
-                                ...businessState,
-                                business: pubResponse.data,
-                                countries: response.data,
-                                newBusiness: false,
-                            });
-                            setIsLoading(false);
+        }));
+
+        requests.push(Axios.get(`${configHelper.apiUrl}/api/reference/countries`, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        }));
+
+        Promise.allSettled(requests).then((responses: Array<any>) => {
+            if (params.id !== undefined && params.id !== null) {
+                Axios.get(`${configHelper.apiUrl}/api/business/${params.id}`, {
+                    headers: {
+                        Authorization: `Bearer ${context.getToken()}`,
+                    },
+                })
+                    .then((pubResponse) => {
+                        setBusinessState({
+                            ...businessState,
+                            business: pubResponse.data,
+                            businessTypes: responses[0].value.data,
+                            countries: responses[1].value.data,
+                            newBusiness: false,
                         });
-                } else {
-                    setBusinessState({
-                        ...businessState,
-                        countries: response.data,
-                        newBusiness: true,
+                        setIsLoading(false);
                     });
-                    setIsLoading(false);
-                }
-            });
+            } else {
+                setBusinessState({
+                    ...businessState,
+                    businessTypes: responses[0].value.data,
+                    countries: responses[1].value.data,
+                    newBusiness: true,
+                });
+                setIsLoading(false);
+            }
+        });
     }, [context]);
 
     const updateBusiness = (business: Business, validateForm: any) => {
@@ -116,7 +133,7 @@ const BusinessPage = () => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Update successful');
-                                store.dispatch(push('/businesss'));
+                                store.dispatch(push('/businesses'));
                             }
                         })
                         .catch((error) => {
@@ -142,7 +159,7 @@ const BusinessPage = () => {
                         .then((response) => {
                             if (response.status === 200) {
                                 renderSuccessSnackbar('Add successful');
-                                store.dispatch(push('/businesss'));
+                                store.dispatch(push('/businesses'));
                             }
                         })
                         .catch((error) => {
@@ -155,10 +172,6 @@ const BusinessPage = () => {
                 }
             });
     };
-
-    if (!businessState.newBusiness && businessState.business.businessId < 1) {
-        return (<CircularProgress />);
-    }
 
     if (isLoading) {
         return (<CircularProgress />);
@@ -224,6 +237,24 @@ const BusinessPage = () => {
                                     onChange={handleChange}
                                     error={!!(errors.name)}
                                     errorMessage={errors.name}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Dropdown
+                                    required
+                                    label="Business Type"
+                                    labelId="businessTypeLabelId"
+                                    id="businessTypeId"
+                                    keyName="businessTypeId"
+                                    value={values.businessTypeId}
+                                    onChange={handleChange}
+                                    options={
+                                        businessState.businessTypes.map<DropdownOption>((businessType: BusinessType) => ({
+                                            value: businessType.businessTypeId,
+                                            text: businessType.name,
+                                        } as DropdownOption))
+                                    }
+                                    errorMessage="A business must have a type format."
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -331,7 +362,7 @@ const BusinessPage = () => {
                                     variant="contained"
                                     color="secondary"
                                     onClick={() => {
-                                        store.dispatch(push('/businesss'));
+                                        store.dispatch(push('/businesses'));
                                     }}
                                 >
                                     Cancel

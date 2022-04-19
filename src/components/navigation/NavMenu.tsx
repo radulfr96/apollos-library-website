@@ -155,7 +155,7 @@ const NavMenu = () => {
                         </Link>
                     </IconButton>
                     <IconButton
-                        aria-label="Businesss"
+                        aria-label="Businesses"
                         aria-controls="menu-appbar"
                         aria-haspopup="true"
                     >
@@ -164,7 +164,7 @@ const NavMenu = () => {
                                 color: '#000000',
                                 textDecoration: 'none',
                             }}
-                            to="/businesss"
+                            to="/businesses"
                         >
                             <Business sx={{
                                 color: '#FFFFFF',

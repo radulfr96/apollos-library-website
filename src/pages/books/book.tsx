@@ -13,7 +13,6 @@ import { DropzoneAreaBase, FileObject } from 'mui-file-dropzone';
 import { push } from 'connected-react-router';
 import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { BusinessListItem } from '../../interfaces/businessListItem';
 import { AuthorListItem } from '../../interfaces/authorListItem';
 import { Genre } from '../../interfaces/genre';
 import PublicationFormat from '../../interfaces/publicationFormat';
@@ -31,6 +30,7 @@ import TypedownOption from '../../interfaces/typedownOption';
 import Dropdown from '../../components/shared/Dropdown';
 import DropdownOption from '../../interfaces/dropdownOption';
 import { SeriesListItem } from '../../interfaces/seriesListItem';
+import BusinessListItem from '../../interfaces/businessListItem';
 
 interface BookParams {
     id: string;

@@ -6,7 +6,7 @@ import {
 import { push } from 'connected-react-router';
 import { useStore } from 'react-redux';
 import { ChevronRight, Delete } from '@mui/icons-material';
-import { BusinessTableItem } from '../interfaces/businessTableItem';
+import BusinessTableItem from '../interfaces/businessTableItem';
 import TableHelper, { Order } from '../util/TableFunctions';
 
 interface HeadCell {
@@ -17,6 +17,7 @@ interface HeadCell {
 const headCells: HeadCell[] = [
     { id: 'businessId', label: 'Business ID' },
     { id: 'name', label: 'Name' },
+    { id: 'type', label: 'Type' },
     { id: 'country', label: 'Country' },
 ];
 
@@ -117,6 +118,7 @@ export const Row = (props: RowProps) => {
         >
             <TableCell>{business.businessId}</TableCell>
             <TableCell>{business.name}</TableCell>
+            <TableCell>{business.type}</TableCell>
             <TableCell>{business.country}</TableCell>
             <NavCell business={business} deleteBusiness={deleteBusiness} />
         </TableRow>
@@ -124,14 +126,14 @@ export const Row = (props: RowProps) => {
 };
 
 interface BusinesssTableProps {
-    businesss: Array<BusinessTableItem>;
+    businesses: Array<BusinessTableItem>;
     deleteBusiness: (businessId: number) => void;
 }
 
 const BusinesssTable = (props: BusinesssTableProps) => {
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof BusinessTableItem>('businessId');
-    const { businesss, deleteBusiness } = props;
+    const { businesses, deleteBusiness } = props;
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
@@ -143,7 +145,7 @@ const BusinesssTable = (props: BusinesssTableProps) => {
     };
 
     let tableContent = null;
-    tableContent = TableHelper.stableSort(businesss, TableHelper.getSorting(order, orderBy))
+    tableContent = TableHelper.stableSort(businesses, TableHelper.getSorting(order, orderBy))
         .map((row: BusinessTableItem) => (
             <Row business={row} deleteBusiness={deleteBusiness} />
         ));

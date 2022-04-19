@@ -7,19 +7,19 @@ import Axios from 'axios';
 import { push } from 'connected-react-router';
 import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { BusinessListItem } from '../../interfaces/businessListItem';
 import PageHeading from '../../components/shared/PageHeading';
 import BusinesssTable from '../../components/BusinessTable';
 import { AppContext } from '../../Context';
 import ConfigHelper from '../../config/configHelper';
+import BusinessListItem from '../../interfaces/businessListItem';
 
-interface BusinesssState {
-    businesss: Array<BusinessListItem>;
+interface BusinessesState {
+    businesses: Array<BusinessListItem>;
 }
 
 const Businesss = () => {
-    const [businessState, setBusinessState] = useState<BusinesssState>({
-        businesss: [],
+    const [businessState, setBusinessState] = useState<BusinessesState>({
+        businesses: [],
     });
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
@@ -49,7 +49,7 @@ const Businesss = () => {
             .then((response) => {
                 setBusinessState({
                     ...businessState,
-                    businesss: response.data.businesss,
+                    businesses: response.data.businesses,
                 });
                 resovle();
             });
@@ -94,7 +94,7 @@ const Businesss = () => {
                 context.isAdmin() && (
                     <Grid item xs={12}>
                         <BusinesssTable
-                            businesss={businessState.businesss}
+                            businesses={businessState.businesses}
                             deleteBusiness={deleteBusiness}
                         />
                     </Grid>
