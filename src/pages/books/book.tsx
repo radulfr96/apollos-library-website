@@ -37,7 +37,7 @@ interface BookParams {
 }
 
 interface BookState {
-    businesss: BusinessListItem[];
+    businesses: BusinessListItem[];
     authors: AuthorListItem[];
     publicationFormats: PublicationFormat[];
     formTypes: FormType[];
@@ -51,7 +51,7 @@ interface BookState {
 
 const BookPage = () => {
     const [bookState, setBookState] = useState<BookState>({
-        businesss: [],
+        businesses: [],
         authors: [],
         publicationFormats: [],
         formTypes: [],
@@ -141,7 +141,7 @@ const BookPage = () => {
                             formTypes: responses[0].value.data.formTypes,
                             fictionTypes: responses[0].value.data.fictionTypes,
                             authors: responses[1].value.data.authors,
-                            businesss: responses[2].value.data.businesss,
+                            businesses: responses[2].value.data.businesses,
                             genres: responses[3].value.data.genres,
                             series: responses[4].value.data.series,
                             newBook: false,
@@ -156,7 +156,7 @@ const BookPage = () => {
                     formTypes: responses[0].value.data.formTypes,
                     fictionTypes: responses[0].value.data.fictionTypes,
                     authors: responses[1].value.data.authors,
-                    businesss: responses[2].value.data.businesss,
+                    businesses: responses[2].value.data.businesses,
                     genres: responses[3].value.data.genres,
                     newBook: true,
                 });
@@ -401,7 +401,7 @@ const BookPage = () => {
                                             label="Business"
                                             id="businessId"
                                             options={
-                                                bookState.businesss.map<TypedownOption>((business) => ({
+                                                bookState.businesses.map<TypedownOption>((business) => ({
                                                     value: business.businessId,
                                                     name: `${business.name} (${business.country})`,
                                                 } as TypedownOption))
