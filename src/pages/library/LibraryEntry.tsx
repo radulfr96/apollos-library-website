@@ -34,20 +34,21 @@ const LibraryEntryPage = () => {
             bookId: undefined,
             quantity: 0,
         },
-        newEntry: true,
+        newEntry: false,
     });
 
     const { enqueueSnackbar } = useSnackbar();
-    const { id } = useParams<LibraryEntryParams>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
     const store = useStore();
+    const { id } = useParams<LibraryEntryParams>();
 
     useEffect(() => {
         if (context.getToken() === undefined) {
             return;
         }
+
         Axios.get(`${configHelper.apiUrl}/api/book`, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
@@ -55,7 +56,7 @@ const LibraryEntryPage = () => {
         })
             .then((response) => {
                 if (id !== undefined && id !== null) {
-                    Axios.get(`${configHelper.apiUrl}/api/library/${id}`, {
+                    Axios.get(`${configHelper.apiUrl}/api/library/entry/${id}`, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },

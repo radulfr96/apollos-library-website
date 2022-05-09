@@ -94,7 +94,7 @@ const LibraryPage = () => {
                         float: 'right',
                     }}
                     onClick={() => {
-                        store.dispatch(push('/entry'));
+                        store.dispatch(push('/addentry'));
                     }}
                 >
                     <Add />

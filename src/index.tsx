@@ -110,7 +110,7 @@ ReactDOM.render(
                                         <Route path="/library">
                                             <LibraryPage />
                                         </Route>
-                                        <Route path="/entry">
+                                        <Route path="/addentry">
                                             <LibraryEntryPage />
                                         </Route>
                                         <Route path="/entry/:id">
