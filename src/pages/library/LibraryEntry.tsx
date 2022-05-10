@@ -232,7 +232,7 @@ const LibraryEntryPage = () => {
                                                     name: `${book.title} ${book.isbn ? '' : `${(book.isbn)}`}`,
                                                 } as TypedownOption))
                                             }
-                                            value={values.bookId?.toString()}
+                                            value={values.bookId}
                                             updateSelection={(selected?: number | string) => {
                                                 if (selected !== undefined) {
                                                     setFieldValue('bookId', selected);

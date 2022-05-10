@@ -7,7 +7,7 @@ import TypedownOption from '../../interfaces/typedownOption';
 interface TypedownProps {
     errorMessage?: string;
     options: Array<TypedownOption>;
-    value?: string;
+    value?: string | number;
     required?: boolean;
     id: string;
     updateSelection: (id: number | string | undefined) => void;
