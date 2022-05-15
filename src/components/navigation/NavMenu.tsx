@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import {
-    Book, Business, Person, CollectionsBookmark, TableRowsOutlined,
+    Book, Business, Person, CollectionsBookmark, TableRowsOutlined, Receipt,
 } from '@mui/icons-material';
 import AdminMenu from './AdminMenu';
 import { AppContext } from '../../Context';
@@ -100,6 +100,24 @@ const NavMenu = () => {
                     </Link>
                 </Typography>
                 <Box style={{ display: context.isPaidUser() ? 'block' : 'none' }}>
+                    <IconButton
+                        aria-label="Orders"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                    >
+                        <Link
+                            style={{
+                                color: '#000000',
+                                textDecoration: 'none',
+                            }}
+                            to="/orders"
+                        >
+                            <Receipt sx={{
+                                color: '#FFFFFF',
+                            }}
+                            />
+                        </Link>
+                    </IconButton>
                     <IconButton
                         aria-label="Library"
                         aria-controls="menu-appbar"

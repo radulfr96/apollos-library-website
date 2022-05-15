@@ -24,7 +24,7 @@ export default class TableHelper {
     static getSorting<K extends keyof any>(
         order: Order,
         orderBy: K,
-    ): (a: { [key in K]: number | string }, b: { [key in K]: number | string }) => number {
+    ): (a: { [key in K]: number | string | Date }, b: { [key in K]: number | string | Date }) => number {
         return order === 'desc' ? (a, b) => TableHelper.desc(a, b, orderBy) : (a, b) => -TableHelper.desc(a, b, orderBy);
     }
 }
