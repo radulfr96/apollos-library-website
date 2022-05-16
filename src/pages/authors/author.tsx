@@ -106,7 +106,7 @@ const AuthorsPage = () => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.patch(`${configHelper.apiUrl}/api/author`, author, {
+                    Axios.put(`${configHelper.apiUrl}/api/author`, author, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },

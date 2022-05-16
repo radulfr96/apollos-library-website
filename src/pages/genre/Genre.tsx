@@ -88,7 +88,7 @@ const GenrePage = () => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.patch(`${configHelper.apiUrl}/api/genre/`, genre, {
+                    Axios.put(`${configHelper.apiUrl}/api/genre/`, genre, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },

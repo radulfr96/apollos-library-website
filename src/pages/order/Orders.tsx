@@ -82,9 +82,9 @@ const Orders = () => {
     }
 
     return (
-        <Grid item xs={5} container justifyContent="center">
+        <Grid item xs={8} container justifyContent="center">
             <Grid item xs={12}>
-                <PageHeading headingText="Series" />
+                <PageHeading headingText="Orders" />
             </Grid>
             {
                 context.isAdmin() && (
@@ -106,7 +106,7 @@ const Orders = () => {
                         float: 'right',
                     }}
                     onClick={() => {
-                        store.dispatch(push('/addseries'));
+                        store.dispatch(push('/addorder'));
                     }}
                 >
                     <Add />

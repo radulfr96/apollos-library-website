@@ -56,7 +56,7 @@ const UpdatePassword = () => {
                 };
 
                 if ((Object.keys(formKeys).length) === 0) {
-                    Axios.patch(`${configHelper.idpUrl}/api/user/password`, command, {
+                    Axios.put(`${configHelper.idpUrl}/api/user/password`, command, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },

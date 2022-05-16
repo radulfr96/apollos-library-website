@@ -187,7 +187,7 @@ const BookPage = () => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.patch(`${configHelper.apiUrl}/api/book`, book, {
+                    Axios.put(`${configHelper.apiUrl}/api/book`, book, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },

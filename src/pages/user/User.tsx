@@ -89,7 +89,7 @@ const UserPage = () => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.patch(`${configHelper.idpUrl}/api/user/`, user, {
+                    Axios.put(`${configHelper.idpUrl}/api/user/`, user, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },

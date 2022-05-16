@@ -125,7 +125,7 @@ const BusinessPage = () => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.patch(`${configHelper.apiUrl}/api/business/`, business, {
+                    Axios.put(`${configHelper.apiUrl}/api/business/`, business, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },
