@@ -1,10 +1,15 @@
 import { useSnackbar } from 'notistack';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, CircularProgress, Grid } from '@mui/material';
+import {
+    Button, CircularProgress, Grid, TextField,
+} from '@mui/material';
 import { push } from 'connected-react-router';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useStore } from 'react-redux';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ConfigHelper from '../../config/configHelper';
@@ -226,6 +231,19 @@ const OrderPage = () => {
                                                 }
                                             }}
                                         />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                            <DatePicker
+                                                label="Basic example"
+                                                value={values.orderDate}
+                                                onChange={(newValue) => {
+                                                    setFieldValue('orderDate', newValue);
+                                                }}
+                                                // eslint-disable-next-line react/jsx-props-no-spreading
+                                                renderInput={(datePickerParams) => <TextField {...datePickerParams} />}
+                                            />
+                                        </LocalizationProvider>
                                     </Grid>
                                     <Grid item xs={12} style={{ paddingTop: '10px' }}>
                                         {!orderState.newOrder && (

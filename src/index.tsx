@@ -30,6 +30,7 @@ import SeriesListPage from './pages/series/SeriesListPage';
 import LibraryPage from './pages/library/Library';
 import LibraryEntryPage from './pages/library/LibraryEntry';
 import Orders from './pages/order/Orders';
+import OrderPage from './pages/order/Order';
 // Create browser history to use in the Redux store
 
 // Get the application-wide store instance, prepopulating
@@ -119,6 +120,12 @@ ReactDOM.render(
                                         </Route>
                                         <Route path="/orders">
                                             <Orders />
+                                        </Route>
+                                        <Route path="/addorder">
+                                            <OrderPage />
+                                        </Route>
+                                        <Route path="/order/:id">
+                                            <OrderPage />
                                         </Route>
                                     </Switch>
                                 </Layout>
