@@ -8,7 +8,6 @@ import * as yup from 'yup';
 import {
     CircularProgress, Grid, Button, Card, CardHeader, CardContent, CardActions,
 } from '@mui/material';
-import { makeStyles } from '@material-ui/styles';
 import { DropzoneAreaBase, FileObject } from 'mui-file-dropzone';
 import { push } from 'connected-react-router';
 import { useStore } from 'react-redux';
@@ -82,13 +81,6 @@ const BookPage = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const store = useStore();
     const { enqueueSnackbar } = useSnackbar();
-    const useStyles = makeStyles(() => ({
-        dropZone: {
-            height: '440px',
-        },
-    }));
-
-    const classes = useStyles();
 
     useEffect(() => {
         if (context.getToken() === undefined) {
@@ -620,7 +612,6 @@ const BookPage = () => {
                                                             }}
                                                             fileObjects={[]}
                                                             acceptedFiles={['image/*']}
-                                                            dropzoneClass={classes.dropZone}
                                                         />
                                                     )
                                                 }

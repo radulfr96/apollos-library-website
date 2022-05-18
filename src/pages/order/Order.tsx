@@ -1,15 +1,12 @@
 import { useSnackbar } from 'notistack';
 import React, { useContext, useEffect, useState } from 'react';
 import {
-    Button, CircularProgress, Grid, TextField,
+    Button, CircularProgress, Grid,
 } from '@mui/material';
 import { push } from 'connected-react-router';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useStore } from 'react-redux';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ConfigHelper from '../../config/configHelper';
@@ -21,6 +18,7 @@ import Typedown from '../../components/shared/Typedown';
 import TypedownOption from '../../interfaces/typedownOption';
 import BusinessListItem from '../../interfaces/businessListItem';
 import Book from '../../interfaces/book';
+import DateSelector from '../../components/shared/DatePicker';
 
 interface OrderParams {
     id?: string;
@@ -56,28 +54,37 @@ const OrderPage = () => {
         if (context.getToken() === undefined) {
             return;
         }
-        if (params.id !== undefined && params.id !== null) {
-            Axios.get(`${configHelper.apiUrl}/api/series/${params.id}`, {
-                headers: {
-                    Authorization: `Bearer ${context.getToken()}`,
-                },
-            })
-                .then((response) => {
+
+        Axios.get(`${configHelper.apiUrl}/api/business`, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        })
+            .then((response) => {
+                if (params.id !== undefined && params.id !== null) {
+                    Axios.get(`${configHelper.apiUrl}/api/order/${params.id}`, {
+                        headers: {
+                            Authorization: `Bearer ${context.getToken()}`,
+                        },
+                    })
+                        .then((orderResponse) => {
+                            setOrderState({
+                                businesses: response.data.businesses,
+                                books: [],
+                                order: orderResponse.data,
+                                newOrder: false,
+                            });
+                            setIsLoading(false);
+                        });
+                } else {
                     setOrderState({
-                        businesses: [],
-                        books: [],
-                        order: response.data,
-                        newOrder: false,
+                        ...orderState,
+                        newOrder: true,
+                        businesses: response.data.businesses,
                     });
                     setIsLoading(false);
-                });
-        } else {
-            setOrderState({
-                ...orderState,
-                newOrder: true,
+                }
             });
-            setIsLoading(false);
-        }
     }, [context]);
 
     const renderErrorSnackbar = (message: string): void => {
@@ -173,8 +180,8 @@ const OrderPage = () => {
                 onSubmit={() => { }}
                 validationSchema={
                     yup.object().shape({
-                        name: yup.string()
-                            .required('A genre must have a name'),
+                        dateOrder: yup.date()
+                            .required('An order must have a date'),
                     })
                 }
             >
@@ -233,17 +240,17 @@ const OrderPage = () => {
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                            <DatePicker
-                                                label="Basic example"
-                                                value={values.orderDate}
-                                                onChange={(newValue) => {
-                                                    setFieldValue('orderDate', newValue);
-                                                }}
-                                                // eslint-disable-next-line react/jsx-props-no-spreading
-                                                renderInput={(datePickerParams) => <TextField {...datePickerParams} />}
-                                            />
-                                        </LocalizationProvider>
+                                        <DateSelector
+                                            label="Order Date"
+                                            value={values.orderDate}
+                                            keyName="orderDate"
+                                            required
+                                            onChange={(selected: Date) => {
+                                                setFieldValue('orderDate', selected);
+                                            }}
+                                            errorMessage="Order must have a date"
+                                            error={!!(errors.orderDate)}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} style={{ paddingTop: '10px' }}>
                                         {!orderState.newOrder && (
@@ -280,7 +287,7 @@ const OrderPage = () => {
                                             variant="contained"
                                             color="secondary"
                                             onClick={() => {
-                                                store.dispatch(push('/serieslist'));
+                                                store.dispatch(push('/orders'));
                                             }}
                                         >
                                             Cancel
