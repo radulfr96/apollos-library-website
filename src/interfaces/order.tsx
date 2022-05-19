@@ -1,14 +1,18 @@
 interface Order {
     orderId: number;
-    bookshopId: number;
+    businessId: number;
     orderDate: Date;
-    orderItems: OrderItem[];
+    orderItems: OrderItemListItem[];
 }
 
-export interface OrderItem {
+export interface OrderItemListItem {
     bookId: number;
+    title: string;
+    isbn: string;
+    eisbn: string;
     quantity: number;
-    price: number;
+    unitPrice: number;
+    total: number;
 }
 
 export default Order;

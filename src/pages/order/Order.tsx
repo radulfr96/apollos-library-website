@@ -19,6 +19,7 @@ import TypedownOption from '../../interfaces/typedownOption';
 import BusinessListItem from '../../interfaces/businessListItem';
 import Book from '../../interfaces/book';
 import DateSelector from '../../components/shared/DatePicker';
+import OrderLineItemsTable from '../../components/OrderLineItemsTable';
 
 interface OrderParams {
     id?: string;
@@ -37,7 +38,7 @@ const OrderPage = () => {
         books: [],
         order: {
             orderId: 0,
-            bookshopId: 0,
+            businessId: 0,
             orderDate: new Date(),
             orderItems: [],
         },
@@ -55,7 +56,7 @@ const OrderPage = () => {
             return;
         }
 
-        Axios.get(`${configHelper.apiUrl}/api/business`, {
+        Axios.get(`${configHelper.apiUrl}/api/business/bookshops`, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },
@@ -216,7 +217,7 @@ const OrderPage = () => {
 
                                     <Grid item xs={12}>
                                         <Typedown
-                                            label="Business"
+                                            label="Bookshop"
                                             id="businessId"
                                             options={
                                                 orderState.businesses.map<TypedownOption>((business) => ({
@@ -224,7 +225,7 @@ const OrderPage = () => {
                                                     name: `${business.name} (${business.country})`,
                                                 } as TypedownOption))
                                             }
-                                            value={values.bookshopId?.toString()}
+                                            value={values.businessId}
                                             updateSelection={(selected?: number | string) => {
                                                 if (selected !== undefined) {
                                                     setFieldValue('businessId', selected);
@@ -232,7 +233,7 @@ const OrderPage = () => {
                                                         ...orderState,
                                                         order: {
                                                             ...orderState.order,
-                                                            bookshopId: selected as number,
+                                                            businessId: selected as number,
                                                         },
                                                     });
                                                 }
@@ -294,6 +295,9 @@ const OrderPage = () => {
                                         </Button>
                                     </Grid>
                                 </Grid>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <OrderLineItemsTable orderItems={values.orderItems} deleteOrderItem={() => { }} />
                             </Grid>
                         </Grid>
                     </Grid>

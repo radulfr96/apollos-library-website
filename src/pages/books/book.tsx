@@ -101,7 +101,7 @@ const BookPage = () => {
             },
         }));
 
-        requests.push(Axios.get(`${configHelper.apiUrl}/api/business`, {
+        requests.push(Axios.get(`${configHelper.apiUrl}/api/business/publishers`, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },

@@ -29,8 +29,8 @@ import SeriesPage from './pages/series/Series';
 import SeriesListPage from './pages/series/SeriesListPage';
 import LibraryPage from './pages/library/Library';
 import LibraryEntryPage from './pages/library/LibraryEntry';
-import Orders from './pages/order/Orders';
-import OrderPage from './pages/order/Order';
+import Orders from './pages/order/orders';
+import OrderPage from './pages/order/order';
 // Create browser history to use in the Redux store
 
 // Get the application-wide store instance, prepopulating
