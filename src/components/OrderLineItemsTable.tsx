@@ -3,9 +3,7 @@ import {
     TableHead, TableRow, TableCell, TableSortLabel, TableContainer,
     Paper, Table, TableBody, IconButton, Typography,
 } from '@mui/material';
-import { useStore } from 'react-redux';
-import { push } from 'connected-react-router';
-import { ChevronRight, Delete } from '@mui/icons-material';
+import { Delete } from '@mui/icons-material';
 import TableHelper, { Order } from '../util/TableFunctions';
 import { OrderItemListItem } from '../interfaces/order';
 
@@ -85,8 +83,6 @@ interface NavCellProps {
 
 const NavigationCell = (props: NavCellProps): JSX.Element => {
     const { deleteOrderItem, orderItem } = props;
-    const store = useStore();
-
     return (
         <TableCell>
             <IconButton onClick={() => {
@@ -94,12 +90,6 @@ const NavigationCell = (props: NavCellProps): JSX.Element => {
             }}
             >
                 <Delete sx={{ color: 'red' }} />
-            </IconButton>
-            <IconButton onClick={() => {
-                store.dispatch(push(`order/${orderItem.bookId}`));
-            }}
-            >
-                <ChevronRight />
             </IconButton>
         </TableCell>
     );
