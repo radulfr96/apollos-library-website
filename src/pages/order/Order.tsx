@@ -117,11 +117,17 @@ const OrderPage = () => {
         });
     };
 
-    const updateOrder = (order: Order, validateForm: any) => {
+    const orderFormInitialValues = {
+        bookId: undefined,
+        quantity: undefined,
+        unitPrice: undefined,
+    };
+
+    const updateOrder = (validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.put(`${configHelper.apiUrl}/api/order/`, order, {
+                    Axios.put(`${configHelper.apiUrl}/api/order/`, orderState.order, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },
@@ -143,11 +149,11 @@ const OrderPage = () => {
             });
     };
 
-    const addOrder = (order: Order, validateForm: any) => {
+    const addOrder = (validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.post(`${configHelper.apiUrl}/api/order/`, order, {
+                    Axios.post(`${configHelper.apiUrl}/api/order/`, orderState.order, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },
@@ -237,7 +243,7 @@ const OrderPage = () => {
                                 onSubmit={() => { }}
                                 validationSchema={
                                     yup.object().shape({
-                                        dateOrder: yup.date()
+                                        orderDate: yup.date()
                                             .required('An order must have a date'),
                                     })
                                 }
@@ -315,7 +321,7 @@ const OrderPage = () => {
                                                         onClick={(e) => {
                                                             e.preventDefault();
                                                             if (errors !== null) {
-                                                                updateOrder(values, validateForm);
+                                                                updateOrder(validateForm);
                                                             }
                                                         }}
                                                     >
@@ -329,7 +335,7 @@ const OrderPage = () => {
                                                         onClick={(e) => {
                                                             e.preventDefault();
                                                             if (errors !== null) {
-                                                                addOrder(values, validateForm);
+                                                                addOrder(validateForm);
                                                             }
                                                         }}
                                                     >
@@ -357,14 +363,7 @@ const OrderPage = () => {
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
                                     <Formik
-                                        initialValues={{
-                                            bookId: '',
-                                            title: '',
-                                            isbn: '',
-                                            eisbn: '',
-                                            quantity: undefined,
-                                            unitPrice: undefined,
-                                        }}
+                                        initialValues={orderFormInitialValues}
                                         onSubmit={() => { }}
                                         validationSchema={
                                             yup.object().shape({
@@ -391,7 +390,7 @@ const OrderPage = () => {
                                                                 value: book.bookId,
                                                                 name: `${getIsbnString(book)} ${book.title} (${book.author})`,
                                                             } as TypedownOption))}
-                                                            value={values.bookId?.toString()}
+                                                            value={values.bookId}
                                                             updateSelection={(selected?: number | string) => {
                                                                 if (selected !== undefined) {
                                                                     setFieldValue('bookId', selected);
@@ -431,16 +430,7 @@ const OrderPage = () => {
                                                             onClick={(e) => {
                                                                 e.preventDefault();
                                                                 addOrderItem(values, validateForm).then(() => {
-                                                                    resetForm({
-                                                                        values: {
-                                                                            bookId: '',
-                                                                            title: '',
-                                                                            isbn: '',
-                                                                            eisbn: '',
-                                                                            quantity: undefined,
-                                                                            unitPrice: undefined,
-                                                                        },
-                                                                    });
+                                                                    resetForm();
                                                                 });
                                                             }}
                                                         >
