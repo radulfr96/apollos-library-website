@@ -117,12 +117,6 @@ const OrderPage = () => {
         });
     };
 
-    const orderFormInitialValues = {
-        bookId: undefined,
-        quantity: undefined,
-        unitPrice: undefined,
-    };
-
     const updateOrder = (validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
@@ -212,6 +206,12 @@ const OrderPage = () => {
         }
 
         return section;
+    };
+
+    const orderFormInitialValues = {
+        bookId: undefined,
+        quantity: undefined,
+        unitPrice: undefined,
     };
 
     if (isLoading) {
@@ -378,7 +378,7 @@ const OrderPage = () => {
                                             handleChange,
                                             validateForm,
                                             setFieldValue,
-                                            resetForm,
+                                            handleSubmit,
                                         }) => (
                                             <Grid item xs={12}>
                                                 <Grid container spacing={2}>
@@ -429,9 +429,12 @@ const OrderPage = () => {
                                                             }}
                                                             onClick={(e) => {
                                                                 e.preventDefault();
-                                                                addOrderItem(values, validateForm).then(() => {
-                                                                    resetForm();
-                                                                });
+                                                                addOrderItem(values, validateForm)
+                                                                    .then(() => { })
+                                                                    .catch((err: any) => {
+                                                                        console.log(err);
+                                                                    });
+                                                                handleSubmit();
                                                             }}
                                                         >
                                                             Add
