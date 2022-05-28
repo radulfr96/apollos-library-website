@@ -36,8 +36,10 @@ const ProductDisplay = () => {
     }, [context]);
 
     const submit = ((priceId: string) => {
-        Axios.post('/create-checkout-session', {
-            priceId,
+        Axios.post(`${configHelper.apiUrl}/api/subscription/create-checkout-session/${priceId}`, null, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
         });
     });
 
@@ -55,7 +57,7 @@ const ProductDisplay = () => {
                     <Grid container spacing={2}>
                         {
                             subscriptionsState.subscriptions.map((subscriptionOption) => (
-                                <Grid item xs={6}>
+                                <Grid item xs={6} key={subscriptionOption.subscriptionType}>
                                     <Card>
                                         <CardContent className="product" sx={{ height: '250px' }}>
                                             <Book />
