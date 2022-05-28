@@ -14,7 +14,7 @@ import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
 import CountryTypedown from '../../components/shared/CountryTypedown';
 import Country from '../../interfaces/country';
-import { AppContext } from '../../Context';
+import { AppContext } from '../../context';
 import ConfigHelper from '../../config/configHelper';
 import BusinessType from '../../interfaces/businessTypes';
 import Dropdown from '../../components/shared/Dropdown';

@@ -9,7 +9,7 @@ import { useStore } from 'react-redux';
 import { useParams } from 'react-router';
 import Typedown from '../../components/shared/Typedown';
 import ConfigHelper from '../../config/configHelper';
-import { AppContext } from '../../Context';
+import { AppContext } from '../../context';
 import LibraryEntry from '../../interfaces/libraryEntry';
 import BookListItem from '../../interfaces/bookListItem';
 import PageHeading from '../../components/shared/PageHeading';

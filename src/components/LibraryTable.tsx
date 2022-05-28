@@ -6,7 +6,7 @@ import {
 import { useStore } from 'react-redux';
 import { push } from 'connected-react-router';
 import { ChevronRight, Delete } from '@mui/icons-material';
-import TableHelper, { Order } from '../util/TableFunctions';
+import TableHelper, { Order } from '../util/tableFunctions';
 import LibraryEntryListItem from '../interfaces/libraryEntryListItem';
 
 interface HeadCell {

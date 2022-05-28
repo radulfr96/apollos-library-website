@@ -9,7 +9,7 @@ import { useSnackbar } from 'notistack';
 import PageHeading from '../../../components/shared/PageHeading';
 import InputTextField from '../../../components/shared/InputTextField';
 import ChangePasswordInfo from '../../../interfaces/changePasswordInfo';
-import { AppContext } from '../../../Context';
+import { AppContext } from '../../../context';
 import ConfigHelper from '../../../config/configHelper';
 
 interface ChangePasswordState {

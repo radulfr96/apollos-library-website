@@ -8,7 +8,7 @@ import { useStore } from 'react-redux';
 import OrdersTable from '../../components/OrdersTable';
 import PageHeading from '../../components/shared/PageHeading';
 import ConfigHelper from '../../config/configHelper';
-import { AppContext } from '../../Context';
+import { AppContext } from '../../context';
 import OrderListItem from '../../interfaces/orderListItem';
 
 interface OrdersState {

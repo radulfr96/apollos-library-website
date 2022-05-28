@@ -15,8 +15,8 @@ import { UpdateUserInfo } from '../../interfaces/updateUserInfo';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
 import RoleSelector from '../../components/RoleSelector';
-import UserHelper from './UserHelper';
-import { AppContext } from '../../Context';
+import UserHelper from './userHelper';
+import { AppContext } from '../../context';
 import ConfigHelper from '../../config/configHelper';
 
 interface UserParams {

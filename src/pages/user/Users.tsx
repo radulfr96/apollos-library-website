@@ -6,7 +6,7 @@ import { User } from '../../interfaces/user';
 import UsersTable from '../../components/UsersTable';
 import PageHeading from '../../components/shared/PageHeading';
 import ConfigHelper from '../../config/configHelper';
-import { AppContext } from '../../Context';
+import { AppContext } from '../../context';
 
 interface UsersState {
     users: Array<User>;

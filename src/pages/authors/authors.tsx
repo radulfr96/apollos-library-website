@@ -10,7 +10,7 @@ import { push } from 'connected-react-router';
 import { AuthorListItem } from '../../interfaces/authorListItem';
 import PageHeading from '../../components/shared/PageHeading';
 import AuthorsTable from '../../components/AuthorsTable';
-import { AppContext } from '../../Context';
+import { AppContext } from '../../context';
 import ConfigHelper from '../../config/configHelper';
 
 interface AuthorsState {

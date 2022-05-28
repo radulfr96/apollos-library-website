@@ -15,7 +15,7 @@ import InputTextField from '../../components/shared/InputTextField';
 import CountryTypedown from '../../components/shared/CountryTypedown';
 import Country from '../../interfaces/country';
 import ConfigHelper from '../../config/configHelper';
-import { AppContext } from '../../Context';
+import { AppContext } from '../../context';
 
 interface AuthorParams {
     id: string;

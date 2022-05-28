@@ -10,7 +10,7 @@ import { useStore } from 'react-redux';
 import Axios from 'axios';
 import { useParams } from 'react-router-dom';
 import ConfigHelper from '../../config/configHelper';
-import { AppContext } from '../../Context';
+import { AppContext } from '../../context';
 import Order from '../../interfaces/order';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';

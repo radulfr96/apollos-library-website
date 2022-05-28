@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import {
     Paper, Tabs, Tab, Typography, Box,
 } from '@mui/material';
-import MyDetails from './AccountDetails';
-import DeactivateAccount from './DeactivateAccount';
-import UpdatePassword from './UpdatePassword';
+import MyDetails from './accountDetails';
+import DeactivateAccount from './deactivateAccount';
+import UpdatePassword from './updatePassword';
 
 interface TabPanelProps {
     children: React.ReactNode;

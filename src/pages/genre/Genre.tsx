@@ -13,7 +13,7 @@ import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';
 import ConfigHelper from '../../config/configHelper';
-import { AppContext } from '../../Context';
+import { AppContext } from '../../context';
 
 interface GenreParams {
     id?: string;

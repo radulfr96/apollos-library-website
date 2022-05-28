@@ -9,7 +9,7 @@ import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import PageHeading from '../../components/shared/PageHeading';
 import BusinesssTable from '../../components/BusinessTable';
-import { AppContext } from '../../Context';
+import { AppContext } from '../../context';
 import ConfigHelper from '../../config/configHelper';
 import BusinessListItem from '../../interfaces/businessListItem';
 

@@ -18,7 +18,7 @@ import PublicationFormat from '../../interfaces/publicationFormat';
 import FormType from '../../interfaces/formType';
 import FictionType from '../../interfaces/fictionType';
 import Book from '../../interfaces/book';
-import { AppContext } from '../../Context';
+import { AppContext } from '../../context';
 import ConfigHelper from '../../config/configHelper';
 import PageHeading from '../../components/shared/PageHeading';
 import InputTextField from '../../components/shared/InputTextField';

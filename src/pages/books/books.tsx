@@ -8,7 +8,7 @@ import { Add } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import PageHeading from '../../components/shared/PageHeading';
 import ConfigHelper from '../../config/configHelper';
-import { AppContext } from '../../Context';
+import { AppContext } from '../../context';
 import BookListItem from '../../interfaces/bookListItem';
 import BooksTable from '../../components/BooksTable';
 

@@ -4,7 +4,7 @@ import {
     Paper, Table, TableBody, IconButton, Typography,
 } from '@mui/material';
 import { Delete } from '@mui/icons-material';
-import TableHelper, { Order } from '../util/TableFunctions';
+import TableHelper, { Order } from '../util/tableFunctions';
 import { OrderItemListItem } from '../interfaces/order';
 
 interface HeadCell {

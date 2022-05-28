@@ -7,7 +7,7 @@ import { useStore } from 'react-redux';
 import { push } from 'connected-react-router';
 import { ChevronRight, Delete } from '@mui/icons-material';
 import { AuthorListItem } from '../interfaces/authorListItem';
-import TableHelper, { Order } from '../util/TableFunctions';
+import TableHelper, { Order } from '../util/tableFunctions';
 
 interface HeadCell {
     id: keyof AuthorListItem;

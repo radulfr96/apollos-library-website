@@ -8,7 +8,7 @@ import { useStore } from 'react-redux';
 import LibraryTable from '../../components/LibraryTable';
 import PageHeading from '../../components/shared/PageHeading';
 import ConfigHelper from '../../config/configHelper';
-import { AppContext } from '../../Context';
+import { AppContext } from '../../context';
 import LibraryEntryListItem from '../../interfaces/libraryEntryListItem';
 
 interface LibraryState {

@@ -6,7 +6,7 @@ import {
 import { Link } from 'react-router-dom';
 import { ChevronRight, Delete } from '@mui/icons-material';
 import { User } from '../interfaces/user';
-import TableHelper, { Order } from '../util/TableFunctions';
+import TableHelper, { Order } from '../util/tableFunctions';
 
 interface HeadCell {
     id: keyof User;

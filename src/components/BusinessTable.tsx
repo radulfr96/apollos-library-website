@@ -7,7 +7,7 @@ import { push } from 'connected-react-router';
 import { useStore } from 'react-redux';
 import { ChevronRight, Delete } from '@mui/icons-material';
 import BusinessTableItem from '../interfaces/businessTableItem';
-import TableHelper, { Order } from '../util/TableFunctions';
+import TableHelper, { Order } from '../util/tableFunctions';
 
 interface HeadCell {
     id: keyof BusinessTableItem;
