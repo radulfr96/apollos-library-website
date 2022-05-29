@@ -7,7 +7,7 @@ import userManager from '../util/userManager';
 const CallbackPage = () => {
     const goToHome = () => {
         // eslint-disable-next-line no-restricted-globals
-        location.href = '/';
+        window.location.href = '/';
     };
 
     return (

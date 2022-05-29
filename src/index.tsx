@@ -31,7 +31,7 @@ import LibraryPage from './pages/library/library';
 import LibraryEntryPage from './pages/library/libraryEntry';
 import Orders from './pages/order/orders';
 import OrderPage from './pages/order/order';
-import Subscriptions from './pages/subscription/subscriptions';
+import StripeSubscriptionPage from './pages/subscription/stripeSubscriptionPage';
 // Create browser history to use in the Redux store
 
 // Get the application-wide store instance, prepopulating
@@ -129,7 +129,7 @@ ReactDOM.render(
                                             <OrderPage />
                                         </Route>
                                         <Route path="/subscriptions">
-                                            <Subscriptions />
+                                            <StripeSubscriptionPage />
                                         </Route>
                                     </Switch>
                                 </Layout>

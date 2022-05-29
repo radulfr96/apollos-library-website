@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Axios from 'axios';
-import { useParams } from 'react-router';
 import { Book } from '@mui/icons-material';
 import {
     Button, CircularProgress, Grid, Typography,
@@ -8,12 +7,12 @@ import {
 import { AppContext } from '../../context';
 import ConfigHelper from '../../config/configHelper';
 
-interface SubscriptionSuccessParams {
-    sessionId: string;
+interface SubscriptionSuccessProps {
+    sessionId: string | null;
 }
 
-const SubscriptionSuccess = () => {
-    const { sessionId } = useParams<SubscriptionSuccessParams>();
+const SubscriptionSuccess = (props: SubscriptionSuccessProps) => {
+    const { sessionId } = props;
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const configHelper = new ConfigHelper();
     const context = useContext(AppContext);
@@ -31,7 +30,10 @@ const SubscriptionSuccess = () => {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },
-        });
+        })
+            .then((result: any) => {
+                window.location.href = result.data.portalURL;
+            });
     };
 
     if (isLoading) {

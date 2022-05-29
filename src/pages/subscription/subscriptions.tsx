@@ -35,12 +35,16 @@ const ProductDisplay = () => {
             });
     }, [context]);
 
-    const submit = ((priceId: string) => {
-        Axios.post(`${configHelper.apiUrl}/api/subscription/create-checkout-session/${priceId}`, null, {
+    const submit = ((productId: string) => {
+        Axios.post(`${configHelper.apiUrl}/api/subscription/create-checkout-session`, { productId }, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
+                ContentType: 'application/json',
             },
-        });
+        })
+            .then((result: any) => {
+                window.location.href = result.data.checkoutURL;
+            });
     });
 
     if (isLoading) {
