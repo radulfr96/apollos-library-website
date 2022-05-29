@@ -7,8 +7,8 @@ import Axios from 'axios';
 import { useSnackbar } from 'notistack';
 import { Link } from 'react-router-dom';
 import { Genre } from '../../interfaces/genre';
-import PageHeading from '../../components/shared/PageHeading';
-import GenresTable from '../../components/GenresTable';
+import PageHeading from '../../components/shared/pageHeading';
+import GenresTable from '../../components/genresTable';
 import ConfigHelper from '../../config/configHelper';
 import { AppContext } from '../../context';
 

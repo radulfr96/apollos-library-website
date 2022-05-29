@@ -6,15 +6,15 @@ import Axios from 'axios';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
-import PageHeading from '../../../components/shared/PageHeading';
+import PageHeading from '../../../components/shared/pageHeading';
 import { AppContext } from '../../../context';
 import ConfigHelper from '../../../config/configHelper';
-import InputTextField from '../../../components/shared/InputTextField';
+import InputTextField from '../../../components/shared/inputTextField';
 import UserHelper from '../userHelper';
-import ChangeAccountDetailsInfo from '../../../interfaces/changeAccountDetailsInfo';
-import ReadOnlyText from '../../../components/shared/ReadOnlyText';
-import ReadOnlyLabel from '../../../components/shared/ReadOnlyLabel';
+import ReadOnlyText from '../../../components/shared/readOnlyText';
+import ReadOnlyLabel from '../../../components/shared/readOnlyLabel';
 import userManager from '../../../util/userManager';
+import ChangeAccountDetailsInfo from '../../../interfaces/changeAccountDetailsInfo';
 
 interface ChangeAccountDetailsState {
     changeAccountDetailsInfo: ChangeAccountDetailsInfo;

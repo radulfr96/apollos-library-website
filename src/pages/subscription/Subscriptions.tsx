@@ -7,7 +7,7 @@ import Axios from 'axios';
 import { AppContext } from '../../context';
 import SubscriptionOption from '../../interfaces/subscriptionOption';
 import ConfigHelper from '../../config/configHelper';
-import PageHeading from '../../components/shared/PageHeading';
+import PageHeading from '../../components/shared/pageHeading';
 
 interface SubscriptionsState {
     subscriptions: SubscriptionOption[];

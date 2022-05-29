@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Grid } from '@mui/material';
 import { AppContext } from '../context';
-import NavMenu from './navigation/NavMenu';
+import NavMenu from './navigation/navMenu';
 
 const Layout = (props: { children?: React.ReactNode }) => {
     const { children } = props;

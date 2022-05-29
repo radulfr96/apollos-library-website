@@ -6,7 +6,7 @@ import { push } from 'connected-react-router';
 import Axios from 'axios';
 import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import PageHeading from '../../../components/shared/PageHeading';
+import PageHeading from '../../../components/shared/pageHeading';
 import ConfigHelper from '../../../config/configHelper';
 import { AppContext } from '../../../context';
 

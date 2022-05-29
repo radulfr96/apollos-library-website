@@ -7,7 +7,7 @@ import { Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
 import { OidcProvider } from 'redux-oidc';
-import Layout from './components/Layout';
+import Layout from './components/layout';
 import CallbackPage from './pages/callbackPage';
 import GenrePage from './pages/genre/genre';
 import Genres from './pages/genre/genres';

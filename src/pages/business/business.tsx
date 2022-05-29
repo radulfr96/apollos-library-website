@@ -10,14 +10,14 @@ import Axios from 'axios';
 import { useSnackbar } from 'notistack';
 import { useStore } from 'react-redux';
 import Business from '../../interfaces/business';
-import PageHeading from '../../components/shared/PageHeading';
-import InputTextField from '../../components/shared/InputTextField';
-import CountryTypedown from '../../components/shared/CountryTypedown';
+import PageHeading from '../../components/shared/pageHeading';
+import InputTextField from '../../components/shared/inputTextField';
+import CountryTypedown from '../../components/shared/countryTypedown';
 import Country from '../../interfaces/country';
 import { AppContext } from '../../context';
 import ConfigHelper from '../../config/configHelper';
 import BusinessType from '../../interfaces/businessTypes';
-import Dropdown from '../../components/shared/Dropdown';
+import Dropdown from '../../components/shared/dropdown';
 import DropdownOption from '../../interfaces/dropdownOption';
 
 interface BusinessParams {

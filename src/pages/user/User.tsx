@@ -12,12 +12,12 @@ import { useParams } from 'react-router';
 import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { UpdateUserInfo } from '../../interfaces/updateUserInfo';
-import PageHeading from '../../components/shared/PageHeading';
-import InputTextField from '../../components/shared/InputTextField';
-import RoleSelector from '../../components/RoleSelector';
+import InputTextField from '../../components/shared/inputTextField';
+import RoleSelector from '../../components/roleSelector';
 import UserHelper from './userHelper';
 import { AppContext } from '../../context';
 import ConfigHelper from '../../config/configHelper';
+import PageHeading from '../../components/shared/pageHeading';
 
 interface UserParams {
     id: string;

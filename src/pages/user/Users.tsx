@@ -3,8 +3,8 @@ import { Grid, CircularProgress } from '@mui/material';
 import Axios from 'axios';
 import { useSnackbar } from 'notistack';
 import { User } from '../../interfaces/user';
-import UsersTable from '../../components/UsersTable';
-import PageHeading from '../../components/shared/PageHeading';
+import UsersTable from '../../components/usersTable';
+import PageHeading from '../../components/shared/pageHeading';
 import ConfigHelper from '../../config/configHelper';
 import { AppContext } from '../../context';
 

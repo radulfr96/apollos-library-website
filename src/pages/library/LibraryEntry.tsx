@@ -7,13 +7,13 @@ import * as yup from 'yup';
 import { Button, CircularProgress, Grid } from '@mui/material';
 import { useStore } from 'react-redux';
 import { useParams } from 'react-router';
-import Typedown from '../../components/shared/Typedown';
+import Typedown from '../../components/shared/typedown';
 import ConfigHelper from '../../config/configHelper';
 import { AppContext } from '../../context';
 import LibraryEntry from '../../interfaces/libraryEntry';
 import BookListItem from '../../interfaces/bookListItem';
-import PageHeading from '../../components/shared/PageHeading';
-import InputTextField from '../../components/shared/InputTextField';
+import PageHeading from '../../components/shared/pageHeading';
+import InputTextField from '../../components/shared/inputTextField';
 import TypedownOption from '../../interfaces/typedownOption';
 
 interface LibraryEntryParams {

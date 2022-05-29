@@ -8,8 +8,8 @@ import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { push } from 'connected-react-router';
 import { AuthorListItem } from '../../interfaces/authorListItem';
-import PageHeading from '../../components/shared/PageHeading';
-import AuthorsTable from '../../components/AuthorsTable';
+import PageHeading from '../../components/shared/pageHeading';
+import AuthorsTable from '../../components/authorsTable';
 import { AppContext } from '../../context';
 import ConfigHelper from '../../config/configHelper';
 

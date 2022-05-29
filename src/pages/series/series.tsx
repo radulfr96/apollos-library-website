@@ -10,8 +10,8 @@ import { useParams } from 'react-router';
 import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { Series } from '../../interfaces/series';
-import PageHeading from '../../components/shared/PageHeading';
-import InputTextField from '../../components/shared/InputTextField';
+import PageHeading from '../../components/shared/pageHeading';
+import InputTextField from '../../components/shared/inputTextField';
 import ConfigHelper from '../../config/configHelper';
 import { AppContext } from '../../context';
 

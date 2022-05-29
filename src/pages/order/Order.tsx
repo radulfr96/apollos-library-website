@@ -12,13 +12,13 @@ import { useParams } from 'react-router-dom';
 import ConfigHelper from '../../config/configHelper';
 import { AppContext } from '../../context';
 import Order from '../../interfaces/order';
-import PageHeading from '../../components/shared/PageHeading';
-import InputTextField from '../../components/shared/InputTextField';
-import Typedown from '../../components/shared/Typedown';
+import PageHeading from '../../components/shared/pageHeading';
+import InputTextField from '../../components/shared/inputTextField';
+import Typedown from '../../components/shared/typedown';
 import TypedownOption from '../../interfaces/typedownOption';
 import BusinessListItem from '../../interfaces/businessListItem';
-import DateSelector from '../../components/shared/DatePicker';
-import OrderLineItemsTable from '../../components/OrderLineItemsTable';
+import DateSelector from '../../components/shared/datePicker';
+import OrderLineItemsTable from '../../components/orderLineItemsTable';
 import LibraryBook from '../../interfaces/libraryBook';
 
 interface OrderParams {

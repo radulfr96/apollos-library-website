@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import {
     Book, Business, Person, CollectionsBookmark, TableRowsOutlined, Receipt,
 } from '@mui/icons-material';
-import AdminMenu from './AdminMenu';
+import AdminMenu from './adminMenu';
 import { AppContext } from '../../context';
 import userManager from '../../util/userManager';
 

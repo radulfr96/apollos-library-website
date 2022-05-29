@@ -1,4 +1,4 @@
-import SubscriptionTypeEnum from '../enums/SubscriptionTypeEnum';
+import SubscriptionTypeEnum from '../enums/subscriptionTypeEnum';
 
 interface SubscriptionOption {
     subscriptionType: SubscriptionTypeEnum;

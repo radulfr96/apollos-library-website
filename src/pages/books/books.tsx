@@ -6,11 +6,11 @@ import Axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Add } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
-import PageHeading from '../../components/shared/PageHeading';
+import PageHeading from '../../components/shared/pageHeading';
 import ConfigHelper from '../../config/configHelper';
 import { AppContext } from '../../context';
 import BookListItem from '../../interfaces/bookListItem';
-import BooksTable from '../../components/BooksTable';
+import BooksTable from '../../components/booksTable';
 
 interface BooksState {
     books: Array<BookListItem>;
