@@ -21,7 +21,7 @@ import configureStore from './store';
 import AuthorPage from './pages/authors/author';
 import theme from './config/theme';
 import userManager from './util/userManager';
-import AppContextProvider from './context';
+import AppContextProvider from './userContext';
 import AuthorsPage from './pages/authors/authors';
 import BooksPage from './pages/books/books';
 import BookPage from './pages/books/book';
@@ -32,6 +32,7 @@ import LibraryEntryPage from './pages/library/libraryEntry';
 import Orders from './pages/order/orders';
 import OrderPage from './pages/order/order';
 import StripeSubscriptionPage from './pages/subscription/stripeSubscriptionPage';
+import Protected from './components/navigation/protected';
 // Create browser history to use in the Redux store
 
 // Get the application-wide store instance, prepopulating
@@ -57,79 +58,127 @@ ReactDOM.render(
                                             <CallbackPage />
                                         </Route>
                                         <Route path="/user">
-                                            <Users />
+                                            <Protected>
+                                                <Users />
+                                            </Protected>
                                         </Route>
                                         <Route path="/account">
-                                            <MyAccount />
+                                            <Protected>
+                                                <MyAccount />
+                                            </Protected>
                                         </Route>
                                         <Route path="/userdetails/:id">
-                                            <UserPage />
+                                            <Protected>
+                                                <UserPage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/genres">
-                                            <Genres />
+                                            <Protected>
+                                                <Genres />
+                                            </Protected>
                                         </Route>
                                         <Route path="/genre/:id">
-                                            <GenrePage />
+                                            <Protected>
+                                                <GenrePage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/addgenre">
-                                            <GenrePage />
+                                            <Protected>
+                                                <GenrePage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/businesses">
-                                            <BusinessesPage />
+                                            <Protected>
+                                                <BusinessesPage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/business/:id">
-                                            <BusinessPage />
+                                            <Protected>
+                                                <BusinessPage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/addbusiness">
-                                            <BusinessPage />
+                                            <Protected>
+                                                <BusinessPage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/authors">
-                                            <AuthorsPage />
+                                            <Protected>
+                                                <AuthorsPage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/author/:id">
-                                            <AuthorPage />
+                                            <Protected>
+                                                <AuthorPage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/addauthor">
                                             <AuthorPage />
                                         </Route>
                                         <Route path="/books">
-                                            <BooksPage />
+                                            <Protected>
+                                                <BooksPage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/addbook">
-                                            <BookPage />
+                                            <Protected>
+                                                <BookPage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/book/:id">
-                                            <BookPage />
+                                            <Protected>
+                                                <BookPage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/serieslist">
-                                            <SeriesListPage />
+                                            <Protected>
+                                                <SeriesListPage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/addseries">
-                                            <SeriesPage />
+                                            <Protected>
+                                                <SeriesPage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/series/:id">
-                                            <SeriesPage />
+                                            <Protected>
+                                                <SeriesPage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/library">
-                                            <LibraryPage />
+                                            <Protected>
+                                                <LibraryPage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/addentry">
-                                            <LibraryEntryPage />
+                                            <Protected>
+                                                <LibraryEntryPage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/entry/:id">
-                                            <LibraryEntryPage />
+                                            <Protected>
+                                                <LibraryEntryPage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/orders">
-                                            <Orders />
+                                            <Protected>
+                                                <Orders />
+                                            </Protected>
                                         </Route>
                                         <Route path="/addorder">
-                                            <OrderPage />
+                                            <Protected>
+                                                <OrderPage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/order/:id">
-                                            <OrderPage />
+                                            <Protected>
+                                                <OrderPage />
+                                            </Protected>
                                         </Route>
                                         <Route path="/subscriptions">
-                                            <StripeSubscriptionPage />
+                                            <Protected>
+                                                <StripeSubscriptionPage />
+                                            </Protected>
                                         </Route>
                                     </Switch>
                                 </Layout>

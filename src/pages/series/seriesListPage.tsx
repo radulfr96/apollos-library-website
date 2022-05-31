@@ -8,7 +8,7 @@ import { useStore } from 'react-redux';
 import SeriesTable from '../../components/seriesTable';
 import PageHeading from '../../components/shared/pageHeading';
 import ConfigHelper from '../../config/configHelper';
-import { AppContext } from '../../context';
+import { AppContext } from '../../userContext';
 import { SeriesListItem } from '../../interfaces/seriesListItem';
 
 interface SeriesState {

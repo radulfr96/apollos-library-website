@@ -15,7 +15,7 @@ import { UpdateUserInfo } from '../../interfaces/updateUserInfo';
 import InputTextField from '../../components/shared/inputTextField';
 import RoleSelector from '../../components/roleSelector';
 import UserHelper from './userHelper';
-import { AppContext } from '../../context';
+import { AppContext } from '../../userContext';
 import ConfigHelper from '../../config/configHelper';
 import PageHeading from '../../components/shared/pageHeading';
 

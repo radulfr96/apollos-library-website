@@ -4,7 +4,7 @@ import { Book } from '@mui/icons-material';
 import {
     Button, CircularProgress, Grid, Typography,
 } from '@mui/material';
-import { AppContext } from '../../context';
+import { AppContext } from '../../userContext';
 import ConfigHelper from '../../config/configHelper';
 
 interface SubscriptionSuccessProps {

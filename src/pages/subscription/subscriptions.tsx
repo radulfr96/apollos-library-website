@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import { Book } from '@mui/icons-material';
 import Axios from 'axios';
-import { AppContext } from '../../context';
+import { AppContext } from '../../userContext';
 import SubscriptionOption from '../../interfaces/subscriptionOption';
 import ConfigHelper from '../../config/configHelper';
 import PageHeading from '../../components/shared/pageHeading';

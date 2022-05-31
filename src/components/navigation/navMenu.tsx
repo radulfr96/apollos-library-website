@@ -7,7 +7,7 @@ import {
     Book, Business, Person, CollectionsBookmark, TableRowsOutlined, Receipt,
 } from '@mui/icons-material';
 import AdminMenu from './adminMenu';
-import { AppContext } from '../../context';
+import { AppContext } from '../../userContext';
 import userManager from '../../util/userManager';
 
 const NavMenu = () => {

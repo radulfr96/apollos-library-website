@@ -13,7 +13,7 @@ import { Series } from '../../interfaces/series';
 import PageHeading from '../../components/shared/pageHeading';
 import InputTextField from '../../components/shared/inputTextField';
 import ConfigHelper from '../../config/configHelper';
-import { AppContext } from '../../context';
+import { AppContext } from '../../userContext';
 
 interface SeriesParams {
     id?: string;

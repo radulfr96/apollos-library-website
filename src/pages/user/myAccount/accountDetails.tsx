@@ -7,7 +7,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import PageHeading from '../../../components/shared/pageHeading';
-import { AppContext } from '../../../context';
+import { AppContext } from '../../../userContext';
 import ConfigHelper from '../../../config/configHelper';
 import InputTextField from '../../../components/shared/inputTextField';
 import UserHelper from '../userHelper';

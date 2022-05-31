@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import * as React from 'react';
 import { Grid } from '@mui/material';
-import { AppContext } from '../context';
+import { AppContext } from '../userContext';
 import NavMenu from './navigation/navMenu';
 
 const Layout = (props: { children?: React.ReactNode }) => {

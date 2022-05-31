@@ -8,7 +8,7 @@ import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import PageHeading from '../../../components/shared/pageHeading';
 import ConfigHelper from '../../../config/configHelper';
-import { AppContext } from '../../../context';
+import { AppContext } from '../../../userContext';
 
 const DeactivateAccount = () => {
     const configHelper = new ConfigHelper();

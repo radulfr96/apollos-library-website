@@ -10,7 +10,7 @@ import { Genre } from '../../interfaces/genre';
 import PageHeading from '../../components/shared/pageHeading';
 import GenresTable from '../../components/genresTable';
 import ConfigHelper from '../../config/configHelper';
-import { AppContext } from '../../context';
+import { AppContext } from '../../userContext';
 
 interface GenresState {
     genres: Array<Genre>;
