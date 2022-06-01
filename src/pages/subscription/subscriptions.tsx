@@ -26,7 +26,11 @@ const ProductDisplay = () => {
             return;
         }
 
-        Axios.get(`${configHelper.apiUrl}/api/subscription`)
+        Axios.get(`${configHelper.apiUrl}/api/subscription`, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        })
             .then((response: any) => {
                 setSubscriptionsState({
                     subscriptions: response.data.subscriptionTypes,

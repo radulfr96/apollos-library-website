@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import Axios from 'axios';
+import SubscriptionInfo from './interfaces/subscriptionInfo';
 import { UserInfo } from './interfaces/userInfo';
 import userManager from './util/userManager';
+import ConfigHelper from './config/configHelper';
+import SubscriptionTypeEnum from './enums/subscriptionTypeEnum';
 
 export const AppContext = React.createContext<State & Functions>({
     userInfo: null,
@@ -9,6 +13,7 @@ export const AppContext = React.createContext<State & Functions>({
     getUserInfo: () => null,
     clearUserInfo: () => null,
     getToken: () => '',
+    subscriptionInfo: null,
 });
 
 interface Functions {
@@ -21,6 +26,7 @@ interface Functions {
 
 interface State {
     userInfo: UserInfo | null;
+    subscriptionInfo: SubscriptionInfo | null;
 }
 
 interface AppContextProviderProps {
@@ -30,29 +36,35 @@ interface AppContextProviderProps {
 const AppContextProvider = (props: AppContextProviderProps) => {
     const [state, setState] = useState<State>({
         userInfo: null,
+        subscriptionInfo: null,
     });
 
     const isAdmin = (): boolean => {
         if (state.userInfo == null) return false;
         if (state.userInfo.roles === undefined) return false;
-        if (state.userInfo.roles.indexOf('administrator') > -1) {
+        if (state.subscriptionInfo?.subscriptionType === SubscriptionTypeEnum.Staff) {
             return true;
         }
         return false;
     };
 
     const isPaidUser = (): boolean => {
-        if (state.userInfo == null) return false;
-        if (state.userInfo.roles === undefined) return false;
-        if (state.userInfo.roles.indexOf('paidaccount') > -1 || state.userInfo.roles.indexOf('freeaccount') > -1) {
-            return true;
+        if (state.subscriptionInfo == null) return false;
+        if (state.subscriptionInfo?.subscriptionType !== SubscriptionTypeEnum.Family
+            && state.subscriptionInfo?.subscriptionType !== SubscriptionTypeEnum.Individual
+            && state.subscriptionInfo?.subscriptionType !== SubscriptionTypeEnum.Staff
+            && ((!state.subscriptionInfo.expiry) || state.subscriptionInfo.expiry < new Date())) {
+            return false;
         }
-        return false;
+        return true;
     };
+
+    const configHelper = new ConfigHelper();
 
     const clearUserInfo = () => {
         setState({
             userInfo: null,
+            subscriptionInfo: null,
         });
     };
 
@@ -61,15 +73,23 @@ const AppContextProvider = (props: AppContextProviderProps) => {
     const getUserInfo = () => {
         userManager.getUser().then((user) => {
             if (user !== null) {
-                setState({
-                    userInfo: {
-                        username: user.profile.username,
-                        roles: user.profile.role,
-                        userId: user.profile.sid,
-                        token: user.access_token,
-                        email: user.profile.emailaddress,
+                Axios.get(`${configHelper.apiUrl}/api/subscription/subscription`, {
+                    headers: {
+                        Authorization: `Bearer ${user.access_token}`,
                     },
-                });
+                })
+                    .then((subscription) => {
+                        setState({
+                            userInfo: {
+                                username: user.profile.username,
+                                roles: user.profile.role,
+                                userId: user.profile.sid,
+                                token: user.access_token,
+                                email: user.profile.emailaddress,
+                            },
+                            subscriptionInfo: subscription.data,
+                        });
+                    });
             }
         });
     };
