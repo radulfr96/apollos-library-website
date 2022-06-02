@@ -42,7 +42,7 @@ const AppContextProvider = (props: AppContextProviderProps) => {
     const isAdmin = (): boolean => {
         if (state.userInfo == null) return false;
         if (state.userInfo.roles === undefined) return false;
-        if (state.subscriptionInfo?.subscriptionType === SubscriptionTypeEnum.Staff) {
+        if (state.userInfo.roles.indexOf('administrator') > -1) {
             return true;
         }
         return false;
