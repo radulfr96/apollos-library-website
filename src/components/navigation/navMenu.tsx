@@ -75,17 +75,6 @@ const NavMenu = () => {
                         <MenuItem onClick={handleLogin}>
                             <Typography>Log in</Typography>
                         </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                            <Link
-                                style={{
-                                    color: '#000000',
-                                    textDecoration: 'none',
-                                }}
-                                to="/register"
-                            >
-                                Sign Up
-                            </Link>
-                        </MenuItem>
                     </Menu>
                 </Toolbar>
             </AppBar>
@@ -261,17 +250,6 @@ const NavMenu = () => {
                             to="/"
                         >
                             Log out
-                        </Link>
-                    </MenuItem>
-                    <MenuItem style={{ display: context.userInfo?.email === undefined ? 'block' : 'none' }} onClick={handleClose}>
-                        <Link
-                            style={{
-                                color: '#000000',
-                                textDecoration: 'none',
-                            }}
-                            to="/register"
-                        >
-                            Sign Up
                         </Link>
                     </MenuItem>
                 </Menu>
