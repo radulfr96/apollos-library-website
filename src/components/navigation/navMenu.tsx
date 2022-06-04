@@ -198,6 +198,19 @@ const NavMenu = () => {
                         </Link>
                     </IconButton>
                 </Box>
+                <Box style={{ display: !context.isPaidUser() ? 'block' : 'none' }}>
+                    <Link
+                        style={{
+                            color: '#FFFFFF',
+                            textDecoration: 'none',
+                        }}
+                        to="/subscriptions"
+                    >
+                        <Typography>
+                            Subscriptions
+                        </Typography>
+                    </Link>
+                </Box>
                 <Box style={{ display: context.isAdmin() ? 'block' : 'none' }}>
                     <AdminMenu />
                 </Box>
