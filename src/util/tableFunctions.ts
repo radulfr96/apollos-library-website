@@ -1,3 +1,5 @@
+import { Guid } from 'guid-typescript';
+
 export type Order = 'asc' | 'desc';
 
 export default class TableHelper {
@@ -24,7 +26,7 @@ export default class TableHelper {
     static getSorting<K extends keyof any>(
         order: Order,
         orderBy: K,
-    ): (a: { [key in K]: number | string | Date }, b: { [key in K]: number | string | Date }) => number {
+    ): (a: { [key in K]: number | string | Date | Guid }, b: { [key in K]: number | string | Date | Guid }) => number {
         return order === 'desc' ? (a, b) => TableHelper.desc(a, b, orderBy) : (a, b) => -TableHelper.desc(a, b, orderBy);
     }
 }

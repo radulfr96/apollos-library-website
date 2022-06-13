@@ -5,7 +5,7 @@ import React, { useContext, useState } from 'react';
 import PageHeading from '../../components/shared/pageHeading';
 import TabPanel from '../../components/shared/tabPanel';
 import { AppContext } from '../../userContext';
-import ReportTable from '../../components/reportTable';
+import ReportsTab from './reportsTab';
 
 interface ModerationState {
     tab: number;
@@ -23,14 +23,14 @@ const Moderation = () => {
     };
 
     return (
-        <Grid item xs={8} container justifyContent="center">
+        <Grid item xs={12} container justifyContent="center">
             <Grid item xs={12}>
                 <PageHeading headingText="Moderation" />
             </Grid>
             {
                 context.isAdmin() && (
                     <Grid item xs={12}>
-                        <Paper sx={{ width: '1000px' }}>
+                        <Paper>
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                 <Tabs
                                     onChange={handleTabChange}
@@ -40,7 +40,7 @@ const Moderation = () => {
                                 </Tabs>
                             </Box>
                             <TabPanel value={myAccountState.tab} index={0}>
-                                <ReportTable />
+                                <ReportsTab />
                             </TabPanel>
                         </Paper>
                     </Grid>
