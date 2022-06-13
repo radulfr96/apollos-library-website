@@ -6,21 +6,28 @@ import {
 import { useStore } from 'react-redux';
 import { push } from 'connected-react-router';
 import { ChevronRight, Delete } from '@mui/icons-material';
-import { SeriesListItem } from '../interfaces/seriesListItem';
 import TableHelper, { Order } from '../util/tableFunctions';
+import EntryReportListItem from '../interfaces/entryReportListItem';
 
 interface HeadCell {
-    id: keyof SeriesListItem;
+    id: keyof EntryReportListItem;
     label: string;
 }
 
 const headCells: HeadCell[] = [
-    { id: 'seriesId', label: 'Series ID' },
-    { id: 'name', label: 'Name' },
+    { id: 'reportId', label: 'Report ID' },
+    { id: 'entryId', label: 'Entry Type' },
+    { id: 'entryTypeId', label: 'Entry Type' },
+    { id: 'entryStatusId', label: 'Entry Type' },
+    { id: 'entryStatus', label: 'Entry Type' },
+    { id: 'reportedBy', label: 'Entry Type' },
+    { id: 'reportedDate', label: 'Entry Type' },
+    { id: 'createdBy', label: 'Entry Type' },
+    { id: 'createdDate', label: 'Entry Type' },
 ];
 
 interface EnhancedTableProps {
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof SeriesListItem) => void;
+    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof EntryReportListItem) => void;
     order: Order;
     orderBy: string;
 }
@@ -29,7 +36,7 @@ const EnhancedTableHead = (props: EnhancedTableProps): JSX.Element => {
     const { onRequestSort, orderBy, order } = props;
 
     const createSortHandler = (
-        property: keyof SeriesListItem,
+        property: keyof EntryReportListItem,
     ) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
@@ -75,24 +82,24 @@ const EnhancedTableHead = (props: EnhancedTableProps): JSX.Element => {
 };
 
 interface NavCellProps {
-    series: SeriesListItem;
-    deleteSeries: (seriesId: number) => void;
+    report: EntryReportListItem;
+    deleteReport: (reportId: number) => void;
 }
 
 const NavigationCell = (props: NavCellProps): JSX.Element => {
-    const { deleteSeries, series } = props;
+    const { deleteReport, report } = props;
     const store = useStore();
 
     return (
         <TableCell>
             <IconButton onClick={() => {
-                deleteSeries(series.seriesId);
+                deleteReport(report.reportId);
             }}
             >
                 <Delete sx={{ color: 'red' }} />
             </IconButton>
             <IconButton onClick={() => {
-                store.dispatch(push(`series/${series.seriesId}`));
+                store.dispatch(push(`series/${report.reportId}`));
             }}
             >
                 <ChevronRight />
@@ -102,54 +109,62 @@ const NavigationCell = (props: NavCellProps): JSX.Element => {
 };
 
 interface RowProps {
-    deleteSeries: (seriesId: number) => void;
-    series: SeriesListItem;
+    deleteReport: (seriesId: number) => void;
+    report: EntryReportListItem;
 }
 
 const Row = (props: RowProps): JSX.Element => {
-    const { series, deleteSeries } = props;
+    const { report, deleteReport } = props;
 
     return (
         <TableRow
-            key={series.seriesId}
+            key={report.reportId}
             hover
             sx={{
                 transition: 'all 0.4s',
             }}
         >
-            <TableCell>{series.seriesId}</TableCell>
-            <TableCell>{series.name}</TableCell>
+            <TableCell>{report.entryType}</TableCell>
+            <TableCell>{report.createdBy}</TableCell>
+            <TableCell>{report.createdDate}</TableCell>
+            <TableCell>{report.entryId}</TableCell>
+            <TableCell>{report.entryStatus}</TableCell>
+            <TableCell>{report.entryStatusId}</TableCell>
+            <TableCell>{report.entryTypeId}</TableCell>
+            <TableCell>{report.reportId}</TableCell>
+            <TableCell>{report.reportedBy}</TableCell>
+            <TableCell>{report.reportedDate}</TableCell>
             <NavigationCell
-                series={series}
-                deleteSeries={deleteSeries}
+                report={report}
+                deleteReport={deleteReport}
             />
         </TableRow>
     );
 };
 
-interface SeriesTableProps {
-    series: Array<SeriesListItem>;
-    deleteSeries: (seriesId: number) => void;
+interface ReportsTableProps {
+    reports: Array<EntryReportListItem>;
+    deleteReport: (reportId: number) => void;
 }
 
-const AuthorsTable = (props: SeriesTableProps): JSX.Element => {
+const ReportsTable = (props: ReportsTableProps): JSX.Element => {
     const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof SeriesListItem>('seriesId');
-    const { series, deleteSeries } = props;
+    const [orderBy, setOrderBy] = React.useState<keyof EntryReportListItem>('reportId');
+    const { reports, deleteReport } = props;
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
-        property: keyof SeriesListItem,
+        property: keyof EntryReportListItem,
     ) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
     };
 
-    const tableContent = TableHelper
-        .stableSort(series, TableHelper.getSorting(order, orderBy))
-        .map((row: SeriesListItem) => (
-            <Row series={row} deleteSeries={deleteSeries} />
+    let tableContent = null;
+    tableContent = TableHelper.stableSort(reports, TableHelper.getSorting(order, orderBy))
+        .map((row: EntryReportListItem) => (
+            <Row report={row} deleteReport={deleteReport} />
         ));
 
     return (
@@ -172,4 +187,4 @@ const AuthorsTable = (props: SeriesTableProps): JSX.Element => {
     );
 };
 
-export default AuthorsTable;
+export default ReportsTable;

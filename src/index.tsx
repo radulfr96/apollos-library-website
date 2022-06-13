@@ -35,6 +35,7 @@ import StripeSubscriptionPage from './pages/subscription/stripeSubscriptionPage'
 import Protected from './components/navigation/protected';
 import SubscriberRoute from './components/navigation/subscriberRoute';
 import AdminRoute from './components/navigation/adminRoute';
+import Moderation from './pages/moderation/moderation';
 // Create browser history to use in the Redux store
 
 // Get the application-wide store instance, prepopulating
@@ -229,6 +230,11 @@ ReactDOM.render(
                                                     <StripeSubscriptionPage />
                                                 </SubscriberRoute>
                                             </Protected>
+                                        </Route>
+                                        <Route path="/moderation">
+                                            <AdminRoute>
+                                                <Moderation />
+                                            </AdminRoute>
                                         </Route>
                                     </Switch>
                                 </Layout>

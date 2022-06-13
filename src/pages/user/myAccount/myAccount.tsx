@@ -1,34 +1,11 @@
 import React, { useState } from 'react';
 import {
-    Paper, Tabs, Tab, Typography, Box,
+    Paper, Tabs, Tab, Box,
 } from '@mui/material';
 import MyDetails from './accountDetails';
 import DeactivateAccount from './deactivateAccount';
 import UpdatePassword from './updatePassword';
-
-interface TabPanelProps {
-    children: React.ReactNode;
-    index: any;
-    value: any;
-}
-
-const TabPanel = (props: TabPanelProps) => {
-    const {
-        children, value, index,
-    } = props;
-
-    return (
-        <Typography
-            component="div"
-            role="tabpanel"
-            hidden={value !== index}
-            id={`scrollable-prevent-tabpanel-${index}`}
-            aria-labelledby={`scrollable-prevent-tab-${index}`}
-        >
-            {value === index && <Box p={3}>{children}</Box>}
-        </Typography>
-    );
-};
+import TabPanel from '../../../components/shared/tabPanel';
 
 interface MyAccountState {
     tab: number;

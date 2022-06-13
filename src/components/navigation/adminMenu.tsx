@@ -65,6 +65,17 @@ const AdminMenu = () => {
                         Genres
                     </MenuItem>
                 </Link>
+                <Link
+                    style={{
+                        color: '#000000',
+                        textDecoration: 'none',
+                    }}
+                    to="/moderation"
+                >
+                    <MenuItem onClick={handleClose}>
+                        Moderation
+                    </MenuItem>
+                </Link>
             </Menu>
         </Box>
     );
