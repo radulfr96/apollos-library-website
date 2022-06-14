@@ -36,6 +36,7 @@ import Protected from './components/navigation/protected';
 import SubscriberRoute from './components/navigation/subscriberRoute';
 import AdminRoute from './components/navigation/adminRoute';
 import Moderation from './pages/moderation/moderation';
+import Report from './pages/moderation/report';
 // Create browser history to use in the Redux store
 
 // Get the application-wide store instance, prepopulating
@@ -234,6 +235,11 @@ ReactDOM.render(
                                         <Route path="/moderation">
                                             <AdminRoute>
                                                 <Moderation />
+                                            </AdminRoute>
+                                        </Route>
+                                        <Route path="/report/:id">
+                                            <AdminRoute>
+                                                <Report />
                                             </AdminRoute>
                                         </Route>
                                     </Switch>

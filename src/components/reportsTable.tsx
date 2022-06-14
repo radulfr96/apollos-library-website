@@ -91,7 +91,7 @@ const NavigationCell = (props: NavCellProps): JSX.Element => {
     return (
         <TableCell>
             <IconButton onClick={() => {
-                store.dispatch(push(`series/${report.reportId}`));
+                store.dispatch(push(`report/${report.reportId}`));
             }}
             >
                 <ChevronRight />
