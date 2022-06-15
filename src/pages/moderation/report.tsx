@@ -20,6 +20,8 @@ interface ReportParams {
 
 interface ReportState {
     report: EntryReportListItem;
+    reportedUser: string;
+    createdUser: string;
 }
 
 const Report = () => {
@@ -36,6 +38,8 @@ const Report = () => {
             createdBy: Guid.createEmpty(),
             createdDate: new Date(),
         },
+        createdUser: '',
+        reportedUser: '',
     });
     const params = useParams<ReportParams>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -56,9 +60,32 @@ const Report = () => {
             })
                 .then((response) => {
                     setReportState({
-                        report: response.data,
+                        ...reportState,
+                        report: response.data.createdDate,
                     });
-                    setIsLoading(false);
+                }).then(() => {
+                    const requests = [];
+
+                    requests.push(Axios.get(`${configHelper.idpUrl}/api/user/${reportState.report.createdBy}`, {
+                        headers: {
+                            Authorization: `Bearer ${context.getToken()}`,
+                        },
+                    }));
+
+                    requests.push(Axios.get(`${configHelper.idpUrl}/api/user/${reportState.report.reportedBy}`, {
+                        headers: {
+                            Authorization: `Bearer ${context.getToken()}`,
+                        },
+                    }));
+
+                    Promise.allSettled(requests).then((responses: Array<any>) => {
+                        setReportState({
+                            ...reportState,
+                            createdUser: responses[0].value.data.username,
+                            reportedUser: responses[0].value.data.username,
+                        });
+                        setIsLoading(false);
+                    });
                 });
         }
     }, [context]);
@@ -79,57 +106,69 @@ const Report = () => {
                             Report
                         </Typography>
                     </Grid>
-                    <Grid item xs={6Y}>
-                    <ReadOnlyLabel text="Report ID" />
-                    <ReadOnlyText
-                        text={params.id}
-                    />
+                    <Grid item xs={6}>
+                        <ReadOnlyLabel text="Report ID" />
+                        <ReadOnlyText
+                            text={params.id}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <ReadOnlyLabel text="Entry Type" />
+                        <ReadOnlyText
+                            text={reportState.report.entryType}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <ReadOnlyLabel text="Created By" />
+                        <ReadOnlyText
+                            text={reportState.createdUser}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <ReadOnlyLabel text="Reported By" />
+                        <ReadOnlyText
+                            text={reportState.reportedUser}
+                        />
+                    </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                    <ReadOnlyLabel text="Entry Type" />
-                    <ReadOnlyText
-                        text={reportState.report.entryType}
-                    />
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <Typography variant="h4">
+                            Entry
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <Typography variant="h4">
+                            Entry
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={2}>
+                    <Grid item xs={12} style={{ paddingTop: '10px' }}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => {
+                                store.dispatch(push('/moderation'));
+                            }}
+                        >
+                            Confirm
+                        </Button>
+                        <Button
+                            sx={{ marginLeft: '10px' }}
+                            variant="contained"
+                            color="secondary"
+                            onClick={() => {
+                                store.dispatch(push('/moderation'));
+                            }}
+                        >
+                            Reject
+                        </Button>
+                    </Grid>
                 </Grid>
             </Grid>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Typography variant="h4">
-                        Entry
-                    </Typography>
-                </Grid>
-            </Grid>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Typography variant="h4">
-                        Entry
-                    </Typography>
-                </Grid>
-            </Grid>
-            <Grid container spacing={2}>
-                <Grid item xs={12} style={{ paddingTop: '10px' }}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => {
-                            store.dispatch(push('/moderation'));
-                        }}
-                    >
-                        Confirm
-                    </Button>
-                    <Button
-                        sx={{ marginLeft: '10px' }}
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => {
-                            store.dispatch(push('/moderation'));
-                        }}
-                    >
-                        Reject
-                    </Button>
-                </Grid>
-            </Grid>
-        </Grid>
         </>
     );
 };
