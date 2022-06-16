@@ -36,7 +36,7 @@ import Protected from './components/navigation/protected';
 import SubscriberRoute from './components/navigation/subscriberRoute';
 import AdminRoute from './components/navigation/adminRoute';
 import Moderation from './pages/moderation/moderation';
-import Report from './pages/moderation/report';
+import Report from './pages/moderation/report/report';
 // Create browser history to use in the Redux store
 
 // Get the application-wide store instance, prepopulating
