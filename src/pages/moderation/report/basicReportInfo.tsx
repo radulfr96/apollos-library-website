@@ -35,13 +35,21 @@ const BasicReportInfo = (props: BasicInfoProps) => {
 
         const requests = [];
 
-        requests.push(Axios.get(`${configHelper.idpUrl}/api/user/${report.createdBy}`));
-        requests.push(Axios.get(`${configHelper.idpUrl}/api/user/${report.reportedBy}`));
+        requests.push(Axios.get(`${configHelper.idpUrl}/api/user/${report.createdBy}`, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        }));
+        requests.push(Axios.get(`${configHelper.idpUrl}/api/user/${report.reportedBy}`, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        }));
 
         Promise.allSettled(requests).then((responses: Array<any>) => {
             setBasicInfoState({
-                createdUser: responses[0].value.data,
-                reportedUser: responses[1].value.data,
+                createdUser: responses[0].value.data.username,
+                reportedUser: responses[1].value.data.username,
             });
             setIsLoading(false);
         });
@@ -81,6 +89,18 @@ const BasicReportInfo = (props: BasicInfoProps) => {
                     <ReadOnlyLabel text="Reported By" />
                     <ReadOnlyText
                         text={basicInfoState.reportedUser}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <ReadOnlyLabel text="Created Date" />
+                    <ReadOnlyText
+                        text={report.createdDate}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <ReadOnlyLabel text="Reported Date" />
+                    <ReadOnlyText
+                        text={report.reportedDate}
                     />
                 </Grid>
             </Grid>

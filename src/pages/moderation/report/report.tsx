@@ -84,30 +84,26 @@ const Report = () => {
                 </Grid>
             </Grid>
             <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} style={{ paddingTop: '10px' }}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => {
-                                    store.dispatch(push('/moderation'));
-                                }}
-                            >
-                                Confirm
-                            </Button>
-                            <Button
-                                sx={{ marginLeft: '10px' }}
-                                variant="contained"
-                                color="secondary"
-                                onClick={() => {
-                                    store.dispatch(push('/moderation'));
-                                }}
-                            >
-                                Reject
-                            </Button>
-                        </Grid>
-                    </Grid>
+                <Grid item xs={12} style={{ paddingTop: '10px' }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => {
+                            store.dispatch(push('/moderation'));
+                        }}
+                    >
+                        Confirm
+                    </Button>
+                    <Button
+                        sx={{ marginLeft: '10px' }}
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => {
+                            store.dispatch(push('/moderation'));
+                        }}
+                    >
+                        Reject
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>
