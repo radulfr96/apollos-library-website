@@ -1,9 +1,10 @@
 import { Guid } from 'guid-typescript';
+import EntryTypeEnum from '../enums/entryTypeEnum';
 
 interface EntryReportListItem {
     reportId: number;
     entryId: number;
-    entryTypeId: number;
+    entryTypeId: EntryTypeEnum;
     entryType: string;
     entryStatusId: number;
     entryStatus: string;

@@ -12,6 +12,8 @@ import ConfigHelper from '../../../config/configHelper';
 import EntryReportListItem from '../../../interfaces/entryReportListItem';
 import { AppContext } from '../../../userContext';
 import BasicReportInfo from './basicReportInfo';
+import BookEntry from './bookEntry';
+import EntryTypeEnum from '../../../enums/entryTypeEnum';
 
 interface ReportParams {
     id?: string;
@@ -72,39 +74,41 @@ const Report = () => {
     }
 
     return (
-        <Grid item xs={12}>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <PageHeading headingText="Report Details" />
-                </Grid>
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <PageHeading headingText="Report Details" />
             </Grid>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <BasicReportInfo report={reportState.report} reportId={params.id} />
-                </Grid>
+            <Grid item xs={12}>
+                <BasicReportInfo report={reportState.report} reportId={params.id} />
             </Grid>
-            <Grid container spacing={2}>
-                <Grid item xs={12} style={{ paddingTop: '10px' }}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => {
-                            store.dispatch(push('/moderation'));
-                        }}
-                    >
-                        Confirm
-                    </Button>
-                    <Button
-                        sx={{ marginLeft: '10px' }}
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => {
-                            store.dispatch(push('/moderation'));
-                        }}
-                    >
-                        Reject
-                    </Button>
-                </Grid>
+            <Grid item xs={12}>
+                {
+                    reportState.report.entryTypeId === EntryTypeEnum.Book
+                    && (
+                        <BookEntry entryId={reportState.report.entryId} />
+                    )
+                }
+            </Grid>
+            <Grid item xs={12} style={{ paddingTop: '10px' }}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                        store.dispatch(push('/moderation'));
+                    }}
+                >
+                    Confirm
+                </Button>
+                <Button
+                    sx={{ marginLeft: '10px' }}
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => {
+                        store.dispatch(push('/moderation'));
+                    }}
+                >
+                    Reject
+                </Button>
             </Grid>
         </Grid>
     );
