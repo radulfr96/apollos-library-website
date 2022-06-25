@@ -3,7 +3,7 @@ import EntryTypeEnum from '../enums/entryTypeEnum';
 
 interface EntryReportListItem {
     reportId: number;
-    entryId: number;
+    entryRecordId: number;
     entryTypeId: EntryTypeEnum;
     entryType: string;
     entryStatusId: number;

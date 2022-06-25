@@ -1,6 +1,7 @@
 import {
     Button, CircularProgress, Grid,
 } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import { Guid } from 'guid-typescript';
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
@@ -14,6 +15,10 @@ import { AppContext } from '../../../userContext';
 import BasicReportInfo from './basicReportInfo';
 import BookEntry from './bookEntry';
 import EntryTypeEnum from '../../../enums/entryTypeEnum';
+import AuthorEntry from './authorEntry';
+import BusinessEntry from './businessEntry';
+import SeriesEntry from './seriesEntry';
+import EntryReportStatusEnum from '../../../enums/entryReportStatusEnum';
 
 interface ReportParams {
     id?: string;
@@ -29,7 +34,7 @@ const Report = () => {
     const [reportState, setReportState] = useState<ReportState>({
         report: {
             reportId: 0,
-            entryId: 0,
+            entryRecordId: 0,
             entryTypeId: 0,
             entryType: '',
             entryStatusId: 0,
@@ -42,6 +47,7 @@ const Report = () => {
         createdUser: '',
         reportedUser: '',
     });
+    const { enqueueSnackbar } = useSnackbar();
     const params = useParams<ReportParams>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const configHelper = new ConfigHelper();
@@ -69,6 +75,48 @@ const Report = () => {
         }
     }, [context]);
 
+    const renderErrorSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'error',
+        });
+    };
+
+    const renderSuccessSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'success',
+        });
+    };
+
+    const renderWarningSnackbar = (message: string): void => {
+        enqueueSnackbar(message, {
+            variant: 'warning',
+        });
+    };
+
+    const updateReport = (status: EntryReportStatusEnum) => {
+        Axios.put(`${configHelper.apiUrl}/api/moderation`, {
+            entryReportId: params.id,
+            entryReportStatus: status,
+        }, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        })
+            .then((response) => {
+                if (response.status === 200) {
+                    renderSuccessSnackbar('Update successful');
+                    store.dispatch(push('/moderation'));
+                }
+            })
+            .catch((error) => {
+                if (error.response.status === 400) {
+                    renderWarningSnackbar('Unable to update report invalid input');
+                } else {
+                    renderErrorSnackbar('Unable to update report please contact admin');
+                }
+            });
+    };
+
     if (isLoading) {
         return (<CircularProgress />);
     }
@@ -85,7 +133,25 @@ const Report = () => {
                 {
                     reportState.report.entryTypeId === EntryTypeEnum.Book
                     && (
-                        <BookEntry entryId={reportState.report.entryId} />
+                        <BookEntry entryId={reportState.report.entryRecordId} />
+                    )
+                }
+                {
+                    reportState.report.entryTypeId === EntryTypeEnum.Author
+                    && (
+                        <AuthorEntry entryId={reportState.report.entryRecordId} />
+                    )
+                }
+                {
+                    reportState.report.entryTypeId === EntryTypeEnum.Series
+                    && (
+                        <SeriesEntry entryId={reportState.report.entryRecordId} />
+                    )
+                }
+                {
+                    reportState.report.entryTypeId === EntryTypeEnum.Business
+                    && (
+                        <BusinessEntry entryId={reportState.report.entryRecordId} />
                     )
                 }
             </Grid>
@@ -94,7 +160,7 @@ const Report = () => {
                     variant="contained"
                     color="primary"
                     onClick={() => {
-                        store.dispatch(push('/moderation'));
+                        updateReport(EntryReportStatusEnum.Confirmed);
                     }}
                 >
                     Confirm
@@ -104,7 +170,7 @@ const Report = () => {
                     variant="contained"
                     color="secondary"
                     onClick={() => {
-                        store.dispatch(push('/moderation'));
+                        updateReport(EntryReportStatusEnum.Cancelled);
                     }}
                 >
                     Reject

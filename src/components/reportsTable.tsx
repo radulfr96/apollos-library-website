@@ -16,7 +16,7 @@ interface HeadCell {
 
 const headCells: HeadCell[] = [
     { id: 'reportId', label: 'Report ID' },
-    { id: 'entryId', label: 'Entry ID' },
+    { id: 'entryRecordId', label: 'Entry Record ID' },
     { id: 'entryTypeId', label: 'Entry Type' },
     { id: 'entryStatus', label: 'Entry Status' },
     { id: 'reportedBy', label: 'Reported By' },
@@ -116,7 +116,7 @@ const Row = (props: RowProps): JSX.Element => {
             }}
         >
             <TableCell>{report.reportId}</TableCell>
-            <TableCell>{report.entryId}</TableCell>
+            <TableCell>{report.entryRecordId}</TableCell>
             <TableCell>{report.entryType}</TableCell>
             <TableCell>{report.entryStatus}</TableCell>
             <TableCell>{report.reportedBy}</TableCell>

@@ -1,33 +1,34 @@
 import {
-    Card, CardContent, CardHeader, CircularProgress, Grid, Typography,
+    CircularProgress, Grid, Typography,
 } from '@mui/material';
 import Axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import ReadOnlyLabel from '../../../components/shared/readOnlyLabel';
 import ReadOnlyText from '../../../components/shared/readOnlyText';
 import ConfigHelper from '../../../config/configHelper';
-import BookEntryDetails from '../../../interfaces/bookEntryDetails';
+import BusinessEntryDetails from '../../../interfaces/businessEntryDetails';
 import { AppContext } from '../../../userContext';
 
-interface BookEntryProp {
+interface BusinessEntryProp {
     entryId: number;
 }
 
-interface BookEntryState {
-    details: BookEntryDetails;
+interface BusinessEntryState {
+    details: BusinessEntryDetails;
 }
 
-const BookEntry = (props: BookEntryProp) => {
+const BookEntry = (props: BusinessEntryProp) => {
     const { entryId } = props;
-    const [bookState, setBookState] = useState<BookEntryState>(
+    const [bookState, setBookState] = useState<BusinessEntryState>(
         {
             details: {
-                bookId: 0,
-                isbn: '',
-                eISBN: '',
-                title: '',
-                subtitle: '',
-                coverImage: '',
+                businessId: 0,
+                name: '',
+                website: '',
+                streetAddress: '',
+                city: '',
+                postcode: '',
+                state: '',
             },
         },
     );
@@ -39,7 +40,7 @@ const BookEntry = (props: BookEntryProp) => {
         if (context.getToken() === undefined) {
             return;
         }
-        Axios.get(`${configHelper.apiUrl}/api/book/bookrecord/${entryId}`, {
+        Axios.get(`${configHelper.apiUrl}/api/business/businessrecord/${entryId}`, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },
@@ -62,61 +63,53 @@ const BookEntry = (props: BookEntryProp) => {
             <Grid item xs={9}>
                 <Grid item xs={12}>
                     <Typography variant="h4">
-                        Book Entry Details
+                        Business Entry Details
                     </Typography>
                 </Grid>
                 <Grid item container xs={12}>
                     <Grid item xs={6}>
-                        <ReadOnlyLabel text="Book Record ID" />
+                        <ReadOnlyLabel text="Business Record ID" />
                         <ReadOnlyText
                             text={entryId}
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <ReadOnlyLabel text="Book ID" />
+                        <ReadOnlyLabel text="Business ID" />
                         <ReadOnlyText
-                            text={bookState.details.bookId}
+                            text={bookState.details.businessId}
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <ReadOnlyLabel text="Title" />
+                        <ReadOnlyLabel text="Name" />
                         <ReadOnlyText
-                            text={bookState.details.title}
+                            text={bookState.details.name}
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <ReadOnlyLabel text="ISBN" />
+                        <ReadOnlyLabel text="Website" />
                         <ReadOnlyText
-                            text={bookState.details.isbn}
+                            text={bookState.details.website}
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <ReadOnlyLabel text="eISBN" />
+                        <ReadOnlyLabel text="City" />
                         <ReadOnlyText
-                            text={bookState.details.eISBN}
+                            text={bookState.details.city}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <ReadOnlyLabel text="Postcode" />
+                        <ReadOnlyText
+                            text={bookState.details.postcode}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <ReadOnlyLabel text="State" />
+                        <ReadOnlyText
+                            text={bookState.details.state}
                         />
                     </Grid>
                 </Grid>
-            </Grid>
-            <Grid item xs={3}>
-                <Card sx={{ width: '250px' }}>
-                    <CardHeader
-                        title="Book Cover Image"
-                    />
-                    <CardContent>
-                        {
-                            (bookState.details.coverImage && bookState.details.coverImage !== '') && (<img style={{ maxWidth: '150px', maxHeight: '230px' }} alt="Book Cover" src={bookState.details.coverImage} />)
-                        }
-
-                        {
-                            ((!bookState.details.coverImage) || bookState.details.coverImage === '') && (
-                                <Typography>
-                                    Book cover not set
-                                </Typography>
-                            )
-                        }
-                    </CardContent>
-                </Card>
             </Grid>
         </Grid>
     );

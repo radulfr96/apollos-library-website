@@ -37,6 +37,8 @@ const Moderation = () => {
                                     value={myAccountState.tab}
                                 >
                                     <Tab label="Reports" />
+                                    <Tab label="Users With Rejected Reports" />
+                                    <Tab label="Users With Confirmed Reported Entries" />
                                 </Tabs>
                             </Box>
                             <TabPanel value={myAccountState.tab} index={0}>
