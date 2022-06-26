@@ -6,6 +6,7 @@ import PageHeading from '../../components/shared/pageHeading';
 import TabPanel from '../../components/shared/tabPanel';
 import { AppContext } from '../../userContext';
 import ReportsTab from './reportsTab';
+import UsersTab from './usersTab';
 
 interface ModerationState {
     tab: number;
@@ -37,12 +38,14 @@ const Moderation = () => {
                                     value={myAccountState.tab}
                                 >
                                     <Tab label="Reports" />
-                                    <Tab label="Users With Rejected Reports" />
-                                    <Tab label="Users With Confirmed Reported Entries" />
+                                    <Tab label="Users" />
                                 </Tabs>
                             </Box>
                             <TabPanel value={myAccountState.tab} index={0}>
                                 <ReportsTab />
+                            </TabPanel>
+                            <TabPanel value={myAccountState.tab} index={1}>
+                                <UsersTab />
                             </TabPanel>
                         </Paper>
                     </Grid>
