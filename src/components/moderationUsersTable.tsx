@@ -5,23 +5,22 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from '@mui/icons-material';
-import { User } from '../interfaces/user';
 import TableHelper, { Order } from '../util/tableFunctions';
+import ModerationUser from '../interfaces/moderationUser';
 
 interface HeadCell {
-    id: keyof User;
+    id: keyof ModerationUser;
     label: string;
 }
 
 const headCells: HeadCell[] = [
     { id: 'userID', label: 'User ID' },
-    { id: 'username', label: 'Username' },
-    { id: 'email', label: 'Email' },
-    { id: 'isActive', label: ' User is Active' },
+    { id: 'reportsOfUser', label: 'Reported Entries' },
+    { id: 'reportsByUser', label: 'Reports' },
 ];
 
 interface EnhancedTableProps {
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof User) => void;
+    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof ModerationUser) => void;
     order: Order;
     orderBy: string;
 }
@@ -30,7 +29,7 @@ const EnhancedTableHead = (props: EnhancedTableProps) => {
     const {
         onRequestSort, order, orderBy,
     } = props;
-    const createSortHandler = (property: keyof User) => (event: React.MouseEvent<unknown>) => {
+    const createSortHandler = (property: keyof ModerationUser) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
 
@@ -74,7 +73,7 @@ const EnhancedTableHead = (props: EnhancedTableProps) => {
 };
 
 interface RowProps {
-    user: User;
+    user: ModerationUser;
 }
 
 const Row = (props: RowProps) => {
@@ -89,9 +88,8 @@ const Row = (props: RowProps) => {
             }}
         >
             <TableCell>{user.userID}</TableCell>
-            <TableCell>{user.username}</TableCell>
-            <TableCell>{user.email}</TableCell>
-            <TableCell>{user.isActive}</TableCell>
+            <TableCell>{user.reportsOfUser}</TableCell>
+            <TableCell>{user.reportsByUser}</TableCell>
             <TableCell>
                 <Link to={`/userdetails/${user.userID}`}>
                     <IconButton>
@@ -104,15 +102,15 @@ const Row = (props: RowProps) => {
 };
 
 interface ModerationUserTableProps {
-    users: Array<User>;
+    users: Array<ModerationUser>;
 }
 
 const ModerationUsersTable = (props: ModerationUserTableProps) => {
     const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof User>('userID');
+    const [orderBy, setOrderBy] = React.useState<keyof ModerationUser>('userID');
     const { users } = props;
 
-    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof User) => {
+    const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof ModerationUser) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
@@ -120,7 +118,7 @@ const ModerationUsersTable = (props: ModerationUserTableProps) => {
 
     let tableContent = null;
     tableContent = TableHelper.stableSort(users, TableHelper.getSorting(order, orderBy))
-        .map((row: User) => (
+        .map((row: ModerationUser) => (
             <Row user={row} />
         ));
 
