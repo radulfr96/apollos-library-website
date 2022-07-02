@@ -91,7 +91,7 @@ const Row = (props: RowProps) => {
             <TableCell>{user.reportsOfUser}</TableCell>
             <TableCell>{user.reportsByUser}</TableCell>
             <TableCell>
-                <Link to={`/userdetails/${user.userID}`}>
+                <Link to={`/usermoderation/${user.userID}`}>
                     <IconButton>
                         <ChevronRight />
                     </IconButton>

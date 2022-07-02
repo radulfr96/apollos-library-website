@@ -66,7 +66,7 @@ const DeactivateAccount = () => {
         })
             .then((response) => {
                 if (response.status === 200) {
-                    renderSuccessSnackbar('Deletion successful');
+                    renderSuccessSnackbar('Deactivation successful');
                     context.clearUserInfo();
                     store.dispatch(push('/'));
                 }
@@ -77,7 +77,7 @@ const DeactivateAccount = () => {
                         renderWarningSnackbar(message);
                     });
                 } else {
-                    renderErrorSnackbar('Unable to delete account please contact admin');
+                    renderErrorSnackbar('Unable to deactivate account please contact admin');
                 }
             });
     };
