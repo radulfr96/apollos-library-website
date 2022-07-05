@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Grid } from '@mui/material';
 import { AppContext } from '../userContext';
 import NavMenu from './navigation/navMenu';
+import Footer from './footer';
 
 const Layout = (props: { children?: React.ReactNode }) => {
     const { children } = props;
@@ -15,6 +16,7 @@ const Layout = (props: { children?: React.ReactNode }) => {
                     <Grid container sx={{ padding: '20px' }}>
                         {children}
                     </Grid>
+                    <Footer />
                 </>
             )}
         </AppContext.Consumer>
