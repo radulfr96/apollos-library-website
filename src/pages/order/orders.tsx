@@ -82,7 +82,7 @@ const Orders = () => {
     }
 
     return (
-        <Grid xs={6}>
+        <Grid item xs={6}>
             <Grid spacing={2} container justifyContent="center">
                 <Grid item xs={12}>
                     <PageHeading headingText="Orders" />

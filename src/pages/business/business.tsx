@@ -182,7 +182,7 @@ const BusinessPage = () => {
         return (<CircularProgress />);
     }
     return (
-        <Grid xs={4}>
+        <Grid item xs={4}>
             <Grid container spacing={2} justifyContent="center">
                 {
                     !businessState.newBusiness && (

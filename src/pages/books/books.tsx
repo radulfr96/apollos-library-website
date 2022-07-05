@@ -80,7 +80,7 @@ const Books = () => {
         return (<CircularProgress />);
     }
     return (
-        <Grid xs={8}>
+        <Grid item xs={8}>
             <Grid container justifyContent="center">
                 <Grid item xs={12}>
                     <PageHeading headingText="Books" />

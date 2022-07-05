@@ -9,6 +9,7 @@ import SubscriptionTypeEnum from './enums/subscriptionTypeEnum';
 export const AppContext = React.createContext<State & Functions>({
     userInfo: null,
     isAdmin: () => false,
+    isModerator: () => false,
     isPaidUser: () => false,
     getUserInfo: () => null,
     clearUserInfo: () => null,
@@ -18,6 +19,7 @@ export const AppContext = React.createContext<State & Functions>({
 
 interface Functions {
     isAdmin(): boolean;
+    isModerator(): boolean;
     isPaidUser(): boolean;
     getUserInfo(): void;
     clearUserInfo(): void;
@@ -43,6 +45,15 @@ const AppContextProvider = (props: AppContextProviderProps) => {
         if (state.userInfo == null) return false;
         if (state.userInfo.roles === undefined) return false;
         if (state.userInfo.roles.indexOf('administrator') > -1) {
+            return true;
+        }
+        return false;
+    };
+
+    const isModerator = (): boolean => {
+        if (state.userInfo == null) return false;
+        if (state.userInfo.roles === undefined) return false;
+        if (state.userInfo.roles.indexOf('administrator') > -1 || state.userInfo.roles.indexOf('moderator') > -1) {
             return true;
         }
         return false;
@@ -83,7 +94,7 @@ const AppContextProvider = (props: AppContextProviderProps) => {
                             userInfo: {
                                 username: user.profile.username,
                                 roles: user.profile.role,
-                                userId: user.profile.sid,
+                                userId: user.profile.userid,
                                 token: user.access_token,
                                 email: user.profile.emailaddress,
                             },
@@ -96,7 +107,7 @@ const AppContextProvider = (props: AppContextProviderProps) => {
 
     // eslint-disable-next-line react/jsx-no-constructed-context-values
     const contextValue = {
-        ...state, isAdmin, isPaidUser, getUserInfo, clearUserInfo, getToken,
+        ...state, isAdmin, isModerator, isPaidUser, getUserInfo, clearUserInfo, getToken,
     };
 
     const { children } = props;

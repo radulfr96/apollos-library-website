@@ -141,7 +141,7 @@ const GenrePage = () => {
     }
 
     return (
-        <Grid xs={3}>
+        <Grid item xs={3}>
 
             <Grid container spacing={2}>
                 <Grid item xs={12}>

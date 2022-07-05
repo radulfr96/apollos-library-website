@@ -156,144 +156,146 @@ const LibraryEntryPage = () => {
     }
 
     return (
-        <Grid container spacing={2}>
-            <Grid item xs={12}>
-                {
-                    !entryState.newEntry && (
-                        <PageHeading headingText="Entry Details" />
-                    )
-                }
-                {
-                    entryState.newEntry && (
-                        <PageHeading headingText="New Entry" />
-                    )
-                }
-            </Grid>
-            <Formik
-                initialValues={entryState.entry}
-                onSubmit={() => { }}
-                validationSchema={
-                    yup.object().shape({
-                        quantity: yup.number()
-                            .min(1, 'Entry must have quantity of at least 1'),
-                        bookId: yup.number()
-                            .required('Entry must have a book'),
-                    })
-                }
-            >
-                {({
-                    values,
-                    errors,
-                    handleChange,
-                    validateForm,
-                    setFieldValue,
-                }) => (
-                    <Grid item xs={12}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={3}>
-                                <Grid container spacing={2}>
-                                    {
-                                        !entryState.newEntry && (
-                                            <Grid item xs={12}>
-                                                <InputTextField
-                                                    label="Entry Id"
-                                                    required
-                                                    type="text"
-                                                    keyName="entryId"
-                                                    value={values.entryId}
-                                                    onChange={handleChange}
-                                                    error={!!(errors.entryId)}
-                                                    errorMessage={errors.entryId}
-                                                    readonly
-                                                />
-                                            </Grid>
-                                        )
-                                    }
+        <Grid item xs={12}>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    {
+                        !entryState.newEntry && (
+                            <PageHeading headingText="Entry Details" />
+                        )
+                    }
+                    {
+                        entryState.newEntry && (
+                            <PageHeading headingText="New Entry" />
+                        )
+                    }
+                </Grid>
+                <Formik
+                    initialValues={entryState.entry}
+                    onSubmit={() => { }}
+                    validationSchema={
+                        yup.object().shape({
+                            quantity: yup.number()
+                                .min(1, 'Entry must have quantity of at least 1'),
+                            bookId: yup.number()
+                                .required('Entry must have a book'),
+                        })
+                    }
+                >
+                    {({
+                        values,
+                        errors,
+                        handleChange,
+                        validateForm,
+                        setFieldValue,
+                    }) => (
+                        <Grid item xs={12}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={3}>
+                                    <Grid container spacing={2}>
+                                        {
+                                            !entryState.newEntry && (
+                                                <Grid item xs={12}>
+                                                    <InputTextField
+                                                        label="Entry Id"
+                                                        required
+                                                        type="text"
+                                                        keyName="entryId"
+                                                        value={values.entryId}
+                                                        onChange={handleChange}
+                                                        error={!!(errors.entryId)}
+                                                        errorMessage={errors.entryId}
+                                                        readonly
+                                                    />
+                                                </Grid>
+                                            )
+                                        }
 
-                                    <Grid item xs={12}>
-                                        <InputTextField
-                                            label="Quantity"
-                                            required
-                                            type="number"
-                                            keyName="quantity"
-                                            value={values.quantity}
-                                            onChange={handleChange}
-                                            error={!!(errors.quantity)}
-                                            errorMessage={errors.quantity}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Typedown
-                                            label="Book"
-                                            id="bookId"
-                                            options={
-                                                entryState.books.map<TypedownOption>((book) => ({
-                                                    value: book.bookId,
-                                                    name: `${book.title} ${book.isbn ? '' : `${(book.isbn)}`}`,
-                                                } as TypedownOption))
-                                            }
-                                            value={values.bookId}
-                                            updateSelection={(selected?: number | string) => {
-                                                if (selected !== undefined) {
-                                                    setFieldValue('bookId', selected);
-                                                    setEntryState({
-                                                        ...entryState,
-                                                        entry: {
-                                                            ...entryState.entry,
-                                                            bookId: selected as number,
-                                                        },
-                                                    });
+                                        <Grid item xs={12}>
+                                            <InputTextField
+                                                label="Quantity"
+                                                required
+                                                type="number"
+                                                keyName="quantity"
+                                                value={values.quantity}
+                                                onChange={handleChange}
+                                                error={!!(errors.quantity)}
+                                                errorMessage={errors.quantity}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <Typedown
+                                                label="Book"
+                                                id="bookId"
+                                                options={
+                                                    entryState.books.map<TypedownOption>((book) => ({
+                                                        value: book.bookId,
+                                                        name: `${book.title} ${book.isbn ? '' : `${(book.isbn)}`}`,
+                                                    } as TypedownOption))
                                                 }
-                                            }}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} style={{ paddingTop: '10px' }}>
-                                        {!entryState.newEntry && (
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    if (errors !== null) {
-                                                        updateEntry(values, validateForm);
+                                                value={values.bookId}
+                                                updateSelection={(selected?: number | string) => {
+                                                    if (selected !== undefined) {
+                                                        setFieldValue('bookId', selected);
+                                                        setEntryState({
+                                                            ...entryState,
+                                                            entry: {
+                                                                ...entryState.entry,
+                                                                bookId: selected as number,
+                                                            },
+                                                        });
                                                     }
                                                 }}
-                                            >
-                                                Update
-                                            </Button>
-                                        )}
-                                        {entryState.newEntry && (
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    if (errors !== null) {
-                                                        addEntry(values, validateForm);
-                                                    }
-                                                }}
-                                            >
-                                                Add
-                                            </Button>
-                                        )}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} style={{ paddingTop: '10px' }}>
+                                            {!entryState.newEntry && (
+                                                <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        if (errors !== null) {
+                                                            updateEntry(values, validateForm);
+                                                        }
+                                                    }}
+                                                >
+                                                    Update
+                                                </Button>
+                                            )}
+                                            {entryState.newEntry && (
+                                                <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        if (errors !== null) {
+                                                            addEntry(values, validateForm);
+                                                        }
+                                                    }}
+                                                >
+                                                    Add
+                                                </Button>
+                                            )}
 
-                                        <Button
-                                            sx={{ marginLeft: '10px' }}
-                                            variant="contained"
-                                            color="secondary"
-                                            onClick={() => {
-                                                store.dispatch(push('/library'));
-                                            }}
-                                        >
-                                            Cancel
-                                        </Button>
+                                            <Button
+                                                sx={{ marginLeft: '10px' }}
+                                                variant="contained"
+                                                color="secondary"
+                                                onClick={() => {
+                                                    store.dispatch(push('/library'));
+                                                }}
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
-                    </Grid>
-                )}
-            </Formik>
+                    )}
+                </Formik>
+            </Grid>
         </Grid>
     );
 };

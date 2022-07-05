@@ -15,6 +15,7 @@ import ReportsTable from '../../components/reportsTable';
 
 interface UserModerationState {
     username: string;
+    banned: boolean;
     userId: Guid;
     reportsByUser: Array<EntryReportListItem>;
     userEntryReports: Array<EntryReportListItem>;
@@ -27,6 +28,7 @@ interface UserModerationParams {
 const UserModeration = () => {
     const [userModerationState, setUserModerationState] = useState<UserModerationState>({
         username: '',
+        banned: false,
         userId: Guid.createEmpty(),
         reportsByUser: [],
         userEntryReports: [],
@@ -84,6 +86,7 @@ const UserModeration = () => {
         Promise.allSettled(requests).then((responses: Array<any>) => {
             setUserModerationState({
                 userId: responses[0].value.data.userID,
+                banned: responses[0].value.data.isBanned,
                 username: responses[0].value.data.username,
                 userEntryReports: responses[1].value.data.entryReports,
                 reportsByUser: responses[2].value.data.entryReports,
@@ -131,9 +134,14 @@ const UserModeration = () => {
                     </Typography>
                 </Grid>
                 <Grid item xs={9}>
-                    <Button color="error" variant="contained" onClick={banUser}>
-                        Ban User
-                    </Button>
+                    {
+                        ((!userModerationState.banned) && userModerationState.userId.toString() !== context.userInfo?.userId) && (
+
+                            <Button color="error" variant="contained" onClick={banUser}>
+                                Ban User
+                            </Button>
+                        )
+                    }
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant="h5">

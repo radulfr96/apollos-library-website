@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-    TableHead, TableRow, TableCell, TableSortLabel, TableContainer,
-    Paper, Table, TableBody, IconButton, Typography,
+    TableHead, TableRow, TableCell, TableSortLabel,
+    Table, TableBody, IconButton, Typography,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from '@mui/icons-material';
@@ -123,22 +123,20 @@ const ModerationUsersTable = (props: ModerationUserTableProps) => {
         ));
 
     return (
-        <TableContainer component={Paper}>
-            <Table
-                aria-labelledby="tableTitle"
-                aria-label="enhanced table"
-                size="small"
-            >
-                <EnhancedTableHead
-                    order={order}
-                    orderBy={orderBy}
-                    onRequestSort={handleRequestSort}
-                />
-                <TableBody>
-                    {tableContent}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <Table
+            aria-labelledby="tableTitle"
+            aria-label="enhanced table"
+            size="small"
+        >
+            <EnhancedTableHead
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+            />
+            <TableBody>
+                {tableContent}
+            </TableBody>
+        </Table>
     );
 };
 

@@ -18,6 +18,7 @@ const headCells: HeadCell[] = [
     { id: 'username', label: 'Username' },
     { id: 'email', label: 'Email' },
     { id: 'isActive', label: ' User is Active' },
+    { id: 'isBanned', label: ' User is Banned' },
 ];
 
 interface EnhancedTableProps {
@@ -93,6 +94,7 @@ const Row = (props: RowProps) => {
             <TableCell>{user.username}</TableCell>
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.isActive}</TableCell>
+            <TableCell>{user.isBanned}</TableCell>
             <TableCell>
                 <IconButton onClick={() => {
                     deleteUser(user.userID);

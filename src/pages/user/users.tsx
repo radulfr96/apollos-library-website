@@ -86,7 +86,7 @@ const Users = () => {
         return (<CircularProgress />);
     }
     return (
-        <Grid xs={9}>
+        <Grid item xs={9}>
             <Grid container spacing={2} justifyContent="center">
                 <Grid item xs={12}>
                     <PageHeading headingText="Users" />

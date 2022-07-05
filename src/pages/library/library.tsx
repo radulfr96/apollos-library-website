@@ -1,5 +1,5 @@
 import { Add } from '@mui/icons-material';
-import { Fab, Grid } from '@mui/material';
+import { CircularProgress, Fab, Grid } from '@mui/material';
 import Axios from 'axios';
 import { push } from 'connected-react-router';
 import { useSnackbar } from 'notistack';
@@ -24,6 +24,7 @@ const LibraryPage = () => {
     const context = useContext(AppContext);
     const { enqueueSnackbar } = useSnackbar();
     const store = useStore();
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const renderErrorSnackbar = (message: string): void => {
         enqueueSnackbar(message, {
@@ -37,7 +38,7 @@ const LibraryPage = () => {
         });
     };
 
-    const getLibrary = () => {
+    const getLibrary = () => new Promise<void>((resovle) => {
         Axios.get(`${configHelper.apiUrl}/api/library`, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
@@ -45,8 +46,9 @@ const LibraryPage = () => {
         })
             .then((response) => {
                 setLibraryState({ ...libraryState, entries: response.data.libraryEntries });
+                resovle();
             });
-    };
+    });
 
     const deleteEntry = (id: number): void => {
         Axios.delete(`${configHelper.apiUrl}/api/library/${id}`, {
@@ -66,11 +68,22 @@ const LibraryPage = () => {
     };
 
     useEffect(() => {
-        getLibrary();
-    });
+        if (context.getToken() === undefined) {
+            return;
+        }
+
+        getLibrary()
+            .then(() => {
+                setIsLoading(false);
+            });
+    }, [context]);
+
+    if (isLoading) {
+        return (<CircularProgress />);
+    }
 
     return (
-        <Grid xs={9}>
+        <Grid item xs={9}>
             <Grid container spacing={2} justifyContent="center">
                 <Grid item xs={12}>
                     <PageHeading headingText="Your Library" />

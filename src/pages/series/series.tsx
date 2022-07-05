@@ -146,123 +146,125 @@ const SeriesPage = () => {
     }
 
     return (
-        <Grid container spacing={2}>
-            {
-                !seriesState.newSeries && (
-                    <>
-                        <Grid item xs={12}>
-                            <PageHeading headingText="Series Details" />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <ReportButton createdBy={seriesState.series.createdBy} entryRecordId={seriesState.series.seriesRecordId} entryType={EntryTypeEnum.Series} />
-                        </Grid>
-                    </>
-                )
-            }
-            {
-                seriesState.newSeries && (
-                    <Grid item xs={12}>
-                        <PageHeading headingText="New Series" />
-                    </Grid>
-                )
-            }
-            <Formik
-                initialValues={seriesState.series}
-                onSubmit={() => { }}
-                validationSchema={
-                    yup.object().shape({
-                        name: yup.string()
-                            .required('A genre must have a name'),
-                    })
+        <Grid item xs={12}>
+            <Grid container spacing={2}>
+                {
+                    !seriesState.newSeries && (
+                        <>
+                            <Grid item xs={12}>
+                                <PageHeading headingText="Series Details" />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <ReportButton createdBy={seriesState.series.createdBy} entryRecordId={seriesState.series.seriesRecordId} entryType={EntryTypeEnum.Series} />
+                            </Grid>
+                        </>
+                    )
                 }
-            >
-                {({
-                    values,
-                    errors,
-                    handleChange,
-                    validateForm,
-                }) => (
-                    <Grid item xs={12}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={3}>
-                                <Grid container spacing={2}>
-                                    {
-                                        !seriesState.newSeries && (
-                                            <Grid item xs={12}>
-                                                <InputTextField
-                                                    label="Series Id"
-                                                    required
-                                                    type="text"
-                                                    keyName="seriesId"
-                                                    value={values.seriesId}
-                                                    onChange={handleChange}
-                                                    error={!!(errors.seriesId)}
-                                                    errorMessage={errors.seriesId}
-                                                    readonly
-                                                />
-                                            </Grid>
-                                        )
-                                    }
+                {
+                    seriesState.newSeries && (
+                        <Grid item xs={12}>
+                            <PageHeading headingText="New Series" />
+                        </Grid>
+                    )
+                }
+                <Formik
+                    initialValues={seriesState.series}
+                    onSubmit={() => { }}
+                    validationSchema={
+                        yup.object().shape({
+                            name: yup.string()
+                                .required('A genre must have a name'),
+                        })
+                    }
+                >
+                    {({
+                        values,
+                        errors,
+                        handleChange,
+                        validateForm,
+                    }) => (
+                        <Grid item xs={12}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={3}>
+                                    <Grid container spacing={2}>
+                                        {
+                                            !seriesState.newSeries && (
+                                                <Grid item xs={12}>
+                                                    <InputTextField
+                                                        label="Series Id"
+                                                        required
+                                                        type="text"
+                                                        keyName="seriesId"
+                                                        value={values.seriesId}
+                                                        onChange={handleChange}
+                                                        error={!!(errors.seriesId)}
+                                                        errorMessage={errors.seriesId}
+                                                        readonly
+                                                    />
+                                                </Grid>
+                                            )
+                                        }
 
-                                    <Grid item xs={12}>
-                                        <InputTextField
-                                            label="Name"
-                                            required
-                                            type="text"
-                                            keyName="name"
-                                            value={values.name}
-                                            onChange={handleChange}
-                                            error={!!(errors.name)}
-                                            errorMessage={errors.name}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} style={{ paddingTop: '10px' }}>
-                                        {!seriesState.newSeries && (
+                                        <Grid item xs={12}>
+                                            <InputTextField
+                                                label="Name"
+                                                required
+                                                type="text"
+                                                keyName="name"
+                                                value={values.name}
+                                                onChange={handleChange}
+                                                error={!!(errors.name)}
+                                                errorMessage={errors.name}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} style={{ paddingTop: '10px' }}>
+                                            {!seriesState.newSeries && (
+                                                <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        if (errors !== null) {
+                                                            updateSeries(values, validateForm);
+                                                        }
+                                                    }}
+                                                >
+                                                    Update
+                                                </Button>
+                                            )}
+                                            {seriesState.newSeries && (
+                                                <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        if (errors !== null) {
+                                                            addSeries(values, validateForm);
+                                                        }
+                                                    }}
+                                                >
+                                                    Add
+                                                </Button>
+                                            )}
+
                                             <Button
+                                                sx={{ marginLeft: '10px' }}
                                                 variant="contained"
-                                                color="primary"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    if (errors !== null) {
-                                                        updateSeries(values, validateForm);
-                                                    }
+                                                color="secondary"
+                                                onClick={() => {
+                                                    store.dispatch(push('/serieslist'));
                                                 }}
                                             >
-                                                Update
+                                                Cancel
                                             </Button>
-                                        )}
-                                        {seriesState.newSeries && (
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    if (errors !== null) {
-                                                        addSeries(values, validateForm);
-                                                    }
-                                                }}
-                                            >
-                                                Add
-                                            </Button>
-                                        )}
-
-                                        <Button
-                                            sx={{ marginLeft: '10px' }}
-                                            variant="contained"
-                                            color="secondary"
-                                            onClick={() => {
-                                                store.dispatch(push('/serieslist'));
-                                            }}
-                                        >
-                                            Cancel
-                                        </Button>
+                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
-                    </Grid>
-                )}
-            </Formik>
+                    )}
+                </Formik>
+            </Grid>
         </Grid>
     );
 };

@@ -80,7 +80,7 @@ const Genres = () => {
         return (<CircularProgress />);
     }
     return (
-        <Grid xs={5}>
+        <Grid item xs={5}>
             <Grid container spacing={2} justifyContent="center">
                 <Grid item xs={12}>
                     <PageHeading headingText="Genres" />

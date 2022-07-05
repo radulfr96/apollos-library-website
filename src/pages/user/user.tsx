@@ -128,7 +128,7 @@ const UserPage = () => {
         return (<CircularProgress />);
     }
     return (
-        <Grid xs={4}>
+        <Grid item xs={4}>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <PageHeading headingText="User Details" />
