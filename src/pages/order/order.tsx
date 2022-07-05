@@ -90,8 +90,8 @@ const OrderPage = () => {
             } else {
                 setOrderState({
                     ...orderState,
-                    businesses: responses[0].data,
-                    books: responses[1].data,
+                    businesses: responses[0].value.data.businesses,
+                    books: responses[1].value.data.libraryBooks,
                     newOrder: true,
                 });
                 setIsLoading(false);
@@ -219,247 +219,243 @@ const OrderPage = () => {
     }
 
     return (
-        <Grid item xs={12}>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    {
-                        !orderState.newOrder && (
-                            <PageHeading headingText="Order Details" />
-                        )
-                    }
-                    {
-                        orderState.newOrder && (
-                            <PageHeading headingText="New Order" />
-                        )
-                    }
-                </Grid>
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+                {
+                    !orderState.newOrder && (
+                        <PageHeading headingText="Order Details" />
+                    )
+                }
+                {
+                    orderState.newOrder && (
+                        <PageHeading headingText="New Order" />
+                    )
+                }
             </Grid>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={4}>
-                            <Formik
-                                initialValues={orderState.order}
-                                onSubmit={() => { }}
-                                validationSchema={
-                                    yup.object().shape({
-                                        orderDate: yup.date()
-                                            .required('An order must have a date'),
-                                    })
-                                }
-                            >
-                                {({
-                                    values,
-                                    errors,
-                                    handleChange,
-                                    validateForm,
-                                    setFieldValue,
-                                }) => (
-                                    <Grid item xs={12}>
-                                        <Grid container spacing={2}>
-                                            {
-                                                !orderState.newOrder && (
-                                                    <Grid item xs={12}>
-                                                        <InputTextField
-                                                            label="Order Id"
-                                                            required
-                                                            type="text"
-                                                            keyName="orderId"
-                                                            value={values.orderId}
-                                                            onChange={handleChange}
-                                                            error={!!(errors.orderId)}
-                                                            errorMessage={errors.orderId}
-                                                            readonly
-                                                        />
-                                                    </Grid>
-                                                )
-                                            }
+            <Grid item xs={12}>
+                <Grid container spacing={2}>
+                    <Grid item xs={4}>
+                        <Formik
+                            initialValues={orderState.order}
+                            onSubmit={() => { }}
+                            validationSchema={
+                                yup.object().shape({
+                                    orderDate: yup.date()
+                                        .required('An order must have a date'),
+                                })
+                            }
+                        >
+                            {({
+                                values,
+                                errors,
+                                handleChange,
+                                validateForm,
+                                setFieldValue,
+                            }) => (
+                                <Grid item xs={12}>
+                                    <Grid container spacing={2}>
+                                        {
+                                            !orderState.newOrder && (
+                                                <Grid item xs={12}>
+                                                    <InputTextField
+                                                        label="Order Id"
+                                                        required
+                                                        type="text"
+                                                        keyName="orderId"
+                                                        value={values.orderId}
+                                                        onChange={handleChange}
+                                                        error={!!(errors.orderId)}
+                                                        errorMessage={errors.orderId}
+                                                        readonly
+                                                    />
+                                                </Grid>
+                                            )
+                                        }
 
-                                            <Grid item xs={12}>
-                                                <Typedown
-                                                    label="Bookshop"
-                                                    id="businessId"
-                                                    options={
-                                                        orderState.businesses.map<TypedownOption>((business) => ({
-                                                            value: business.businessId,
-                                                            name: `${business.name} (${business.country})`,
-                                                        } as TypedownOption))
+                                        <Grid item xs={12}>
+                                            <Typedown
+                                                label="Bookshop"
+                                                id="businessId"
+                                                options={
+                                                    orderState.businesses.map<TypedownOption>((business) => ({
+                                                        value: business.businessId,
+                                                        name: `${business.name} (${business.country})`,
+                                                    } as TypedownOption))
+                                                }
+                                                value={values.businessId}
+                                                updateSelection={(selected?: number | string) => {
+                                                    if (selected !== undefined) {
+                                                        setFieldValue('businessId', selected);
+                                                        setOrderState({
+                                                            ...orderState,
+                                                            order: {
+                                                                ...orderState.order,
+                                                                businessId: selected as number,
+                                                            },
+                                                        });
                                                     }
-                                                    value={values.businessId}
-                                                    updateSelection={(selected?: number | string) => {
-                                                        if (selected !== undefined) {
-                                                            setFieldValue('businessId', selected);
-                                                            setOrderState({
-                                                                ...orderState,
-                                                                order: {
-                                                                    ...orderState.order,
-                                                                    businessId: selected as number,
-                                                                },
-                                                            });
+                                                }}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <DateSelector
+                                                label="Order Date"
+                                                value={values.orderDate}
+                                                keyName="orderDate"
+                                                required
+                                                onChange={(selected: Date) => {
+                                                    setFieldValue('orderDate', selected);
+                                                }}
+                                                errorMessage="Order must have a date"
+                                                error={!!(errors.orderDate)}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} style={{ paddingTop: '10px' }}>
+                                            {!orderState.newOrder && (
+                                                <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        if (errors !== null) {
+                                                            updateOrder(validateForm);
                                                         }
                                                     }}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12}>
-                                                <DateSelector
-                                                    label="Order Date"
-                                                    value={values.orderDate}
-                                                    keyName="orderDate"
-                                                    required
-                                                    onChange={(selected: Date) => {
-                                                        setFieldValue('orderDate', selected);
+                                                >
+                                                    Update
+                                                </Button>
+                                            )}
+                                            {orderState.newOrder && (
+                                                <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        if (errors !== null) {
+                                                            addOrder(validateForm);
+                                                        }
                                                     }}
-                                                    errorMessage="Order must have a date"
-                                                    error={!!(errors.orderDate)}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} style={{ paddingTop: '10px' }}>
-                                                {!orderState.newOrder && (
-                                                    <Button
-                                                        variant="contained"
-                                                        color="primary"
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                            if (errors !== null) {
-                                                                updateOrder(validateForm);
+                                                >
+                                                    Add
+                                                </Button>
+                                            )}
+
+                                            <Button
+                                                sx={{ marginLeft: '10px' }}
+                                                variant="contained"
+                                                color="secondary"
+                                                onClick={() => {
+                                                    store.dispatch(push('/orders'));
+                                                }}
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            )}
+                        </Formik>
+                    </Grid>
+                    <Grid item xs={8}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <Formik
+                                    initialValues={orderFormInitialValues}
+                                    onSubmit={() => { }}
+                                    validationSchema={
+                                        yup.object().shape({
+                                            bookId: yup.number()
+                                                .required('You must select a book.'),
+                                        })
+                                    }
+                                >
+                                    {({
+                                        values,
+                                        errors,
+                                        handleChange,
+                                        validateForm,
+                                        setFieldValue,
+                                        handleSubmit,
+                                    }) => (
+                                        <Grid item xs={12}>
+                                            <Grid container spacing={2}>
+                                                <Grid item xs={7}>
+                                                    <Typedown
+                                                        label="Book"
+                                                        id="bookId"
+                                                        options={orderState.books.filter((b) => orderState.order.orderItems.map((i) => i.bookId).includes(b.bookId) === false).map<TypedownOption>((book) => ({
+                                                            value: book.bookId,
+                                                            name: `${getIsbnString(book)} ${book.title} (${book.author})`,
+                                                        } as TypedownOption))}
+                                                        value={values.bookId}
+                                                        updateSelection={(selected?: number | string) => {
+                                                            if (selected !== undefined) {
+                                                                setFieldValue('bookId', selected);
                                                             }
                                                         }}
-                                                    >
-                                                        Update
-                                                    </Button>
-                                                )}
-                                                {orderState.newOrder && (
+                                                        error={!!(errors.bookId)}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={2}>
+                                                    <InputTextField
+                                                        label="Quantity"
+                                                        keyName="quantity"
+                                                        type="number"
+                                                        value={values.quantity}
+                                                        error={!!(errors.quantity)}
+                                                        onChange={handleChange}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={2}>
+                                                    <InputTextField
+                                                        label="Unit Price"
+                                                        keyName="unitPrice"
+                                                        type="number"
+                                                        value={values.unitPrice}
+                                                        error={!!(errors.unitPrice)}
+                                                        onChange={handleChange}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={1}>
                                                     <Button
                                                         variant="contained"
                                                         color="primary"
+                                                        sx={{
+                                                            height: '100%',
+                                                            width: '100%',
+                                                        }}
                                                         onClick={(e) => {
                                                             e.preventDefault();
-                                                            if (errors !== null) {
-                                                                addOrder(validateForm);
-                                                            }
+                                                            addOrderItem(values, validateForm)
+                                                                .then(() => { })
+                                                                .catch((err: any) => {
+                                                                    console.log(err);
+                                                                });
+                                                            handleSubmit();
                                                         }}
                                                     >
                                                         Add
                                                     </Button>
-                                                )}
-
-                                                <Button
-                                                    sx={{ marginLeft: '10px' }}
-                                                    variant="contained"
-                                                    color="secondary"
-                                                    onClick={() => {
-                                                        store.dispatch(push('/orders'));
-                                                    }}
-                                                >
-                                                    Cancel
-                                                </Button>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                )}
-                            </Formik>
-                        </Grid>
-                        <Grid item xs={8}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <Formik
-                                        initialValues={orderFormInitialValues}
-                                        onSubmit={() => { }}
-                                        validationSchema={
-                                            yup.object().shape({
-                                                bookId: yup.number()
-                                                    .required('You must select a book.'),
-                                            })
-                                        }
-                                    >
-                                        {({
-                                            values,
-                                            errors,
-                                            handleChange,
-                                            validateForm,
-                                            setFieldValue,
-                                            handleSubmit,
-                                        }) => (
-                                            <Grid item xs={12}>
-                                                <Grid container spacing={2}>
-                                                    <Grid item xs={7}>
-                                                        <Typedown
-                                                            label="Book"
-                                                            id="bookId"
-                                                            options={orderState.books.filter((b) => orderState.order.orderItems.map((i) => i.bookId).includes(b.bookId) === false).map<TypedownOption>((book) => ({
-                                                                value: book.bookId,
-                                                                name: `${getIsbnString(book)} ${book.title} (${book.author})`,
-                                                            } as TypedownOption))}
-                                                            value={values.bookId}
-                                                            updateSelection={(selected?: number | string) => {
-                                                                if (selected !== undefined) {
-                                                                    setFieldValue('bookId', selected);
-                                                                }
-                                                            }}
-                                                            error={!!(errors.bookId)}
-                                                        />
-                                                    </Grid>
-                                                    <Grid item xs={2}>
-                                                        <InputTextField
-                                                            label="Quantity"
-                                                            keyName="quantity"
-                                                            type="number"
-                                                            value={values.quantity}
-                                                            error={!!(errors.quantity)}
-                                                            onChange={handleChange}
-                                                        />
-                                                    </Grid>
-                                                    <Grid item xs={2}>
-                                                        <InputTextField
-                                                            label="Unit Price"
-                                                            keyName="unitPrice"
-                                                            type="number"
-                                                            value={values.unitPrice}
-                                                            error={!!(errors.unitPrice)}
-                                                            onChange={handleChange}
-                                                        />
-                                                    </Grid>
-                                                    <Grid item xs={1}>
-                                                        <Button
-                                                            variant="contained"
-                                                            color="primary"
-                                                            sx={{
-                                                                height: '100%',
-                                                                width: '100%',
-                                                            }}
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                addOrderItem(values, validateForm)
-                                                                    .then(() => { })
-                                                                    .catch((err: any) => {
-                                                                        console.log(err);
-                                                                    });
-                                                                handleSubmit();
-                                                            }}
-                                                        >
-                                                            Add
-                                                        </Button>
-                                                    </Grid>
                                                 </Grid>
                                             </Grid>
-                                        )}
-                                    </Formik>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <OrderLineItemsTable
-                                        orderItems={orderState.order.orderItems}
-                                        deleteOrderItem={(bookId: number) => {
-                                            const filteredList = orderState.order.orderItems.filter((i) => i.bookId !== bookId);
-                                            setOrderState({
-                                                ...orderState,
-                                                order: {
-                                                    ...orderState.order,
-                                                    orderItems: filteredList,
-                                                },
-                                            });
-                                        }}
-                                    />
-                                </Grid>
+                                        </Grid>
+                                    )}
+                                </Formik>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <OrderLineItemsTable
+                                    orderItems={orderState.order.orderItems}
+                                    deleteOrderItem={(bookId: number) => {
+                                        const filteredList = orderState.order.orderItems.filter((i) => i.bookId !== bookId);
+                                        setOrderState({
+                                            ...orderState,
+                                            order: {
+                                                ...orderState.order,
+                                                orderItems: filteredList,
+                                            },
+                                        });
+                                    }}
+                                />
                             </Grid>
                         </Grid>
                     </Grid>

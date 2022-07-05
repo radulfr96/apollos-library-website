@@ -70,35 +70,37 @@ const LibraryPage = () => {
     });
 
     return (
-        <Grid item xs={5} container justifyContent="center">
-            <Grid item xs={12}>
-                <PageHeading headingText="Your Library" />
-            </Grid>
-            {
-                context.isAdmin() && (
-                    <Grid item xs={12}>
-                        <LibraryTable
-                            entries={libraryState.entries}
-                            deleteEntry={deleteEntry}
-                        />
-                    </Grid>
-                )
-            }
+        <Grid xs={9}>
+            <Grid container spacing={2} justifyContent="center">
+                <Grid item xs={12}>
+                    <PageHeading headingText="Your Library" />
+                </Grid>
+                {
+                    context.isAdmin() && (
+                        <Grid item xs={12}>
+                            <LibraryTable
+                                entries={libraryState.entries}
+                                deleteEntry={deleteEntry}
+                            />
+                        </Grid>
+                    )
+                }
 
-            <Grid item xs={12}>
-                <Fab
-                    color="primary"
-                    aria-label="add"
-                    sx={{
-                        marginTop: '10px',
-                        float: 'right',
-                    }}
-                    onClick={() => {
-                        store.dispatch(push('/addentry'));
-                    }}
-                >
-                    <Add />
-                </Fab>
+                <Grid item xs={12}>
+                    <Fab
+                        color="primary"
+                        aria-label="add"
+                        sx={{
+                            marginTop: '10px',
+                            float: 'right',
+                        }}
+                        onClick={() => {
+                            store.dispatch(push('/addentry'));
+                        }}
+                    >
+                        <Add />
+                    </Fab>
+                </Grid>
             </Grid>
         </Grid>
     );

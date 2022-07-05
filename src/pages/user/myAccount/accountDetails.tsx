@@ -116,8 +116,8 @@ const MyDetails = () => {
         return (<CircularProgress />);
     }
     return (
-        <>
-            <Grid container item xs={12}>
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
                 <PageHeading headingText="My Details" />
             </Grid>
             <Formik
@@ -136,48 +136,50 @@ const MyDetails = () => {
                     handleChange,
                     validateForm,
                 }) => (
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <ReadOnlyLabel
-                                text="Email"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <ReadOnlyText text={context.userInfo?.email} />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <InputTextField
-                                label="Username"
-                                required
-                                type="text"
-                                keyName="username"
-                                value={values.username}
-                                onChange={handleChange}
-                                error={!!(errors.username)}
-                                errorMessage={errors.username}
-                                onBlur={() => {
-                                    checkUserIsUnique(values.username);
-                                }}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    if (errors !== null) {
-                                        updateDetails(values, validateForm);
-                                    }
-                                }}
-                            >
-                                Update
-                            </Button>
+                    <Grid item xs={12}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <ReadOnlyLabel
+                                    text="Email"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <ReadOnlyText text={context.userInfo?.email} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <InputTextField
+                                    label="Username"
+                                    required
+                                    type="text"
+                                    keyName="username"
+                                    value={values.username}
+                                    onChange={handleChange}
+                                    error={!!(errors.username)}
+                                    errorMessage={errors.username}
+                                    onBlur={() => {
+                                        checkUserIsUnique(values.username);
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (errors !== null) {
+                                            updateDetails(values, validateForm);
+                                        }
+                                    }}
+                                >
+                                    Update
+                                </Button>
+                            </Grid>
                         </Grid>
                     </Grid>
                 )}
             </Formik>
-        </>
+        </Grid>
     );
 };
 

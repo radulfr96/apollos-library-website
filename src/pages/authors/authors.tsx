@@ -72,35 +72,32 @@ const AuthorsPage = () => {
     });
 
     return (
-        <Grid item xs={5} container justifyContent="center">
-            <Grid item xs={12}>
-                <PageHeading headingText="Authors" />
-            </Grid>
-            {
-                context.isAdmin() && (
-                    <Grid item xs={12}>
-                        <AuthorsTable
-                            authors={authorsState.authors}
-                            deleteAuthor={deleteAuthor}
-                        />
-                    </Grid>
-                )
-            }
-
-            <Grid item xs={12}>
-                <Fab
-                    color="primary"
-                    aria-label="add"
-                    sx={{
-                        marginTop: '10px',
-                        float: 'right',
-                    }}
-                    onClick={() => {
-                        store.dispatch(push('/addauthor'));
-                    }}
-                >
-                    <Add />
-                </Fab>
+        <Grid xs={6}>
+            <Grid container spacing={2} justifyContent="center">
+                <Grid item xs={12}>
+                    <PageHeading headingText="Authors" />
+                </Grid>
+                <Grid item xs={12}>
+                    <AuthorsTable
+                        authors={authorsState.authors}
+                        deleteAuthor={deleteAuthor}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <Fab
+                        color="primary"
+                        aria-label="add"
+                        sx={{
+                            marginTop: '10px',
+                            float: 'right',
+                        }}
+                        onClick={() => {
+                            store.dispatch(push('/addauthor'));
+                        }}
+                    >
+                        <Add />
+                    </Fab>
+                </Grid>
             </Grid>
         </Grid>
     );

@@ -80,26 +80,28 @@ const Genres = () => {
         return (<CircularProgress />);
     }
     return (
-        <Grid item xs={5} container justifyContent="center">
-            <Grid item xs={12}>
-                <PageHeading headingText="Genres" />
-            </Grid>
-            <Grid item xs={12}>
-                <GenresTable genres={genreState.genres} deleteGenre={deleteGenre} />
-            </Grid>
-            <Grid item xs={12}>
-                <Link to="/addgenre">
-                    <Fab
-                        color="primary"
-                        aria-label="add"
-                        sx={{
-                            marginTop: '10px',
-                            float: 'right',
-                        }}
-                    >
-                        <Add />
-                    </Fab>
-                </Link>
+        <Grid xs={5}>
+            <Grid container spacing={2} justifyContent="center">
+                <Grid item xs={12}>
+                    <PageHeading headingText="Genres" />
+                </Grid>
+                <Grid item xs={12}>
+                    <GenresTable genres={genreState.genres} deleteGenre={deleteGenre} />
+                </Grid>
+                <Grid item xs={12}>
+                    <Link to="/addgenre">
+                        <Fab
+                            color="primary"
+                            aria-label="add"
+                            sx={{
+                                marginTop: '10px',
+                                float: 'right',
+                            }}
+                        >
+                            <Add />
+                        </Fab>
+                    </Link>
+                </Grid>
             </Grid>
         </Grid>
     );

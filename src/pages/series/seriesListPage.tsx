@@ -70,35 +70,33 @@ const SeriesListPage = () => {
     });
 
     return (
-        <Grid item xs={5} container justifyContent="center">
-            <Grid item xs={12}>
-                <PageHeading headingText="Series" />
-            </Grid>
-            {
-                context.isAdmin() && (
-                    <Grid item xs={12}>
-                        <SeriesTable
-                            series={seriesState.series}
-                            deleteSeries={deleteSeries}
-                        />
-                    </Grid>
-                )
-            }
+        <Grid xs={6}>
 
-            <Grid item xs={12}>
-                <Fab
-                    color="primary"
-                    aria-label="add"
-                    sx={{
-                        marginTop: '10px',
-                        float: 'right',
-                    }}
-                    onClick={() => {
-                        store.dispatch(push('/addseries'));
-                    }}
-                >
-                    <Add />
-                </Fab>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <PageHeading headingText="Series" />
+                </Grid>
+                <Grid item xs={12}>
+                    <SeriesTable
+                        series={seriesState.series}
+                        deleteSeries={deleteSeries}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <Fab
+                        color="primary"
+                        aria-label="add"
+                        sx={{
+                            marginTop: '10px',
+                            float: 'right',
+                        }}
+                        onClick={() => {
+                            store.dispatch(push('/addseries'));
+                        }}
+                    >
+                        <Add />
+                    </Fab>
+                </Grid>
             </Grid>
         </Grid>
     );

@@ -80,89 +80,91 @@ const UpdatePassword = () => {
     };
 
     return (
-        <>
-            <Grid container item xs={12}>
-                <PageHeading headingText="Update Password" />
-            </Grid>
-            <Formik
-                initialValues={updatePasswordState.changePasswordInfo}
-                onSubmit={() => { }}
-                validationSchema={
-                    yup.object().shape({
-                        currentPassword: yup.string()
-                            .required('You must enter your current password'),
-                        newPassword: yup.string()
-                            .required('You must enter a new password')
-                            .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Password must be at least 6 characters long and contain one number and uppercase character.'),
-                        newPasswordConfirmation: yup.string()
-                            .oneOf([yup.ref('newPassword')], 'Confirm password must matched new password')
-                            .required('You must enter your new password again'),
-                    })
-                }
-            >
-                {({
-                    values,
-                    errors,
-                    handleChange,
-                    validateForm,
-                }) => (
-                    <Grid item xs={12}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <InputTextField
-                                    label="Current Password"
-                                    required
-                                    type="password"
-                                    keyName="currentPassword"
-                                    value={values.currentPassword}
-                                    onChange={handleChange}
-                                    error={!!(errors.currentPassword)}
-                                    errorMessage={errors.currentPassword}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <InputTextField
-                                    label="New Password"
-                                    required
-                                    type="password"
-                                    keyName="newPassword"
-                                    value={values.newPassword}
-                                    onChange={handleChange}
-                                    error={!!(errors.newPassword)}
-                                    errorMessage={errors.newPassword}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <InputTextField
-                                    label="New Password Confirmation"
-                                    required
-                                    type="password"
-                                    keyName="newPasswordConfirmation"
-                                    value={values.newPasswordConfirmation}
-                                    onChange={handleChange}
-                                    error={!!(errors.newPasswordConfirmation)}
-                                    errorMessage={errors.newPasswordConfirmation}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        if (errors !== null) {
-                                            updatePassword(values, validateForm);
-                                        }
-                                    }}
-                                >
-                                    Update
-                                </Button>
+        <Grid xs={12}>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <PageHeading headingText="Update Password" />
+                </Grid>
+                <Formik
+                    initialValues={updatePasswordState.changePasswordInfo}
+                    onSubmit={() => { }}
+                    validationSchema={
+                        yup.object().shape({
+                            currentPassword: yup.string()
+                                .required('You must enter your current password'),
+                            newPassword: yup.string()
+                                .required('You must enter a new password')
+                                .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Password must be at least 6 characters long and contain one number and uppercase character.'),
+                            newPasswordConfirmation: yup.string()
+                                .oneOf([yup.ref('newPassword')], 'Confirm password must matched new password')
+                                .required('You must enter your new password again'),
+                        })
+                    }
+                >
+                    {({
+                        values,
+                        errors,
+                        handleChange,
+                        validateForm,
+                    }) => (
+                        <Grid item xs={12}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <InputTextField
+                                        label="Current Password"
+                                        required
+                                        type="password"
+                                        keyName="currentPassword"
+                                        value={values.currentPassword}
+                                        onChange={handleChange}
+                                        error={!!(errors.currentPassword)}
+                                        errorMessage={errors.currentPassword}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <InputTextField
+                                        label="New Password"
+                                        required
+                                        type="password"
+                                        keyName="newPassword"
+                                        value={values.newPassword}
+                                        onChange={handleChange}
+                                        error={!!(errors.newPassword)}
+                                        errorMessage={errors.newPassword}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <InputTextField
+                                        label="New Password Confirmation"
+                                        required
+                                        type="password"
+                                        keyName="newPasswordConfirmation"
+                                        value={values.newPasswordConfirmation}
+                                        onChange={handleChange}
+                                        error={!!(errors.newPasswordConfirmation)}
+                                        errorMessage={errors.newPasswordConfirmation}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            if (errors !== null) {
+                                                updatePassword(values, validateForm);
+                                            }
+                                        }}
+                                    >
+                                        Update
+                                    </Button>
+                                </Grid>
                             </Grid>
                         </Grid>
-                    </Grid>
-                )}
-            </Formik>
-        </>
+                    )}
+                </Formik>
+            </Grid>
+        </Grid>
     );
 };
 

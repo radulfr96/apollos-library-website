@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { Guid } from 'guid-typescript';
 import {
     Grid, Button, CircularProgress,
 } from '@mui/material';
@@ -16,6 +17,8 @@ import CountryTypedown from '../../components/shared/countryTypedown';
 import Country from '../../interfaces/country';
 import ConfigHelper from '../../config/configHelper';
 import { AppContext } from '../../userContext';
+import ReportButton from '../../components/shared/reportButton';
+import EntryTypeEnum from '../../enums/entryTypeEnum';
 
 interface AuthorParams {
     id: string;
@@ -32,11 +35,13 @@ const AuthorsPage = () => {
         countries: [],
         author: {
             authorID: 0,
+            authorRecordID: 0,
             firstname: '',
             middlename: '',
             lastname: '',
             description: '',
             countryID: '',
+            createdBy: Guid.createEmpty(),
         },
         newAuthor: false,
     });
@@ -159,161 +164,172 @@ const AuthorsPage = () => {
     }
 
     return (
-        <Grid item xs={6} container justifyContent="center">
-            <Grid item xs={12}>
+        <Grid xs={4}>
+            <Grid container spacing={2} justifyContent="center">
                 {
                     !authorState.newAuthor && (
-                        <PageHeading headingText="Author Details" />
+                        <Grid item xs={12}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <PageHeading headingText="Author Details" />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <ReportButton entryRecordId={authorState.author.authorRecordID} entryType={EntryTypeEnum.Author} createdBy={authorState.author.createdBy} />
+                                </Grid>
+                            </Grid>
+                        </Grid>
                     )
                 }
                 {
                     authorState.newAuthor && (
-                        <PageHeading headingText="New Author" />
+                        <Grid item xs={12}>
+                            <PageHeading headingText="New Author" />
+                        </Grid>
                     )
                 }
-            </Grid>
-            <Formik
-                initialValues={authorState.author}
-                onSubmit={() => { }}
-                validationSchema={
-                    yup.object().shape({
-                        firstname: yup.string()
-                            .required('An author must have a firstname or alias'),
-                    })
-                }
-            >
-                {({
-                    values,
-                    errors,
-                    handleChange,
-                    setFieldValue,
-                    validateForm,
-                }) => (
-                    <Grid item xs={12}>
-                        <Grid container spacing={2}>
-                            {
-                                !authorState.newAuthor && (
-                                    <Grid item xs={12}>
-                                        <InputTextField
-                                            label="Author ID"
-                                            required
-                                            type="text"
-                                            keyName="authorID"
-                                            value={values.authorID}
-                                            onChange={handleChange}
-                                            error={!!(errors.authorID)}
-                                            errorMessage={errors.authorID}
-                                            readonly
-                                        />
-                                    </Grid>
-                                )
-                            }
+                <Formik
+                    initialValues={authorState.author}
+                    onSubmit={() => { }}
+                    validationSchema={
+                        yup.object().shape({
+                            firstname: yup.string()
+                                .required('An author must have a firstname or alias'),
+                        })
+                    }
+                >
+                    {({
+                        values,
+                        errors,
+                        handleChange,
+                        setFieldValue,
+                        validateForm,
+                    }) => (
+                        <Grid item xs={12}>
+                            <Grid container spacing={2}>
+                                {
+                                    !authorState.newAuthor && (
+                                        <Grid item xs={12}>
+                                            <InputTextField
+                                                label="Author ID"
+                                                required
+                                                type="text"
+                                                keyName="authorID"
+                                                value={values.authorID}
+                                                onChange={handleChange}
+                                                error={!!(errors.authorID)}
+                                                errorMessage={errors.authorID}
+                                                readonly
+                                            />
+                                        </Grid>
+                                    )
+                                }
 
-                            <Grid item xs={12}>
-                                <InputTextField
-                                    label="Firstname"
-                                    required
-                                    type="text"
-                                    keyName="firstname"
-                                    value={values.firstname}
-                                    onChange={handleChange}
-                                    error={!!(errors.firstname)}
-                                    errorMessage={errors.firstname}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <InputTextField
-                                    label="Middlename"
-                                    type="text"
-                                    keyName="middlename"
-                                    value={values.middlename}
-                                    onChange={handleChange}
-                                    error={!!(errors.middlename)}
-                                    errorMessage={errors.middlename}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <InputTextField
-                                    label="Lastname"
-                                    type="text"
-                                    keyName="lastname"
-                                    value={values.lastname}
-                                    onChange={handleChange}
-                                    error={!!(errors.lastname)}
-                                    errorMessage={errors.lastname}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <CountryTypedown
-                                    required
-                                    countries={authorState.countries}
-                                    value={values.countryID}
-                                    onBlur={undefined}
-                                    onChange={(e: Event) => {
-                                        const field = e.target as HTMLInputElement;
-                                        setFieldValue('countryID', authorState.countries.find((c) => c.name
-                                            === field.innerText)?.countryID);
-                                    }}
-                                    error={!!(errors.countryID)}
-                                    errorMessage={errors.countryID}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <InputTextField
-                                    label="Description"
-                                    type="text"
-                                    keyName="description"
-                                    value={values.description}
-                                    onChange={handleChange}
-                                    error={!!(errors.description)}
-                                    errorMessage={errors.description}
-                                />
-                            </Grid>
-                            <Grid item xs={12} style={{ paddingTop: '10px' }}>
-                                {!authorState.newAuthor && (
+                                <Grid item xs={12}>
+                                    <InputTextField
+                                        label="Firstname"
+                                        required
+                                        type="text"
+                                        keyName="firstname"
+                                        value={values.firstname}
+                                        onChange={handleChange}
+                                        error={!!(errors.firstname)}
+                                        errorMessage={errors.firstname}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <InputTextField
+                                        label="Middlename"
+                                        type="text"
+                                        keyName="middlename"
+                                        value={values.middlename}
+                                        onChange={handleChange}
+                                        error={!!(errors.middlename)}
+                                        errorMessage={errors.middlename}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <InputTextField
+                                        label="Lastname"
+                                        type="text"
+                                        keyName="lastname"
+                                        value={values.lastname}
+                                        onChange={handleChange}
+                                        error={!!(errors.lastname)}
+                                        errorMessage={errors.lastname}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <CountryTypedown
+                                        required
+                                        countries={authorState.countries}
+                                        value={values.countryID}
+                                        onBlur={undefined}
+                                        onChange={(e: Event) => {
+                                            const field = e.target as HTMLInputElement;
+                                            setFieldValue('countryID', authorState.countries.find((c) => c.name
+                                                === field.innerText)?.countryID);
+                                        }}
+                                        error={!!(errors.countryID)}
+                                        errorMessage={errors.countryID}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <InputTextField
+                                        label="Description"
+                                        type="text"
+                                        keyName="description"
+                                        value={values.description}
+                                        onChange={handleChange}
+                                        error={!!(errors.description)}
+                                        errorMessage={errors.description}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} style={{ paddingTop: '10px' }}>
+                                    {!authorState.newAuthor && (
+                                        <Button
+                                            sx={{ marginRight: '10px' }}
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                if (errors !== null) {
+                                                    updateAuthor(values, validateForm);
+                                                }
+                                            }}
+                                        >
+                                            Update
+                                        </Button>
+                                    )}
+                                    {authorState.newAuthor && (
+                                        <Button
+                                            sx={{ marginRight: '10px' }}
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                addAuthor(values, validateForm);
+                                            }}
+                                        >
+                                            Add
+                                        </Button>
+                                    )}
+
                                     <Button
                                         sx={{ marginRight: '10px' }}
                                         variant="contained"
-                                        color="primary"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (errors !== null) {
-                                                updateAuthor(values, validateForm);
-                                            }
+                                        color="secondary"
+                                        onClick={() => {
+                                            store.dispatch(push('/authors'));
                                         }}
                                     >
-                                        Update
+                                        Cancel
                                     </Button>
-                                )}
-                                {authorState.newAuthor && (
-                                    <Button
-                                        sx={{ marginRight: '10px' }}
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            addAuthor(values, validateForm);
-                                        }}
-                                    >
-                                        Add
-                                    </Button>
-                                )}
-
-                                <Button
-                                    sx={{ marginRight: '10px' }}
-                                    variant="contained"
-                                    color="secondary"
-                                    onClick={() => {
-                                        store.dispatch(push('/authors'));
-                                    }}
-                                >
-                                    Cancel
-                                </Button>
+                                </Grid>
                             </Grid>
                         </Grid>
-                    </Grid>
-                )}
-            </Formik>
+                    )}
+                </Formik>
+            </Grid>
         </Grid>
     );
 };

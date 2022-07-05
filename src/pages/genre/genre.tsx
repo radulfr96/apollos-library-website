@@ -141,113 +141,116 @@ const GenrePage = () => {
     }
 
     return (
-        <>
-            <Grid item xs={12}>
-                {
-                    !genreState.newGenre && (
-                        <PageHeading headingText="Genre Details" />
-                    )
-                }
-                {
-                    genreState.newGenre && (
-                        <PageHeading headingText="New Genre" />
-                    )
-                }
-            </Grid>
-            <Formik
-                initialValues={genreState.genre}
-                onSubmit={() => { }}
-                validationSchema={
-                    yup.object().shape({
-                        name: yup.string()
-                            .required('A genre must have a name'),
-                    })
-                }
-            >
-                {({
-                    values,
-                    errors,
-                    handleChange,
-                    validateForm,
-                }) => (
-                    <Grid item xs={3}>
-                        <Grid container spacing={2}>
-                            {
-                                !genreState.newGenre && (
-                                    <Grid item xs={12}>
-                                        <InputTextField
-                                            label="Genre Id"
-                                            required
-                                            type="text"
-                                            keyName="genreId"
-                                            value={values.genreId}
-                                            onChange={handleChange}
-                                            error={!!(errors.genreId)}
-                                            errorMessage={errors.genreId}
-                                            readonly
-                                        />
-                                    </Grid>
-                                )
-                            }
+        <Grid xs={3}>
 
-                            <Grid item xs={12}>
-                                <InputTextField
-                                    label="Name"
-                                    required
-                                    type="text"
-                                    keyName="name"
-                                    value={values.name}
-                                    onChange={handleChange}
-                                    error={!!(errors.name)}
-                                    errorMessage={errors.name}
-                                />
-                            </Grid>
-                            <Grid item xs={12} style={{ paddingTop: '10px' }}>
-                                {!genreState.newGenre && (
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    {
+                        !genreState.newGenre && (
+                            <PageHeading headingText="Genre Details" />
+                        )
+                    }
+                    {
+                        genreState.newGenre && (
+                            <PageHeading headingText="New Genre" />
+                        )
+                    }
+                </Grid>
+                <Formik
+                    initialValues={genreState.genre}
+                    onSubmit={() => { }}
+                    validationSchema={
+                        yup.object().shape({
+                            name: yup.string()
+                                .required('A genre must have a name'),
+                        })
+                    }
+                >
+                    {({
+                        values,
+                        errors,
+                        handleChange,
+                        validateForm,
+                    }) => (
+                        <Grid item xs={12}>
+                            <Grid container spacing={2}>
+                                {
+                                    !genreState.newGenre && (
+                                        <Grid item xs={12}>
+                                            <InputTextField
+                                                label="Genre Id"
+                                                required
+                                                type="text"
+                                                keyName="genreId"
+                                                value={values.genreId}
+                                                onChange={handleChange}
+                                                error={!!(errors.genreId)}
+                                                errorMessage={errors.genreId}
+                                                readonly
+                                            />
+                                        </Grid>
+                                    )
+                                }
+
+                                <Grid item xs={12}>
+                                    <InputTextField
+                                        label="Name"
+                                        required
+                                        type="text"
+                                        keyName="name"
+                                        value={values.name}
+                                        onChange={handleChange}
+                                        error={!!(errors.name)}
+                                        errorMessage={errors.name}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} style={{ paddingTop: '10px' }}>
+                                    {!genreState.newGenre && (
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                if (errors !== null) {
+                                                    updateGenre(values, validateForm);
+                                                }
+                                            }}
+                                        >
+                                            Update
+                                        </Button>
+                                    )}
+                                    {genreState.newGenre && (
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                if (errors !== null) {
+                                                    addGenre(values, validateForm);
+                                                }
+                                            }}
+                                        >
+                                            Add
+                                        </Button>
+                                    )}
+
                                     <Button
+                                        sx={{ marginLeft: '10px' }}
                                         variant="contained"
-                                        color="primary"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (errors !== null) {
-                                                updateGenre(values, validateForm);
-                                            }
+                                        color="secondary"
+                                        onClick={() => {
+                                            store.dispatch(push('/genres'));
                                         }}
                                     >
-                                        Update
+                                        Cancel
                                     </Button>
-                                )}
-                                {genreState.newGenre && (
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (errors !== null) {
-                                                addGenre(values, validateForm);
-                                            }
-                                        }}
-                                    >
-                                        Add
-                                    </Button>
-                                )}
-
-                                <Button
-                                    sx={{ marginLeft: '10px' }}
-                                    variant="contained"
-                                    color="secondary"
-                                    onClick={() => {
-                                        store.dispatch(push('/genres'));
-                                    }}
-                                >
-                                    Cancel
-                                </Button>
+                                </Grid>
                             </Grid>
                         </Grid>
-                    </Grid>
-                )}
-            </Formik>
-        </>
+                    )}
+                </Formik>
+            </Grid>
+        </Grid>
     );
 };
 

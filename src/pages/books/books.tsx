@@ -80,26 +80,28 @@ const Books = () => {
         return (<CircularProgress />);
     }
     return (
-        <Grid item xs={8} container justifyContent="center">
-            <Grid item xs={12}>
-                <PageHeading headingText="Books" />
-            </Grid>
-            <Grid item xs={12}>
-                <BooksTable deleteBook={deleteBook} books={booksState.books} />
-            </Grid>
-            <Grid item xs={12}>
-                <Link to="/addbook">
-                    <Fab
-                        color="primary"
-                        aria-label="add"
-                        sx={{
-                            marginTop: '10px',
-                            float: 'right',
-                        }}
-                    >
-                        <Add />
-                    </Fab>
-                </Link>
+        <Grid xs={8}>
+            <Grid container justifyContent="center">
+                <Grid item xs={12}>
+                    <PageHeading headingText="Books" />
+                </Grid>
+                <Grid item xs={12}>
+                    <BooksTable deleteBook={deleteBook} books={booksState.books} />
+                </Grid>
+                <Grid item xs={12}>
+                    <Link to="/addbook">
+                        <Fab
+                            color="primary"
+                            aria-label="add"
+                            sx={{
+                                marginTop: '10px',
+                                float: 'right',
+                            }}
+                        >
+                            <Add />
+                        </Fab>
+                    </Link>
+                </Grid>
             </Grid>
         </Grid>
     );

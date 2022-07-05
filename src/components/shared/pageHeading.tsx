@@ -11,7 +11,7 @@ const PageHeading = (props: PageHeadingProps) => {
     const { headingText } = props;
 
     return (
-        <Typography variant="h3" sx={{ paddingBottom: '20px' }}>
+        <Typography variant="h3">
             {headingText}
         </Typography>
     );

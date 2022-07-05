@@ -1,5 +1,8 @@
+import { Guid } from 'guid-typescript';
+
 interface Book {
     bookId?: number;
+    bookRecordId: number;
     isbn: string;
     eISBN: string;
     title: string;
@@ -10,6 +13,7 @@ interface Book {
     formTypeId: number;
     businessId?: number;
     coverImage?: string;
+    createdBy?: Guid;
     series: number[];
     genres: number[];
     authors: number[];

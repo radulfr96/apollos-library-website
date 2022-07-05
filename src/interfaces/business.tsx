@@ -1,5 +1,8 @@
+import { Guid } from 'guid-typescript';
+
 interface Business {
     businessId: number;
+    businessRecordId: number;
     name: string;
     streetAddress: string;
     city: string;
@@ -8,6 +11,7 @@ interface Business {
     countryID: string;
     website: string;
     businessTypeId: number;
+    createdBy: Guid;
 }
 
 export default Business;

@@ -86,7 +86,7 @@ const DeactivateAccount = () => {
         <Grid item xs={12}>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <PageHeading headingText="Deactivate AccountY" />
+                    <PageHeading headingText="Deactivate Account" />
                 </Grid>
                 <Grid item xs={12}>
                     <Button

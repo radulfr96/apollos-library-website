@@ -83,7 +83,7 @@ const UserModeration = () => {
 
         Promise.allSettled(requests).then((responses: Array<any>) => {
             setUserModerationState({
-                userId: responses[0].value.data.userId,
+                userId: responses[0].value.data.userID,
                 username: responses[0].value.data.username,
                 userEntryReports: responses[1].value.data.entryReports,
                 reportsByUser: responses[2].value.data.entryReports,
@@ -93,7 +93,7 @@ const UserModeration = () => {
     }, [context]);
 
     const banUser = () => {
-        Axios.put(`${configHelper.idpUrl}/api/user/${userModerationState.userId}/ban`, {}, {
+        Axios.post(`${configHelper.idpUrl}/api/user/${userModerationState.userId}/ban`, {}, {
             headers: {
                 Authorization: `Bearer ${context.getToken()}`,
             },

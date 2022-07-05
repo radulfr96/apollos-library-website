@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import {
     Button, CircularProgress, Grid,
 } from '@mui/material';
+import { Guid } from 'guid-typescript';
 import { push } from 'connected-react-router';
 import Axios from 'axios';
 import { useParams } from 'react-router';
@@ -14,6 +15,8 @@ import PageHeading from '../../components/shared/pageHeading';
 import InputTextField from '../../components/shared/inputTextField';
 import ConfigHelper from '../../config/configHelper';
 import { AppContext } from '../../userContext';
+import ReportButton from '../../components/shared/reportButton';
+import EntryTypeEnum from '../../enums/entryTypeEnum';
 
 interface SeriesParams {
     id?: string;
@@ -27,8 +30,10 @@ interface SeriesState {
 const SeriesPage = () => {
     const [seriesState, setSeriesState] = useState<SeriesState>({
         series: {
-            name: '',
             seriesId: 0,
+            seriesRecordId: 0,
+            name: '',
+            createdBy: Guid.createEmpty(),
             items: [],
         },
         newSeries: false,
@@ -141,19 +146,26 @@ const SeriesPage = () => {
     }
 
     return (
-        <>
-            <Grid item xs={12}>
-                {
-                    !seriesState.newSeries && (
-                        <PageHeading headingText="Series Details" />
-                    )
-                }
-                {
-                    seriesState.newSeries && (
+        <Grid container spacing={2}>
+            {
+                !seriesState.newSeries && (
+                    <>
+                        <Grid item xs={12}>
+                            <PageHeading headingText="Series Details" />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <ReportButton createdBy={seriesState.series.createdBy} entryRecordId={seriesState.series.seriesRecordId} entryType={EntryTypeEnum.Series} />
+                        </Grid>
+                    </>
+                )
+            }
+            {
+                seriesState.newSeries && (
+                    <Grid item xs={12}>
                         <PageHeading headingText="New Series" />
-                    )
-                }
-            </Grid>
+                    </Grid>
+                )
+            }
             <Formik
                 initialValues={seriesState.series}
                 onSubmit={() => { }}
@@ -251,7 +263,7 @@ const SeriesPage = () => {
                     </Grid>
                 )}
             </Formik>
-        </>
+        </Grid>
     );
 };
 

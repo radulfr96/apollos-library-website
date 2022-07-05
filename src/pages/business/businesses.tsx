@@ -86,35 +86,32 @@ const Businesss = () => {
         return (<CircularProgress />);
     }
     return (
-        <Grid item xs={5} container justifyContent="center">
-            <Grid item xs={12}>
-                <PageHeading headingText="Businesses" />
-            </Grid>
-            {
-                context.isAdmin() && (
-                    <Grid item xs={12}>
-                        <BusinesssTable
-                            businesses={businessState.businesses}
-                            deleteBusiness={deleteBusiness}
-                        />
-                    </Grid>
-                )
-            }
-
-            <Grid item xs={12}>
-                <Fab
-                    color="primary"
-                    aria-label="add"
-                    sx={{
-                        marginTop: '10px',
-                        float: 'right',
-                    }}
-                    onClick={() => {
-                        store.dispatch(push('/addbusiness'));
-                    }}
-                >
-                    <Add />
-                </Fab>
+        <Grid xs={6}>
+            <Grid container spacing={2} justifyContent="center">
+                <Grid item xs={12}>
+                    <PageHeading headingText="Businesses" />
+                </Grid>
+                <Grid item xs={12}>
+                    <BusinesssTable
+                        businesses={businessState.businesses}
+                        deleteBusiness={deleteBusiness}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <Fab
+                        color="primary"
+                        aria-label="add"
+                        sx={{
+                            marginTop: '10px',
+                            float: 'right',
+                        }}
+                        onClick={() => {
+                            store.dispatch(push('/addbusiness'));
+                        }}
+                    >
+                        <Add />
+                    </Fab>
+                </Grid>
             </Grid>
         </Grid>
     );

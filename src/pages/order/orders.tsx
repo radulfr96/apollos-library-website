@@ -82,35 +82,32 @@ const Orders = () => {
     }
 
     return (
-        <Grid item xs={8} container justifyContent="center">
-            <Grid item xs={12}>
-                <PageHeading headingText="Orders" />
-            </Grid>
-            {
-                context.isAdmin() && (
-                    <Grid item xs={12}>
-                        <OrdersTable
-                            orders={ordersState.orders}
-                            deleteOrder={deleteOrder}
-                        />
-                    </Grid>
-                )
-            }
-
-            <Grid item xs={12}>
-                <Fab
-                    color="primary"
-                    aria-label="add"
-                    sx={{
-                        marginTop: '10px',
-                        float: 'right',
-                    }}
-                    onClick={() => {
-                        store.dispatch(push('/addorder'));
-                    }}
-                >
-                    <Add />
-                </Fab>
+        <Grid xs={6}>
+            <Grid spacing={2} container justifyContent="center">
+                <Grid item xs={12}>
+                    <PageHeading headingText="Orders" />
+                </Grid>
+                <Grid item xs={12}>
+                    <OrdersTable
+                        orders={ordersState.orders}
+                        deleteOrder={deleteOrder}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <Fab
+                        color="primary"
+                        aria-label="add"
+                        sx={{
+                            marginTop: '10px',
+                            float: 'right',
+                        }}
+                        onClick={() => {
+                            store.dispatch(push('/addorder'));
+                        }}
+                    >
+                        <Add />
+                    </Fab>
+                </Grid>
             </Grid>
         </Grid>
     );

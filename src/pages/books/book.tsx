@@ -9,6 +9,7 @@ import {
     CircularProgress, Grid, Button, Card, CardHeader, CardContent, CardActions,
 } from '@mui/material';
 import { DropzoneAreaBase, FileObject } from 'mui-file-dropzone';
+import { Guid } from 'guid-typescript';
 import { push } from 'connected-react-router';
 import { useStore } from 'react-redux';
 import { useSnackbar } from 'notistack';
@@ -30,6 +31,8 @@ import Dropdown from '../../components/shared/dropdown';
 import DropdownOption from '../../interfaces/dropdownOption';
 import { SeriesListItem } from '../../interfaces/seriesListItem';
 import BusinessListItem from '../../interfaces/businessListItem';
+import ReportButton from '../../components/shared/reportButton';
+import EntryTypeEnum from '../../enums/entryTypeEnum';
 
 interface BookParams {
     id: string;
@@ -59,6 +62,7 @@ const BookPage = () => {
         series: [],
         book: {
             bookId: 0,
+            bookRecordId: 0,
             isbn: '',
             eISBN: '',
             title: '',
@@ -67,6 +71,7 @@ const BookPage = () => {
             businessId: undefined,
             fictionTypeId: 1,
             formTypeId: 1,
+            createdBy: Guid.createEmpty(),
             genres: [],
             authors: [],
             series: [],
@@ -232,19 +237,30 @@ const BookPage = () => {
     }
 
     return (
-        <>
-            <Grid container item xs={12}>
-                {
-                    !bookState.newBook && (
-                        <PageHeading headingText="Book Details" />
-                    )
-                }
-                {
-                    bookState.newBook && (
+        <Grid container spacing={2}>
+
+            {
+                !bookState.newBook && (
+                    <Grid item xs={12}>
+
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <PageHeading headingText="Book Details" />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <ReportButton entryRecordId={bookState.book.bookRecordId} entryType={EntryTypeEnum.Book} createdBy={bookState.book.createdBy} />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                )
+            }
+            {
+                bookState.newBook && (
+                    <Grid item xs={12}>
                         <PageHeading headingText="New Book" />
-                    )
-                }
-            </Grid>
+                    </Grid>
+                )
+            }
             <Formik
                 initialValues={bookState.book}
                 onSubmit={() => { }}
@@ -657,7 +673,7 @@ const BookPage = () => {
                     </Grid>
                 )}
             </Formik>
-        </>
+        </Grid>
     );
 };
 

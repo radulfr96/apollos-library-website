@@ -86,12 +86,14 @@ const Users = () => {
         return (<CircularProgress />);
     }
     return (
-        <Grid item xs={9} container justifyContent="center">
-            <Grid item xs={12}>
-                <PageHeading headingText="Users" />
-            </Grid>
-            <Grid item xs={12}>
-                <UsersTable users={usersState.users} deleteUser={deleteUser} />
+        <Grid xs={9}>
+            <Grid container spacing={2} justifyContent="center">
+                <Grid item xs={12}>
+                    <PageHeading headingText="Users" />
+                </Grid>
+                <Grid item xs={12}>
+                    <UsersTable users={usersState.users} deleteUser={deleteUser} />
+                </Grid>
             </Grid>
         </Grid>
     );

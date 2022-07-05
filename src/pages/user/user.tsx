@@ -128,115 +128,117 @@ const UserPage = () => {
         return (<CircularProgress />);
     }
     return (
-        <>
-            <Grid item xs={12}>
-                <PageHeading headingText="User Details" />
-            </Grid>
-            <Formik
-                initialValues={userState.updateInfo}
-                enableReinitialize
-                onSubmit={() => { }}
-                validationSchema={
-                    yup.object().shape({
-                        username: yup.string()
-                            .required('A user must have a username'),
-                        roles: yup.array()
-                            .required('A user must have a role'),
-                        password: yup.string()
-                            .notRequired()
-                            .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Password must be at least 6 characters long and contain one number and uppercase character.'),
-                        confirmationPassword: yup.string()
-                            .oneOf([yup.ref('password')], 'Confirmation password must matched password')
-                            .when('password', {
-                                // eslint-disable-next-line no-restricted-globals
-                                is: (password: string) => password?.length > 0,
-                                then: yup.string().required('Confirmation password is required'),
-                            }),
-                    })
-                }
-            >
-                {({
-                    values,
-                    errors,
-                    handleChange,
-                    validateForm,
-                }) => (
-                    <Grid item xs={12}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <InputTextField
-                                    label="Username"
-                                    required
-                                    type="text"
-                                    keyName="username"
-                                    value={values.username}
-                                    onChange={handleChange}
-                                    onBlur={() => {
-                                        checkUserIsUnique(values.username);
-                                    }}
-                                    error={!!(errors.username)}
-                                    errorMessage={errors.username}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <RoleSelector
-                                    roles={userState.roles}
-                                    selectedRoles={userState.updateInfo.roles}
-                                    updateUserRoles={(newRoleNames: string[]) => {
-                                        const newRoles = new Array<string>();
-                                        newRoleNames.forEach((n) => {
-                                            const role = userState.roles.find(
-                                                (r) => r === n,
-                                            );
-                                            if (role !== undefined) {
-                                                newRoles.push(role);
+        <Grid xs={4}>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <PageHeading headingText="User Details" />
+                </Grid>
+                <Formik
+                    initialValues={userState.updateInfo}
+                    enableReinitialize
+                    onSubmit={() => { }}
+                    validationSchema={
+                        yup.object().shape({
+                            username: yup.string()
+                                .required('A user must have a username'),
+                            roles: yup.array()
+                                .required('A user must have a role'),
+                            password: yup.string()
+                                .notRequired()
+                                .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Password must be at least 6 characters long and contain one number and uppercase character.'),
+                            confirmationPassword: yup.string()
+                                .oneOf([yup.ref('password')], 'Confirmation password must matched password')
+                                .when('password', {
+                                    // eslint-disable-next-line no-restricted-globals
+                                    is: (password: string) => password?.length > 0,
+                                    then: yup.string().required('Confirmation password is required'),
+                                }),
+                        })
+                    }
+                >
+                    {({
+                        values,
+                        errors,
+                        handleChange,
+                        validateForm,
+                    }) => (
+                        <Grid item xs={12}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <InputTextField
+                                        label="Username"
+                                        required
+                                        type="text"
+                                        keyName="username"
+                                        value={values.username}
+                                        onChange={handleChange}
+                                        onBlur={() => {
+                                            checkUserIsUnique(values.username);
+                                        }}
+                                        error={!!(errors.username)}
+                                        errorMessage={errors.username}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <RoleSelector
+                                        roles={userState.roles}
+                                        selectedRoles={userState.updateInfo.roles}
+                                        updateUserRoles={(newRoleNames: string[]) => {
+                                            const newRoles = new Array<string>();
+                                            newRoleNames.forEach((n) => {
+                                                const role = userState.roles.find(
+                                                    (r) => r === n,
+                                                );
+                                                if (role !== undefined) {
+                                                    newRoles.push(role);
+                                                }
+                                            });
+                                            // eslint-disable-next-line no-param-reassign
+                                            values.roles = newRoles;
+                                            setUserState({
+                                                ...userState,
+                                                updateInfo: {
+                                                    ...userState.updateInfo,
+                                                    roles: newRoles,
+                                                },
+                                            });
+                                        }}
+                                        error={!!(errors.roles)}
+                                        errorMessage="A user must have a role"
+                                    />
+                                </Grid>
+                                <Grid item xs={12} style={{ paddingTop: '10px' }}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            if (errors !== null) {
+                                                updateUser(values, validateForm);
                                             }
-                                        });
-                                        // eslint-disable-next-line no-param-reassign
-                                        values.roles = newRoles;
-                                        setUserState({
-                                            ...userState,
-                                            updateInfo: {
-                                                ...userState.updateInfo,
-                                                roles: newRoles,
-                                            },
-                                        });
-                                    }}
-                                    error={!!(errors.roles)}
-                                    errorMessage="A user must have a role"
-                                />
-                            </Grid>
-                            <Grid item xs={12} style={{ paddingTop: '10px' }}>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        if (errors !== null) {
-                                            updateUser(values, validateForm);
-                                        }
-                                    }}
-                                >
-                                    Update
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    onClick={() => {
-                                        store.dispatch(push('/user'));
-                                    }}
-                                    sx={{
-                                        marginLeft: '10px',
-                                    }}
-                                >
-                                    Cancel
-                                </Button>
+                                        }}
+                                    >
+                                        Update
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={() => {
+                                            store.dispatch(push('/user'));
+                                        }}
+                                        sx={{
+                                            marginLeft: '10px',
+                                        }}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </Grid>
                             </Grid>
                         </Grid>
-                    </Grid>
-                )}
-            </Formik>
-        </>
+                    )}
+                </Formik>
+            </Grid>
+        </Grid>
     );
 };
 
