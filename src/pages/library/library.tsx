@@ -88,17 +88,12 @@ const LibraryPage = () => {
                 <Grid item xs={12}>
                     <PageHeading headingText="Your Library" />
                 </Grid>
-                {
-                    context.isAdmin() && (
-                        <Grid item xs={12}>
-                            <LibraryTable
-                                entries={libraryState.entries}
-                                deleteEntry={deleteEntry}
-                            />
-                        </Grid>
-                    )
-                }
-
+                <Grid item xs={12}>
+                    <LibraryTable
+                        entries={libraryState.entries}
+                        deleteEntry={deleteEntry}
+                    />
+                </Grid>
                 <Grid item xs={12}>
                     <Fab
                         color="primary"
