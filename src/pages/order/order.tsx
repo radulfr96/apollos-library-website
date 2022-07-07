@@ -428,10 +428,7 @@ const OrderPage = () => {
                                                             onClick={(e) => {
                                                                 e.preventDefault();
                                                                 addOrderItem(values, validateForm)
-                                                                    .then(() => { })
-                                                                    .catch((err: any) => {
-                                                                        console.log(err);
-                                                                    });
+                                                                    .then(() => { });
                                                                 handleSubmit();
                                                             }}
                                                         >
