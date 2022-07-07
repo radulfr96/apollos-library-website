@@ -1,5 +1,6 @@
 import { Grid, Link, Typography } from '@mui/material';
 import React from 'react';
+import Policy from '../documents/privacypolicy.pdf';
 
 const Footer = () => (
     <Grid
@@ -20,7 +21,7 @@ const Footer = () => (
                 <Link href="./" sx={{ textDecoration: 'none', color: '#000000' }}>Terms and Conditions</Link>
             </Typography>
             <Typography>
-                <Link href="./" sx={{ textDecoration: 'none', color: '#000000' }}>Privacy Policy</Link>
+                <Link href={Policy} target="_blank" sx={{ textDecoration: 'none', color: '#000000' }}>Privacy Policy</Link>
             </Typography>
         </Grid>
         <Grid item xs={3} textAlign="right">
