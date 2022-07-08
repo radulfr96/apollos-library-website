@@ -56,7 +56,7 @@ const Users = () => {
     };
 
     const deleteUser = (id: string): void => {
-        Axios.delete(`${process.env.idpUrl}/api/user/${id}`)
+        Axios.delete(`${configHelper.idpUrl}/api/user/${id}`)
             .then((response) => {
                 if (response.status === 200) {
                     renderSuccessSnackbar('Delete successful');
