@@ -64,6 +64,17 @@ const MyDetails = () => {
         });
     };
 
+    const goToCustomerPortal = () => {
+        Axios.post(`${configHelper.apiUrl}/api/subscription/billing`, {}, {
+            headers: {
+                Authorization: `Bearer ${context.getToken()}`,
+            },
+        })
+            .then((result: any) => {
+                window.location.href = result.data.sessionUrl;
+            });
+    };
+
     const updateDetails = (details: ChangeAccountDetailsInfo, validateForm: any) => {
         validateForm()
             .then((formKeys: any) => {
@@ -161,7 +172,7 @@ const MyDetails = () => {
                                     }}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item xs={2}>
                                 <Button
                                     variant="contained"
                                     color="primary"
@@ -173,6 +184,18 @@ const MyDetails = () => {
                                     }}
                                 >
                                     Update
+                                </Button>
+                            </Grid>
+                            <Grid item xs={10}>
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        goToCustomerPortal();
+                                    }}
+                                >
+                                    Billing Details
                                 </Button>
                             </Grid>
                         </Grid>

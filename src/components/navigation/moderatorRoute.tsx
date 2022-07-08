@@ -12,7 +12,7 @@ const AdminRoute = (props: ModeratorRouteProps) => {
     const store = useStore();
     const context = useContext(AppContext);
 
-    if (!context.isModerator()) {
+    if ((!context.isModerator()) && (!context.isAdmin())) {
         store.dispatch(push('/'));
     }
     return children;
