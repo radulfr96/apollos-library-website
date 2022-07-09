@@ -397,6 +397,16 @@ const BookPage = () => {
                                                         },
                                                     });
                                                 }}
+                                                handleDelete={(value: string | number) => {
+                                                    setFieldValue('authors', bookState.book.authors.filter((a) => a !== value));
+                                                    setBookState({
+                                                        ...bookState,
+                                                        book: {
+                                                            ...bookState.book,
+                                                            authors: [...bookState.book.authors.filter((a) => a !== value)],
+                                                        },
+                                                    });
+                                                }}
                                                 error={!!(errors.authors)}
                                                 errorMessage="A book must have an author."
                                                 id="authorSelector"
@@ -454,6 +464,16 @@ const BookPage = () => {
                                                         book: {
                                                             ...bookState.book,
                                                             genres: [...bookState.book.genres, genreSelected.value as number],
+                                                        },
+                                                    });
+                                                }}
+                                                handleDelete={(value: string | number) => {
+                                                    setFieldValue('genres', bookState.book.genres.filter((g) => g !== value));
+                                                    setBookState({
+                                                        ...bookState,
+                                                        book: {
+                                                            ...bookState.book,
+                                                            genres: [...bookState.book.genres.filter((g) => g !== value)],
                                                         },
                                                     });
                                                 }}
@@ -544,6 +564,16 @@ const BookPage = () => {
                                                         book: {
                                                             ...bookState.book,
                                                             series: [...bookState.book.series, seriesSelected.value as number],
+                                                        },
+                                                    });
+                                                }}
+                                                handleDelete={(value: string | number) => {
+                                                    setFieldValue('series', bookState.book.series.filter((s) => s !== value));
+                                                    setBookState({
+                                                        ...bookState,
+                                                        book: {
+                                                            ...bookState.book,
+                                                            genres: [...bookState.book.series.filter((s) => s !== value)],
                                                         },
                                                     });
                                                 }}

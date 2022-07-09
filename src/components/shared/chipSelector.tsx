@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Autocomplete, FormControl, FormHelperText, TextField,
+    Autocomplete, Chip, FormControl, FormHelperText, TextField,
 } from '@mui/material';
 import ChipOption from '../../interfaces/chipOption';
 
@@ -15,15 +15,16 @@ interface ChipSelectorProps {
     textInputId: string;
     required?: boolean;
     updateSelection: (selectedOptions: ChipOption) => void;
+    handleDelete: (value: string | number) => void;
 }
 
 const ChipSelector = (props: ChipSelectorProps) => {
     const {
-        options, selectedOptions, error, errorMessage, id, label, required, updateSelection,
+        options, selectedOptions, error, errorMessage, id, label, required, updateSelection, handleDelete,
     } = props;
 
     const handleChange = (event: any) => {
-        updateSelection(options[event.target.value]);
+        updateSelection(options[event.target.attributes['data-option-index'].value]);
     };
 
     return (
@@ -33,9 +34,11 @@ const ChipSelector = (props: ChipSelectorProps) => {
                 id={id}
                 options={options}
                 getOptionLabel={(option) => (option as ChipOption).name}
+                value={selectedOptions}
                 defaultValue={selectedOptions}
                 isOptionEqualToValue={(option: ChipOption, valueSelected: ChipOption) => option.value === valueSelected.value}
                 onChange={handleChange}
+                renderTags={(opts: Array<ChipOption>) => opts.map((opt: ChipOption) => (<Chip variant="outlined" label={opt.name} onDelete={() => handleDelete(opt.value)} />))}
                 renderInput={(params) => (
                     <TextField
                         // eslint-disable-next-line react/jsx-props-no-spreading
