@@ -417,7 +417,7 @@ const BookPage = () => {
                                         </Grid>
                                         <Grid item xs={6}>
                                             <Typedown
-                                                label="Business"
+                                                label="Publisher"
                                                 id="businessId"
                                                 options={
                                                     bookState.businesses.map<TypedownOption>((business) => ({
