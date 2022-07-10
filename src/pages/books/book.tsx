@@ -155,6 +155,7 @@ const BookPage = () => {
                     authors: responses[1].value.data.authors,
                     businesses: responses[2].value.data.businesses,
                     genres: responses[3].value.data.genres,
+                    series: responses[4].value.data.series,
                     newBook: true,
                 });
                 setIsLoading(false);
