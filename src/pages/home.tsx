@@ -5,6 +5,7 @@ import bookListPage from '../images/homepage/bookListPage.png';
 import bookPage from '../images/homepage/bookAddEditPage.png';
 import authorListPage from '../images/homepage/authorListPage.png';
 import authorPage from '../images/homepage/authorAddEditPage.png';
+import ordersPage from '../images/homepage/ordersPage.png';
 
 const Home = () => (
     <Grid container spacing={2}>
@@ -28,7 +29,7 @@ const Home = () => (
                     <CardMedia src={libraryPage} component="img" />
                 </Grid>
                 <Grid item xs={4}>
-                    Order Page
+                    <CardMedia src={ordersPage} component="img" />
                 </Grid>
                 <Grid item xs={4}>
                     <CardMedia src={bookListPage} component="img" />

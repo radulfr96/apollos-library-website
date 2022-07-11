@@ -121,7 +121,10 @@ const OrderPage = () => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.put(`${configHelper.apiUrl}/api/order/`, orderState.order, {
+                    Axios.put(`${configHelper.apiUrl}/api/order/`, {
+                        ...orderState.order,
+                        orderDate: orderState.order.orderDate.toISOString().replace('Z', ''),
+                    }, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },
@@ -147,7 +150,10 @@ const OrderPage = () => {
         validateForm()
             .then((formKeys: any) => {
                 if (Object.keys(formKeys).length === 0) {
-                    Axios.post(`${configHelper.apiUrl}/api/order/`, orderState.order, {
+                    Axios.post(`${configHelper.apiUrl}/api/order/`, {
+                        ...orderState.order,
+                        orderDate: orderState.order.orderDate.toISOString().replace('Z', ''),
+                    }, {
                         headers: {
                             Authorization: `Bearer ${context.getToken()}`,
                         },
