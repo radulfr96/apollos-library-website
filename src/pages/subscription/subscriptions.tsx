@@ -8,6 +8,7 @@ import { AppContext } from '../../userContext';
 import SubscriptionOption from '../../interfaces/subscriptionOption';
 import ConfigHelper from '../../config/configHelper';
 import PageHeading from '../../components/shared/pageHeading';
+import userManager from '../../util/userManager';
 
 interface SubscriptionsState {
     subscriptions: SubscriptionOption[];
@@ -22,15 +23,7 @@ const ProductDisplay = () => {
     });
 
     useEffect(() => {
-        if (context.getToken() === undefined) {
-            return;
-        }
-
-        Axios.get(`${configHelper.apiUrl}/api/subscription`, {
-            headers: {
-                Authorization: `Bearer ${context.getToken()}`,
-            },
-        })
+        Axios.get(`${configHelper.apiUrl}/api/subscription`)
             .then((response: any) => {
                 setSubscriptionsState({
                     subscriptions: response.data.subscriptionTypes,
@@ -89,8 +82,13 @@ const ProductDisplay = () => {
                                                 sx={{
                                                     width: '100%',
                                                 }}
-                                                onClick={() => {
-                                                    submit(subscriptionOption.priceId);
+                                                onClick={(event) => {
+                                                    event.preventDefault();
+                                                    if (context.getToken() === undefined) {
+                                                        userManager.signinRedirect();
+                                                    } else {
+                                                        submit(subscriptionOption.priceId);
+                                                    }
                                                 }}
                                             >
                                                 Select

@@ -227,11 +227,7 @@ ReactDOM.render(
                                             </Protected>
                                         </Route>
                                         <Route path="/subscriptions">
-                                            <Protected>
-                                                <SubscriberRoute>
-                                                    <StripeSubscriptionPage />
-                                                </SubscriberRoute>
-                                            </Protected>
+                                            <StripeSubscriptionPage />
                                         </Route>
                                         <Route path="/moderation">
                                             <AdminRoute>
