@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-    AppBar, Toolbar, Typography, IconButton, Box, MenuItem, Menu, Grid,
+    AppBar, Toolbar, Typography, IconButton, MenuItem, Menu, Grid,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import {
@@ -10,9 +10,11 @@ import { AppContext } from '../../userContext';
 import userManager from '../../util/userManager';
 
 const NavMenu = () => {
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [accountAnchorEl, setAccountAnchorEl] = useState<null | HTMLElement>(null);
+    const [adminAnchorEl, setAdminAnchorEl] = useState<null | HTMLElement>(null);
     const context = useContext(AppContext);
-    const open = Boolean(anchorEl);
+    const accountOpen = Boolean(accountAnchorEl);
+    const adminOpen = Boolean(adminAnchorEl);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -20,11 +22,11 @@ const NavMenu = () => {
         userManager.signoutRedirect();
     };
 
-    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    const handleMenu = (event: React.MouseEvent<HTMLElement>, setAnchorEl: Function) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
+    const handleClose = (setAnchorEl: Function) => {
         setAnchorEl(null);
     };
 
@@ -70,7 +72,7 @@ const NavMenu = () => {
                                 aria-label="account of current user"
                                 aria-controls="menu-appbar"
                                 aria-haspopup="true"
-                                onClick={handleMenu}
+                                onClick={(e) => handleMenu(e, setAccountAnchorEl)}
                             >
                                 <Person sx={{
                                     color: '#FFFFFF',
@@ -79,14 +81,14 @@ const NavMenu = () => {
                             </IconButton>
                             <Menu
                                 id="menu-appbar"
-                                anchorEl={anchorEl}
+                                anchorEl={accountAnchorEl}
                                 anchorOrigin={{
                                     vertical: 'top',
                                     horizontal: 'right',
                                 }}
                                 keepMounted
-                                open={open}
-                                onClose={handleClose}
+                                open={accountOpen}
+                                onClose={() => handleClose(setAccountAnchorEl)}
                             >
                                 <MenuItem onClick={handleLogin}>
                                     <Typography>Log in</Typography>
@@ -101,146 +103,155 @@ const NavMenu = () => {
     return (
         <AppBar position="static">
             <Toolbar>
-                <Grid container spacing={2}>
+                <Grid container>
                     <Grid item xs={2}>
-                        <Typography variant="h5" sx={{ flexGrow: 1 }}>
-                            <Link to="/" style={{ textDecoration: 'none', color: '#FFFFFFFF' }}>
+                        <Link to="/" style={{ textDecoration: 'none', color: '#FFFFFFFF' }}>
+                            <Typography variant="h5" sx={{ flexGrow: 1 }}>
                                 Apollo&apos;s Library
-                            </Link>
-                        </Typography>
+                            </Typography>
+                        </Link>
                     </Grid>
-                    <Grid item xs={!context.isPaidUser() ? 2 : 0} sx={{ display: context.isPaidUser() ? 'box' : 'none' }}>
-                        <Typography variant="h6">
-                            <Link
-                                style={{
-                                    color: '#FFFFFF',
-                                    textDecoration: 'none',
-                                }}
-                                to="/subscriptions"
-                            >
-                                Subscriptions
-                            </Link>
-                        </Typography>
-                    </Grid>
+                    {
+                        !context.isPaidUser() && (
+                            <Grid item xs={2}>
+                                <Typography variant="h6">
+                                    <Link
+                                        style={{
+                                            color: '#FFFFFF',
+                                            textDecoration: 'none',
+                                        }}
+                                        to="/subscriptions"
+                                    >
+                                        Subscriptions
+                                    </Link>
+                                </Typography>
+                            </Grid>
+                        )
+                    }
+
                     <Grid item xs={context.isPaidUser() ? 10 : 8} sx={{ textAlign: 'right' }}>
-                        <Box sx={{ display: context.isPaidUser() ? 'inline' : 'none' }}>
-                            <IconButton
-                                aria-label="Orders"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                            >
-                                <Link
-                                    style={{
-                                        color: '#000000',
-                                        textDecoration: 'none',
-                                    }}
-                                    to="/orders"
-                                >
-                                    <Receipt sx={{
-                                        color: '#FFFFFF',
-                                    }}
-                                    />
-                                </Link>
-                            </IconButton>
-                            <IconButton
-                                aria-label="Library"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                            >
-                                <Link
-                                    style={{
-                                        color: '#000000',
-                                        textDecoration: 'none',
-                                    }}
-                                    to="/library"
-                                >
-                                    <TableRowsOutlined sx={{
-                                        color: '#FFFFFF',
-                                    }}
-                                    />
-                                </Link>
-                            </IconButton>
-                            <IconButton
-                                aria-label="Books"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                            >
-                                <Link
-                                    style={{
-                                        color: '#000000',
-                                        textDecoration: 'none',
-                                    }}
-                                    to="/books"
-                                >
-                                    <Book sx={{
-                                        color: '#FFFFFF',
-                                    }}
-                                    />
-                                </Link>
-                            </IconButton>
-                            <IconButton
-                                aria-label="Series"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                            >
-                                <Link
-                                    style={{
-                                        color: '#000000',
-                                        textDecoration: 'none',
-                                    }}
-                                    to="/serieslist"
-                                >
-                                    <CollectionsBookmark sx={{
-                                        color: '#FFFFFF',
-                                    }}
-                                    />
-                                </Link>
-                            </IconButton>
-                            <IconButton
-                                aria-label="Authors"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                            >
-                                <Link
-                                    style={{
-                                        color: '#000000',
-                                        textDecoration: 'none',
-                                    }}
-                                    to="/authors"
-                                >
-                                    <Person sx={{
-                                        color: '#FFFFFF',
-                                    }}
-                                    />
-                                </Link>
-                            </IconButton>
-                            <IconButton
-                                aria-label="Businesses"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                            >
-                                <Link
-                                    style={{
-                                        color: '#000000',
-                                        textDecoration: 'none',
-                                    }}
-                                    to="/businesses"
-                                >
-                                    <Business sx={{
-                                        color: '#FFFFFF',
-                                    }}
-                                    />
-                                </Link>
-                            </IconButton>
-                        </Box>
+                        {
+                            context.isPaidUser() && (
+                                <>
+                                    <IconButton
+                                        aria-label="Orders"
+                                        aria-controls="menu-appbar"
+                                        aria-haspopup="true"
+                                    >
+                                        <Link
+                                            style={{
+                                                color: '#000000',
+                                                textDecoration: 'none',
+                                            }}
+                                            to="/orders"
+                                        >
+                                            <Receipt sx={{
+                                                color: '#FFFFFF',
+                                            }}
+                                            />
+                                        </Link>
+                                    </IconButton>
+                                    <IconButton
+                                        aria-label="Library"
+                                        aria-controls="menu-appbar"
+                                        aria-haspopup="true"
+                                    >
+                                        <Link
+                                            style={{
+                                                color: '#000000',
+                                                textDecoration: 'none',
+                                            }}
+                                            to="/library"
+                                        >
+                                            <TableRowsOutlined sx={{
+                                                color: '#FFFFFF',
+                                            }}
+                                            />
+                                        </Link>
+                                    </IconButton>
+                                    <IconButton
+                                        aria-label="Books"
+                                        aria-controls="menu-appbar"
+                                        aria-haspopup="true"
+                                    >
+                                        <Link
+                                            style={{
+                                                color: '#000000',
+                                                textDecoration: 'none',
+                                            }}
+                                            to="/books"
+                                        >
+                                            <Book sx={{
+                                                color: '#FFFFFF',
+                                            }}
+                                            />
+                                        </Link>
+                                    </IconButton>
+                                    <IconButton
+                                        aria-label="Series"
+                                        aria-controls="menu-appbar"
+                                        aria-haspopup="true"
+                                    >
+                                        <Link
+                                            style={{
+                                                color: '#000000',
+                                                textDecoration: 'none',
+                                            }}
+                                            to="/serieslist"
+                                        >
+                                            <CollectionsBookmark sx={{
+                                                color: '#FFFFFF',
+                                            }}
+                                            />
+                                        </Link>
+                                    </IconButton>
+                                    <IconButton
+                                        aria-label="Authors"
+                                        aria-controls="menu-appbar"
+                                        aria-haspopup="true"
+                                    >
+                                        <Link
+                                            style={{
+                                                color: '#000000',
+                                                textDecoration: 'none',
+                                            }}
+                                            to="/authors"
+                                        >
+                                            <Person sx={{
+                                                color: '#FFFFFF',
+                                            }}
+                                            />
+                                        </Link>
+                                    </IconButton>
+                                    <IconButton
+                                        aria-label="Businesses"
+                                        aria-controls="menu-appbar"
+                                        aria-haspopup="true"
+                                    >
+                                        <Link
+                                            style={{
+                                                color: '#000000',
+                                                textDecoration: 'none',
+                                            }}
+                                            to="/businesses"
+                                        >
+                                            <Business sx={{
+                                                color: '#FFFFFF',
+                                            }}
+                                            />
+                                        </Link>
+                                    </IconButton>
+                                </>
+                            )
+                        }
                         {
                             context.isAdmin() && (
-                                <Box style={{ display: context.isAdmin() ? 'inline' : 'none' }}>
+                                <>
                                     <IconButton
                                         aria-label="account of current user"
                                         aria-controls="menu-appbar"
                                         aria-haspopup="true"
-                                        onClick={handleMenu}
+                                        onClick={(e) => handleMenu(e, setAdminAnchorEl)}
                                     >
                                         <Settings sx={{
                                             color: '#FFFFFF',
@@ -249,14 +260,14 @@ const NavMenu = () => {
                                     </IconButton>
                                     <Menu
                                         id="menu-appbar"
-                                        anchorEl={anchorEl}
+                                        anchorEl={adminAnchorEl}
                                         anchorOrigin={{
                                             vertical: 'top',
                                             horizontal: 'right',
                                         }}
                                         keepMounted
-                                        open={open}
-                                        onClose={handleClose}
+                                        open={adminOpen}
+                                        onClose={() => handleClose(setAdminAnchorEl)}
                                     >
                                         <Link
                                             style={{
@@ -265,7 +276,7 @@ const NavMenu = () => {
                                             }}
                                             to="/user"
                                         >
-                                            <MenuItem onClick={handleClose}>
+                                            <MenuItem onClick={() => handleClose(setAdminAnchorEl)}>
                                                 Users
                                             </MenuItem>
                                         </Link>
@@ -276,7 +287,7 @@ const NavMenu = () => {
                                             }}
                                             to="/genres"
                                         >
-                                            <MenuItem onClick={handleClose}>
+                                            <MenuItem onClick={() => handleClose(setAdminAnchorEl)}>
                                                 Genres
                                             </MenuItem>
                                         </Link>
@@ -287,20 +298,20 @@ const NavMenu = () => {
                                             }}
                                             to="/moderation"
                                         >
-                                            <MenuItem onClick={handleClose}>
+                                            <MenuItem onClick={() => handleClose(setAdminAnchorEl)}>
                                                 Moderation
                                             </MenuItem>
                                         </Link>
                                     </Menu>
-                                </Box>
+                                </>
                             )
                         }
-                        <Box>
+                        <>
                             <IconButton
                                 aria-label="account of current user"
                                 aria-controls="menu-appbar"
                                 aria-haspopup="true"
-                                onClick={handleMenu}
+                                onClick={(e) => handleMenu(e, setAccountAnchorEl)}
                             >
                                 <Person sx={{
                                     color: '#FFFFFF',
@@ -309,14 +320,14 @@ const NavMenu = () => {
                             </IconButton>
                             <Menu
                                 id="menu-appbar"
-                                anchorEl={anchorEl}
+                                anchorEl={accountAnchorEl}
                                 anchorOrigin={{
                                     vertical: 'top',
                                     horizontal: 'right',
                                 }}
                                 keepMounted
-                                open={open}
-                                onClose={handleClose}
+                                open={accountOpen}
+                                onClose={() => handleClose(setAccountAnchorEl)}
                             >
                                 <Link
                                     style={{
@@ -325,7 +336,7 @@ const NavMenu = () => {
                                     }}
                                     to="/account"
                                 >
-                                    <MenuItem onClick={handleClose}>
+                                    <MenuItem onClick={() => handleClose(setAccountAnchorEl)}>
                                         My Account
                                     </MenuItem>
                                 </Link>
@@ -333,7 +344,7 @@ const NavMenu = () => {
                                     onClick={() => {
                                         logOut();
                                         context.clearUserInfo();
-                                        handleClose();
+                                        handleClose(setAccountAnchorEl);
                                     }}
                                 >
                                     <Link
@@ -347,7 +358,7 @@ const NavMenu = () => {
                                     </Link>
                                 </MenuItem>
                             </Menu>
-                        </Box>
+                        </>
                     </Grid>
                 </Grid>
             </Toolbar>
