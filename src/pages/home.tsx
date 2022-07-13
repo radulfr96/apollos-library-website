@@ -45,7 +45,7 @@ const Home = () => (
                 </Grid>
             </Grid>
         </Grid>
-        <Grid xs={2} />
+        <Grid item xs={2} />
     </Grid>
 );
 

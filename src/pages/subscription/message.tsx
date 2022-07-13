@@ -1,3 +1,4 @@
+import { Box, Typography } from '@mui/material';
 import React from 'react';
 
 interface MessageProps {
@@ -7,9 +8,10 @@ interface MessageProps {
 const Message = (props: MessageProps) => {
     const { message } = props;
     return (
-        <section>
-            <p>{message}</p>
-        </section>
+        <Box>
+            <Typography variant="h3">Subscription Cancelled</Typography>
+            <Typography variant="body1">{message}</Typography>
+        </Box>
     );
 };
 

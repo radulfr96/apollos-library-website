@@ -20,7 +20,7 @@ const StripeSubscriptionPage = () => {
         if (query.get('canceled')) {
             setSuccess(false);
             setMessage(
-                "Order canceled -- continue to shop around and checkout when you're ready.",
+                "Subscription process canceled please come back when you're ready.",
             );
         }
     }, [sessionId]);
