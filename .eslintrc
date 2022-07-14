@@ -9,7 +9,8 @@
     "rules": {
         "linebreak-style": [
             "error",
-            "windows"
+            "windows",
+            "ubuntu"
         ],
         "indent": "off",
         "@typescript-eslint/indent": [
