@@ -7,11 +7,6 @@
         "project": "./tsconfig.json"
     },
     "rules": {
-        "linebreak-style": [
-            "error",
-            "windows",
-            "ubuntu"
-        ],
         "indent": "off",
         "@typescript-eslint/indent": [
             "error",
