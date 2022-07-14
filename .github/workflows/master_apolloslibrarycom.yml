@@ -29,9 +29,7 @@ jobs:
           CI: false
           
       - name: Zip artifact for deployment
-        uses: montudor/action-zip@v1
-        with:
-          args: zip -r release.zip * .env .next
+        run: zip -r release.zip * .env .next
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -53,9 +51,7 @@ jobs:
           name: node-app
           
       - name: unzip artifact for deployment
-        uses: montudor/action-zip@v1
-        with:
-          args: unzip release.zip
+        run: unzip release.zip
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
