@@ -14,6 +14,7 @@
         ],
         "react/jsx-indent": "off",
         "react/jsx-indent-props": "off",
+        "linebreak-style": 1,
         "react/function-component-definition": [
             2,
             {

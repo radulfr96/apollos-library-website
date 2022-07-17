@@ -14,7 +14,7 @@ interface ChipSelectorProps {
     labelId: string;
     textInputId: string;
     required?: boolean;
-    updateSelection: (selectedOptions: ChipOption) => void;
+    updateSelection: (selectedOptions: ChipOption[]) => void;
     handleDelete: (value: string | number) => void;
 }
 
@@ -23,8 +23,8 @@ const ChipSelector = (props: ChipSelectorProps) => {
         options, selectedOptions, error, errorMessage, id, label, required, updateSelection, handleDelete,
     } = props;
 
-    const handleChange = (event: any) => {
-        updateSelection(options[event.target.attributes['data-option-index'].value]);
+    const handleChange = (event: any, value: ChipOption[]) => {
+        updateSelection(value);
     };
 
     return (
