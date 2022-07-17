@@ -387,15 +387,20 @@ const BookPage = () => {
                                                         name: author?.name,
                                                     } as ChipOption;
                                                 })}
-                                                updateSelection={(authorSelected: ChipOption) => {
-                                                    // eslint-disable-next-line no-param-reassign
-                                                    values.authors.push(authorSelected.value as number);
-                                                    setBookState({
-                                                        ...bookState,
-                                                        book: {
-                                                            ...bookState.book,
-                                                            authors: [...bookState.book.authors, authorSelected.value as number],
-                                                        },
+                                                updateSelection={(authorsSelected: ChipOption[]) => {
+                                                    authorsSelected.forEach((a: ChipOption) => {
+                                                        const existing = values.authors.find((auth) => auth === a.value);
+
+                                                        if (!existing) {
+                                                            values.authors.push(a.value as number);
+                                                            setBookState({
+                                                                ...bookState,
+                                                                book: {
+                                                                    ...bookState.book,
+                                                                    authors: [...bookState.book.authors, a.value as number],
+                                                                },
+                                                            });
+                                                        }
                                                     });
                                                 }}
                                                 handleDelete={(value: string | number) => {
@@ -457,15 +462,20 @@ const BookPage = () => {
                                                         name: genre?.name,
                                                     } as ChipOption;
                                                 })}
-                                                updateSelection={(genreSelected: ChipOption) => {
-                                                    // eslint-disable-next-line no-param-reassign
-                                                    values.genres.push(genreSelected.value as number);
-                                                    setBookState({
-                                                        ...bookState,
-                                                        book: {
-                                                            ...bookState.book,
-                                                            genres: [...bookState.book.genres, genreSelected.value as number],
-                                                        },
+                                                updateSelection={(genresSelected: ChipOption[]) => {
+                                                    genresSelected.forEach((g: ChipOption) => {
+                                                        const existing = values.authors.find((gen) => gen === g.value);
+
+                                                        if (!existing) {
+                                                            values.genres.push(g.value as number);
+                                                            setBookState({
+                                                                ...bookState,
+                                                                book: {
+                                                                    ...bookState.book,
+                                                                    genres: [...bookState.book.authors, g.value as number],
+                                                                },
+                                                            });
+                                                        }
                                                     });
                                                 }}
                                                 handleDelete={(value: string | number) => {
@@ -557,15 +567,20 @@ const BookPage = () => {
                                                         name: series?.name,
                                                     } as ChipOption;
                                                 })}
-                                                updateSelection={(seriesSelected: ChipOption) => {
-                                                    // eslint-disable-next-line no-param-reassign
-                                                    values.series.push(seriesSelected.value as number);
-                                                    setBookState({
-                                                        ...bookState,
-                                                        book: {
-                                                            ...bookState.book,
-                                                            series: [...bookState.book.series, seriesSelected.value as number],
-                                                        },
+                                                updateSelection={(seriesSelected: ChipOption[]) => {
+                                                    seriesSelected.forEach((s: ChipOption) => {
+                                                        const existing = values.series.find((ser) => ser === s.value);
+
+                                                        if (!existing) {
+                                                            values.series.push(s.value as number);
+                                                            setBookState({
+                                                                ...bookState,
+                                                                book: {
+                                                                    ...bookState.book,
+                                                                    series: [...bookState.book.series, s.value as number],
+                                                                },
+                                                            });
+                                                        }
                                                     });
                                                 }}
                                                 handleDelete={(value: string | number) => {
