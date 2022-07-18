@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Typography, Grid, CardMedia } from '@mui/material';
+import {
+    Typography, Grid, CardMedia, Card, Paper,
+} from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import libraryPage from '../images/homepage/libraryPage.png';
@@ -10,7 +12,7 @@ import authorPage from '../images/homepage/authorAddEditPage.png';
 import ordersPage from '../images/homepage/ordersPage.png';
 
 const Home = () => (
-    <Grid item xs={12}>
+    <Grid item xs={12} sx={{ marginBottom: '100px' }}>
         <Grid container spacing={2}>
             <Grid item xs={2} />
             <Grid item xs={8}>
@@ -39,6 +41,31 @@ const Home = () => (
                         </Carousel>
                     </Grid>
                 </Grid>
+            </Grid>
+            <Grid item xs={2} />
+        </Grid>
+        <Grid container spacing={4} sx={{ marginTop: '50px' }}>
+            <Grid item xs={2} />
+            <Grid item xs={8}>
+                <Paper variant="elevation" elevation={24} sx={{ background: '#3B3BC4', paddingLeft: '20px', paddingRight: '20px' }}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={4}>
+                            <Card sx={{ minHeight: '100px' }}>
+                                Community Driven Content
+                            </Card>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Card sx={{ minHeight: '100px' }}>
+                                Keep Track of your own library
+                            </Card>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Card sx={{ minHeight: '100px' }}>
+                                Track your book spending and budget accordingly
+                            </Card>
+                        </Grid>
+                    </Grid>
+                </Paper>
             </Grid>
             <Grid item xs={2} />
         </Grid>
