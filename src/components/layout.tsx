@@ -13,7 +13,7 @@ const Layout = (props: { children?: React.ReactNode }) => {
             {() => (
                 <>
                     <NavMenu />
-                    <Grid container sx={{ padding: '20px' }}>
+                    <Grid container spacing={2}>
                         {children}
                     </Grid>
                     <Footer />
