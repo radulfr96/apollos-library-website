@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ProductDisplay from './subscriptions';
-import Message from './message';
-import SubscriptionSuccess from './subscriptionSuccess';
+import Message from '../../components/subscription/message';
+import SubscriptionSuccess from '../../components/subscription/subscriptionSuccess';
 
 const StripeSubscriptionPage = () => {
     const [message, setMessage] = useState<string>('');

@@ -31,13 +31,13 @@ import LibraryPage from './pages/library/library';
 import LibraryEntryPage from './pages/library/libraryEntry';
 import Orders from './pages/order/orders';
 import OrderPage from './pages/order/order';
-import StripeSubscriptionPage from './pages/subscription/stripeSubscriptionPage';
 import Protected from './components/navigation/protected';
 import SubscriberRoute from './components/navigation/subscriberRoute';
 import AdminRoute from './components/navigation/adminRoute';
 import Moderation from './pages/moderation/moderation';
 import Report from './pages/moderation/report/report';
 import UserModeration from './pages/moderation/userModeration';
+import StripeSubscriptionPage from './pages/subscriptions/stripeSubscriptions';
 // Create browser history to use in the Redux store
 
 // Get the application-wide store instance, prepopulating

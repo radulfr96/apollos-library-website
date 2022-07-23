@@ -11,13 +11,23 @@ const Layout = (props: { children?: React.ReactNode }) => {
     return (
         <AppContext.Consumer>
             {() => (
-                <>
-                    <NavMenu />
+                <Grid item xs={12}>
                     <Grid container spacing={2}>
-                        {children}
+                        <Grid item xs={12}>
+                            <NavMenu />
+                        </Grid>
                     </Grid>
-                    <Footer />
-                </>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            {children}
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <Footer />
+                        </Grid>
+                    </Grid>
+                </Grid>
             )}
         </AppContext.Consumer>
     );

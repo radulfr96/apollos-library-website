@@ -12,6 +12,7 @@ import bookPage from '../images/homepage/bookAddEditPage.png';
 import authorListPage from '../images/homepage/authorListPage.png';
 import authorPage from '../images/homepage/authorAddEditPage.png';
 import ordersPage from '../images/homepage/ordersPage.png';
+import ProductDisplay from '../components/subscription/productDisplay';
 
 const Home = () => (
     <Grid item xs={12}>
@@ -109,7 +110,7 @@ const Home = () => (
             </Grid>
             <Grid item xs={2} />
         </Grid>
-        <Grid container spacing={2} sx={{ marginTop: '50px', marginBottom: '100px' }}>
+        <Grid container spacing={2} sx={{ marginTop: '50px' }}>
             <Grid item xs={2} />
             <Grid item xs={8}>
                 <Carousel NextIcon={<ChevronRight />} PrevIcon={<ChevronLeft />}>
@@ -120,6 +121,13 @@ const Home = () => (
                     <CardMedia src={authorListPage} component="img" />
                     <CardMedia src={authorPage} component="img" />
                 </Carousel>
+            </Grid>
+            <Grid item xs={2} />
+        </Grid>
+        <Grid container spacing={2} sx={{ marginTop: '50px', marginBottom: '100px' }}>
+            <Grid item xs={2} />
+            <Grid item xs={8}>
+                <ProductDisplay />
             </Grid>
             <Grid item xs={2} />
         </Grid>
