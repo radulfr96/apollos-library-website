@@ -46,7 +46,7 @@ const MyAccount = () => {
                     <TabPanel value={myAccountState.tab} index={2}>
                         <DeactivateAccount />
                     </TabPanel>
-                    <TabPanel value={myAccountState.tab} index={2}>
+                    <TabPanel value={myAccountState.tab} index={3}>
                         <BudgetSettings />
                     </TabPanel>
                 </Paper>
