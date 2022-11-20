@@ -27,7 +27,7 @@
         "guid-typescript": "^1.0.9",
         "history": "4.10.1",
         "lodash": "^4.17.21",
-        "mocha": "^9.2.0",
+        "mocha": "^9.2.2",
         "mui-file-dropzone": "^4.0.1",
         "notistack": "^2.0.3",
         "oidc-client": "^1.11.5",
